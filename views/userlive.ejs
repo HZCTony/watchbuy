@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/user_live.css' />
+  <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+</head>
+
+<body>
+  <div id='top_bar'>
+    <div id='username'>Tony</div>
+  </div>
+  <div id='live_container'>
+    <div id='productlist'>
+      hello
+    </div>
+
+    <div id='live'>
+      <div id='video'>
+        <video id="live_video" width="100%" autoplay controls>
+        </video>
+      </div>
+    </div>
+
+    <div id='chat'>
+      <div id='msglog'>
+      </div>
+      <div id='sendMessage'>
+        <input type="text" id="message" name="message">
+        <button id='sendMsgBtn'>傳送</button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <script>
+    socket = io.connect();
+    const roomid = '<%- id %>';
+    var username = document.getElementById('username').innerText;
+
+    //check user's room and join
+    console.log(roomid);
+    var user = {
+      name: username,
+      room: roomid
+    }
+    socket.emit('join', user);
+    socket.on('sys', function (status) {
+      console.log(status);
+    });
+
+    // User send message
+    document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
+    function sendMessage(e) {
+      e.preventDefault();
+
+      var message = document.getElementById('message').value;
+
+      var msg = {
+        username: username,
+        sender_role: 'user',
+        message: message,
+        room: roomid
+      }
+      console.log(msg);
+      socket.emit('usr_message', msg);
+    }
+    // User receive message 
+    socket.on('gotMessage', function (gotMessage) {
+      const msglog = document.getElementById('msglog');
+      if (gotMessage.sender_role == 'host') {
+        msglog.innerHTML += '<div id="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.scrollTop = msglog.scrollHeight;
+      } else {
+        msglog.innerHTML += '<div id="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.scrollTop = msglog.scrollHeight;
+      }
+    });
+
+
+  </script>
+    <script>
+    // live video pull
+    if (flvjs.isSupported()) {
+     //document.querySelector("#video").addEventListener("click", function () {    })
+      const live_url = `http://localhost:8000/live/` + roomid + `.flv`;
+      const video = document.getElementById('live_video');
+      //const target = document.querySelector("input").value;
+      const flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: live_url
+        //url: `rtmp://localhost/live/`
+      });
+      flvPlayer.attachMediaElement(video);
+      flvPlayer.load();
+      flvPlayer.play();
+
+    }
+  </script>
+
+
+</body>
+
+</html>

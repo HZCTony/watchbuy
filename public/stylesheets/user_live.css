@@ -1,0 +1,83 @@
+body{
+    padding:0;
+    margin:0;
+}
+
+
+
+#top_bar{
+    width:100%;
+    height: 100px;
+    background-color: #9ad7a4;
+}
+
+#live_container{
+    width:100%;
+    min-height: 800px;
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: row ;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#live, #chat, #productlist{
+    height: 100%;
+}
+#productlist{
+    width:30%;
+}
+
+#live{
+    width:40%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#video{
+    width:100%;
+    max-width: 480px;
+}
+
+#chat{
+    width:30%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#msglog{
+    border-width:1px; 
+    border-style:solid; 
+    height: 45%;
+    width:100%;
+    overflow: auto;
+}
+
+#sendMessage{
+    height:10%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hostMsg{
+    text-align: left;
+    color:black;
+}
+
+#hostMsg span{
+    background-color: #9ad7a4;
+}
+
+#userMsg{
+    text-align: right;
+    color:black;
+}
+
+#userMsg span{
+    background-color: rgb(221, 221, 221);
+}
