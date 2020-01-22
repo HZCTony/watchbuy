@@ -78,8 +78,8 @@ io.on('connection', function (socket) {
 
     socket.join(roomID);    // 加入房间
     // notice all users in the room with roomID
-    io.to(roomID).emit('sys', A_real_user + 'joined in this room :', roomInfo[roomID]);  
-    console.log(A_real_user + 'joined in this room ' + roomID);
+    io.to(roomID).emit('sys', A_real_user + ' joined in this room :', roomInfo[roomID]);  
+    console.log(A_real_user + ' joined in this room ' + roomID);
   });
 
   socket.on('disconnect', function () {

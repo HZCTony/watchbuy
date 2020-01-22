@@ -27,6 +27,23 @@ body{
 }
 #productlist{
     width:30%;
+    display: flex;
+    flex-direction: row ;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.item{
+    width: 400px;
+    height: 600px;
+    padding-top: 20px;
+    border-radius: 2%;
+    box-shadow: 6px 6px 12px #707070b3;
+}
+
+.description{
+    line-height: 60px;
 }
 
 #live{
@@ -50,10 +67,9 @@ body{
 }
 
 #msglog{
-    border-width:1px; 
-    border-style:solid; 
     height: 45%;
-    width:100%;
+    width:70%;
+    box-shadow: 6px 6px 18px #707070b3;
     overflow: auto;
 }
 
