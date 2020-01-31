@@ -4,9 +4,10 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/user_live.css' />
+  <link rel='stylesheet' href='/stylesheets/host_live.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
 </head>
 
 <body>
@@ -15,12 +16,21 @@
   </div>
   <div id='live_container'>
     <div id='productlist'>
-      hello
+      <div class='item'>
+        <div>
+          <img src="/images/shirt.jpg">
+        </div>
+        <div class='description'>
+          <h1>白色襯衫</h1>
+          NT.799<br>
+          <button>想買嗎？</button><br>
+        </div>
+      </div>
     </div>
 
     <div id='live'>
       <div id='video'>
-        <video autoplay id="live_video" width="100%"  controls>
+        <video autoplay id="live_video" width="100%" controls muted>
         </video>
       </div>
     </div>
@@ -79,25 +89,14 @@
         msglog.scrollTop = msglog.scrollHeight;
       }
     });
-    </script>
-    <script>
-    // live video pull
-    if (flvjs.isSupported()) {
-     //document.querySelector("#video").addEventListener("click", function () {    })
-      //const live_url = `http://localhost:8000/live/` + roomid + `.flv`;
-      const live_url = http://d2bdydyr5nl3wu.cloudfront.net/live/hzctony/index.mpd
-      const video = document.getElementById('live_video');
-      //const target = document.querySelector("input").value;
-      const flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        url: live_url
-        //url: `rtmp://localhost/live/`
-      });
-      flvPlayer.attachMediaElement(video);
-      flvPlayer.load();
-      flvPlayer.play();
-
-    }
+  </script>
+  <!-- DASH mpd -->
+  <script>
+    //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
+    let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/hzctony/index.mpd";
+    let player = dashjs.MediaPlayer().create();
+    let videoplayer = document.getElementById('live_video');
+    player.initialize(videoplayer, video_url, true);
   </script>
 
 

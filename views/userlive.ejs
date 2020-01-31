@@ -83,10 +83,10 @@
     socket.on('gotMessage', function (gotMessage) {
       const msglog = document.getElementById('msglog');
       if (gotMessage.sender_role == 'host') {
-        msglog.innerHTML += '<div id="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.innerHTML += '<div id="hostMsg">' + '<div><span> ' + gotMessage.username + " : " + gotMessage.message + ' </span></div></div>';
         msglog.scrollTop = msglog.scrollHeight;
       } else {
-        msglog.innerHTML += '<div id="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.innerHTML += '<div id="userMsg">' + '<div><span> ' + gotMessage.username + " : " + gotMessage.message + ' </span></div></div>';
         msglog.scrollTop = msglog.scrollHeight;
       }
     });
@@ -108,7 +108,6 @@
     //   // flvPlayer.attachMediaElement(video);
     //   // flvPlayer.load();
     //   // flvPlayer.play();
-
     // }
   </script>
   <!-- DASH mpd -->
@@ -118,7 +117,6 @@
     let player = dashjs.MediaPlayer().create();
     let videoplayer = document.getElementById('live_video');
     player.initialize(videoplayer, video_url, true);
-
   </script>
 </body>
 

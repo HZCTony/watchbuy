@@ -3,9 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var favicon = require('serve-favicon');
 
 var testOBSRouter = require('./routes/testOBS');
 var homepage = require('./routes/index');
+var signup = require('./routes/signup/signup');
+var signin = require('./routes/signin/signin');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
@@ -17,13 +20,22 @@ const io = require('socket.io')(server);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//home
 app.use('/', homepage);
+
+
+//signup & signin pages
+app.use('/signup', signup);
+app.use('/signin', signin);
+
+//live streaming pages
 app.use('/userlive', userlive);
 app.use('/hostlive', hostlive);
 app.use('/users', usersRouter);

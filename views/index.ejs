@@ -7,26 +7,28 @@
 </head>
 
 <body>
-  <div id="main_title">
-    <p>你是誰</p>
-  </div>
   <div id='background'>
-
-    <div id="roles">
-      <div id='host-ani'>
-        <div id='host'>
-          <div><img src="/images/DJ_br.png"></div>
-          <div class='title'>直 播 主</div>
-        </div>
-      </div>
-      <div id='user-ani'>
-        <div id='user'>
-          <div><img src="/images/user_br.png"></div>
-          <div class='title'>使 用 者</div>
-        </div>
-      </div>
+    <div>
+      <button id='signup' class='sign_btn'>Sign up</button>
+    </div>
+    <div>
+      <button id='signin' class='sign_btn'>Sign in</button>
     </div>
   </div>
 </body>
+
+
+<script>
+  document.getElementById("signup").addEventListener("click", function () {
+    window.location = "/signup";
+  });
+</script>
+
+<script>
+  document.getElementById("signin").addEventListener("click", function () {
+    window.location = "/signin";
+  });
+</script>
+
 
 </html>
