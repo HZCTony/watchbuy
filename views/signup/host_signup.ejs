@@ -4,6 +4,8 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/signup/host_signup.css' />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -13,22 +15,61 @@
         <h1 id='title'>直播主註冊</h1>
       </div>
       <div>
-        <input class='sign_info' type="text" name="username" placeholder="username">
+        <input id='username' class='sign_info' type="text" name="username" placeholder="username">
       </div>
       <div>
-        <input class='sign_info' type="text" name="email" placeholder="email">
+        <input id='email' class='sign_info' type="text" name="email" placeholder="email">
       </div>
       <div>
-        <input class='sign_info' type="text" name="password" placeholder="password">
+        <form>
+          <input id='password' class='sign_info' type="password" name="password" placeholder="password">
+        </form>
       </div>
       <div>
-        <input class='sign_info' type="text" name="room name" placeholder="room name">
+        <input id='room_name' class='sign_info' type="text" name="room name" placeholder="room name">
       </div>
       <div>
-        <button class='sign_info_submit'>送出</button>
+        <button id='sendHostSignupInfo' class='sign_info_submit'>送出</button>
       </div>
     </div>
   </div>
 </body>
+
+<script>
+  document.getElementById('sendHostSignupInfo').addEventListener('click', function () {
+
+    var data = {
+      name: document.getElementById("username").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      room_name: document.getElementById("room_name").value
+    };
+
+    if (data.name == '' || data.email == '' || data.password == '' || data.room_name == '') {
+
+      console.log('Sign up info should not be empty.');
+
+    } else {
+
+      $.ajax({
+        url: '/signup/host',
+        type: "POST",
+        dataType: "json",
+        data: data,
+        success: function (req) {
+          //請求成功時處理
+          console.log(req);
+        }
+      })
+
+    }
+
+
+
+  })
+
+</script>
+
+
 
 </html>

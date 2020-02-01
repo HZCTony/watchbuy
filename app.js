@@ -7,8 +7,8 @@ var favicon = require('serve-favicon');
 
 var testOBSRouter = require('./routes/testOBS');
 var homepage = require('./routes/index');
-var signup = require('./routes/signup/signup');
-var signin = require('./routes/signin/signin');
+var signup = require('./routes/sign/signup');
+var signin = require('./routes/sign/signin');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
@@ -113,8 +113,8 @@ io.on('connection', function (socket) {
 
 
 
-server.listen(3000, function () {
-  console.log('listening on port 3000');
+server.listen(80, function () {
+  console.log('listening on port 80');
 });
 
 module.exports = app;

@@ -18,7 +18,7 @@ body{
 }
 
 #container{
-    margin-bottom: 160px;
+    padding-bottom: 40px;
     text-align: center;
 }
 
@@ -78,6 +78,14 @@ body{
     width: 180px;
     padding: 8px;
     color: white;
+}
+
+#status{
+    width: 100%;
+    text-align: center;
+    height: 26px;
+    font-size: 26px;
+    font-weight: bolder;
 }
 
 
