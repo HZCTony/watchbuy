@@ -9,6 +9,7 @@ var testOBSRouter = require('./routes/testOBS');
 var homepage = require('./routes/index');
 var signup = require('./routes/sign/signup');
 var signin = require('./routes/sign/signin');
+var profile = require('./routes/sign/profile');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
@@ -34,6 +35,7 @@ app.use('/', homepage);
 //signup & signin pages
 app.use('/signup', signup);
 app.use('/signin', signin);
+app.use('/profile', profile);
 
 //live streaming pages
 app.use('/userlive', userlive);
