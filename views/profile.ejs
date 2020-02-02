@@ -3,6 +3,7 @@
 
 <head>
   <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/profile.css' />
   <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -11,8 +12,7 @@
 </head>
 
 <body>
-    <div id='top_bar'>
-    </div>
+    <%- include("./model/header.ejs") %>
     <div id='container'>
     <div id='profileSettingList'>
         <div id='listbox'>

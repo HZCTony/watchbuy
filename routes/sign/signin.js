@@ -20,8 +20,9 @@ router.post('/check', function (req, res) {
         res.json({ status: 'You have not been signed up as a user yet.' });
       } else {
         var status = 'Welcome Back! ' + name;
-
         //做完登入確認要轉跳
+        res.cookie('role',role);
+        res.cookie('token',data[0].login_access_token);
         res.json({ status: status });
       }
     }).catch(function (err) {
@@ -34,8 +35,9 @@ router.post('/check', function (req, res) {
         res.json({ status: 'You have not been signed up as a host yet.' });
       } else {
         var status = 'Welcome Back! ' + name;
-
         //做完登入確認要轉跳
+        res.cookie('role',role);
+        res.cookie('token',data[0].login_access_token);
         res.json({ status: status });
       }
     }).catch(function (err) {
@@ -46,6 +48,14 @@ router.post('/check', function (req, res) {
     res.json({status:'Error : please check sign in info first.'});
   }
 
+});
+
+
+router.post('/logout', function (req, res, next) {
+  console.log(req.body);
+  res.clearCookie('role');
+  res.clearCookie('token');
+  res.json({msg:'already logout'});
 });
 
 

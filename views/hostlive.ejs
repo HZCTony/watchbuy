@@ -8,12 +8,23 @@
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <div id='top_bar'>
-    <div id='username'>Ethan</div>
-  </div>
+  <% if (loginStatus.status == 'ok') { %>
+
+    <%- include("./model/loginedmenu.ejs") %>
+
+  <% } else { %>
+
+    <%- include("./model/notloginedmenu.ejs") %>
+
+  <% } %>
+  <%- include("./model/header.ejs") %>
   <div id='live_container'>
     <div id='productlist'>
       <div class='item'>
