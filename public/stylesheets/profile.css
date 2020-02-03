@@ -89,7 +89,7 @@ body{
     border-radius: 10px;
 }
 
-#basicinfo #name, #basicinfo #ID, #basicinfo #description{
+#basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email{
     width: 512px;
     height: 40px;
     display: inline-flex;
@@ -108,4 +108,5 @@ body{
     height:100%;
     border: 2px #9ad7a4 solid;
     border-radius: 10px;
+    overflow:scroll;
 }

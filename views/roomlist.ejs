@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/roomlist.css' />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <% if (loginStatus.status == 'ok') { %>
+
+    <%- include("./model/loginedmenu.ejs") %>
+
+    <% } else { %>
+
+    <%- include("./model/notloginedmenu.ejs") %>
+
+    <% } %>
+    <%- include("./model/header.ejs") %>
+
+    <div id='category'>
+        <div id='title'>
+            <p>category</p>
+        </div>
+        <div id='category_box_container'>
+            <div class='category_box'>
+                <p>旅遊</p>
+            </div>
+            <div class='category_box'>
+                <p>服飾</p>
+            </div>
+            <div class='category_box'>
+                <p>美食</p>
+            </div>
+        </div>
+
+    </div>
+    <div id='rooms'>
+
+
+        <div class='single_room' onclick="getStreamToken()">
+            <div class='room_title'>
+                <p>Tony's room</p>
+            </div>
+            <div class='room_hostname'>
+                <p>tony</p>
+            </div>
+            <div class='stream_token' style='display:none;'>6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26</div>
+            <div class='room_pic'>
+                <p>直播間大頭貼，會放商家logo</p>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+<script>
+
+    function getStreamToken() {
+
+        const stream_token = document.getElementsByClassName('stream_token')[0].innerText;
+        const room_hostname = document.getElementsByClassName('room_hostname')[0].getElementsByTagName('p')[0].innerText;
+        console.log(room_hostname);
+        if ('<%= loginStatus.role %>' == 'host') {
+            if ('<%= loginStatus.name %>' == room_hostname) {
+                window.location = '/hostlive/' + stream_token;
+            }else{
+                window.location = '/userlive/' + stream_token;
+            }
+        } else {
+            window.location = '/userlive/' + stream_token;
+        }
+    }
+
+</script>
+
+</html>

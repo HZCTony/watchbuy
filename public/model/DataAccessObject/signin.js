@@ -33,7 +33,9 @@ module.exports = {
 			var loginStatus = {
 				role: '',
 				status: '',
-				name: ''
+				name: '',
+				email: '',
+				stream_token: ''
 			};
 			if (role == 'user') {
 				database.connection.query(`select * from userlist where login_access_token='${token}';`, function (error, hostcookiecheck, fields) {
@@ -48,6 +50,7 @@ module.exports = {
 							loginStatus.role = 'user';
 							loginStatus.status = 'ok';
 							loginStatus.name = hostcookiecheck[0].name;
+							loginStatus.email = hostcookiecheck[0].email;
 							resolve(loginStatus);
 						}
 					}
@@ -62,9 +65,12 @@ module.exports = {
 							loginStatus.status = 'none';
 							resolve(loginStatus);
 						}else{
+							console.log(hostcookiecheck[0]);
 							loginStatus.role = 'host';
 							loginStatus.status = 'ok';
 							loginStatus.name = hostcookiecheck[0].name;
+							loginStatus.email = hostcookiecheck[0].email;
+							loginStatus.stream_token = hostcookiecheck[0].stream_token;
 							resolve(loginStatus);
 						}
 					}

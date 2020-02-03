@@ -10,6 +10,7 @@ var homepage = require('./routes/index');
 var signup = require('./routes/sign/signup');
 var signin = require('./routes/sign/signin');
 var profile = require('./routes/sign/profile');
+var roomlist = require('./routes/roomlist');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
@@ -38,6 +39,7 @@ app.use('/signin', signin);
 app.use('/profile', profile);
 
 //live streaming pages
+app.use('/roomlist', roomlist);
 app.use('/userlive', userlive);
 app.use('/hostlive', hostlive);
 app.use('/users', usersRouter);

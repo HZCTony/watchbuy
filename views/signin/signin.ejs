@@ -47,7 +47,8 @@
 <script>
 
     console.log('started');
-    document.getElementById("sendSigninInfo").addEventListener("click", function () {
+    document.getElementById("sendSigninInfo").addEventListener("click", function (event) {
+      event.preventDefault();
       
       $.ajax({
         url: '/signin/check',
@@ -61,13 +62,14 @@
         },
         success: function (req) {
           //請求成功時處理
-          console.log(req.status);
-          if(req.status === 'You have not been signed up as a user yet.'){
+          console.log('req.status== ',req.status);
+          if(req.status == 'You have not been signed up as a user yet.'){
             document.getElementById('status').innerText = "你尚未註冊為使用者";
-          };
-          if(req.status === 'You have not been signed up as a host yet.'){
+          }else if(req.status == 'You have not been signed up as a host yet.'){
             document.getElementById('status').innerText = "你尚未註冊為直播主";
-          };
+          }else{
+            window.location = '/roomlist';
+          }
 
         }
       })
