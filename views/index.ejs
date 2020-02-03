@@ -5,15 +5,44 @@
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/hompage.css' />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
+  <% if (loginStatus.status == 'ok') { %>
+
+  <%- include("./model/loginedmenu.ejs") %>
+
+  <% } else { %>
+
+  <%- include("./model/notloginedmenu.ejs") %>
+
+  <% } %>
+  <%- include("./model/header.ejs") %>
+  <div id='slogan'>
+    <h1>Watch carefully,</h1>
+    <h1>Buy quickly</h1>
+  </div>
+
+
+
   <div id='background'>
+    <div id='icons-container'>
     <div>
-      <button id='signup' class='sign_btn'>Sign up</button>
+      <div id='logo'>
+        <img src='/images/favicon.png'>
+        <h3>WatchBuy</h3>
+      </div>
     </div>
-    <div>
-      <button id='signin' class='sign_btn'>Sign in</button>
+    <div id='signs'>
+      <div>
+        <button id='signup' class='sign_btn'>Sign up</button>
+      </div>
+      <div>
+        <button id='signin' class='sign_btn'>Sign in</button>
+      </div>
+    </div>
     </div>
   </div>
 </body>
