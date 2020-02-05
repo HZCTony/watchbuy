@@ -65,14 +65,63 @@ body{
 
 #live{
     width:40%;
-    display:flex;
+    display:inline-flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-#video{
-    width:100%;
-    max-width: 480px;
+#video-container{
+    position: relative;
+    top:-35%;
+    left: -27%;
+}
+
+#live_video{
+    position: absolute;
+    min-width: 480px;
+    height: 640px;
+}
+
+
+#liveCheckButton{
+    position: absolute;
+    z-index: 1000;
+    width: 280px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+
+
+#circle{
+    width: 29px;
+    height: 29px;
+    border-radius: 20px;
+    border: 2px #808080 solid;
+    display: inline-flex;
+    margin-left: 10px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#innercircle{
+    width: 16px;
+    height: 16px;
+    border-radius: 12px;
+    border-width: 0px;
+    background-color: #808080;
+}
+#circle_text{
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 #chat{
@@ -86,7 +135,7 @@ body{
 #msglog{
     height: 45%;
     width:70%;
-    box-shadow: 6px 6px 18px #707070b3;
+    box-shadow: 2px 2px 6px #707070b3;
     overflow: auto;
 }
 

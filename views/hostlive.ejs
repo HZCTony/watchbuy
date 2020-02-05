@@ -8,10 +8,8 @@
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -26,10 +24,18 @@
     </div>
 
     <div id='live'>
+      <div id='video-container'>
+      <div id='liveCheckButton'>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='circle_text'>影像有出現後按我開播</div>
+      </div>
       <div id='video'>
         <video autoplay id="live_video" width="100%" controls muted>
         </video>
       </div>
+    </div>
     </div>
 
     <div id='chat'>
@@ -91,10 +97,29 @@
   <!-- DASH mpd -->
   <script>
     //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
-    let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/"+ "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" +"/index.mpd";
+    let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/" + "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" + "/index.mpd";
     let player = dashjs.MediaPlayer().create();
     let videoplayer = document.getElementById('live_video');
     player.initialize(videoplayer, video_url, true);
+  </script>
+
+
+  <script>
+    document.getElementById('liveCheckButton').addEventListener('click', function (e) {
+      e.preventDefault();
+      var color = $( '#circle' ).css( "border-color" );
+      if (color == 'rgb(128, 128, 128)') {
+        $('#circle').css('border-color', 'rgb(255, 0, 0)');
+        $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
+        document.getElementById('circle_text').innerHTML = '正在開播中，按我取消';
+      } else if (color == 'rgb(255, 0, 0)') {
+        $('#circle').css('border-color', 'rgb(128, 128, 128)');
+        $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
+        document.getElementById('circle_text').innerHTML = '影像有畫面後按我開播';
+      }
+
+
+    })
   </script>
 
 
