@@ -15,14 +15,7 @@
 </head>
 
 <body>
-  <% if (loginStatus.status == 'ok') { %>
-    <%- include("./model/loginedmenu.ejs") %>
-  <% } else { %>
-    <%- include("./model/notLoginedmenu.ejs") %>
-  <% } %>
-  <%- include("./model/header.ejs") %>
-
-
+  <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
     <div id='productlist'>

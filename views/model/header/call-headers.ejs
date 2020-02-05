@@ -1,0 +1,6 @@
+<% if (loginStatus.status == 'ok') { %>
+    <%- include("./loginedmenu.ejs") %>
+  <% } else { %>
+    <%- include("./notLoginedmenu.ejs") %>
+  <% } %>
+  <%- include("./header.ejs") %>
