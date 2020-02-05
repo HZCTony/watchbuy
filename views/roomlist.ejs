@@ -36,14 +36,17 @@
 
         <div class='single_room' onclick="getStreamToken()">
             <div class='room_title'>
+                <div class='circle'>
+                    <div class='innercircle'></div>
+                </div>
                 <p>Tony's room</p>
             </div>
             <div class='room_hostname'>
                 <p>tony</p>
             </div>
             <div class='stream_token' style='display:none;'>6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26</div>
-            <div class='room_pic'>
-                <p>直播間大頭貼，會放商家logo</p>
+            <div class='room_pic'
+                style="background-image: url('/images/favicon.png'); background-size:contain; background-repeat: no-repeat;">
             </div>
         </div>
 
@@ -61,13 +64,85 @@
         if ('<%= loginStatus.role %>' == 'host') {
             if ('<%= loginStatus.name %>' == room_hostname) {
                 window.location = '/hostlive/' + stream_token;
-            }else{
+            } else {
                 window.location = '/userlive/' + stream_token;
             }
         } else {
             window.location = '/userlive/' + stream_token;
         }
     }
+
+</script>
+
+<script>
+
+
+    var rooms = '<%- rooms %>' ;
+    var rooms_obj = JSON.parse(rooms);
+    console.log(rooms_obj);
+    
+    for(var iter=0; iter<rooms_obj.length; iter++){
+        const stream_name = rooms_obj[iter].stream_token;
+        const room_Title = rooms_obj[iter].room_name;
+        const room_host_name = rooms_obj[iter].name;
+
+        generateEverySingleRoom(stream_name, room_Title, room_host_name);
+    }
+
+    function generateEverySingleRoom(stream_token, room_Title, room_host_name) {
+        //div onclick function
+
+        // div construction
+        var single_room = document.createElement('div');
+
+
+        var room_title = document.createElement('div');
+        var circle = document.createElement('div');
+        var innercircle = document.createElement('div');
+        var p = document.createElement('p');
+        console.log(room_title);
+        var RoomTitleText = document.createTextNode(room_Title);
+        room_title.classList.add('room_title');
+        single_room.classList.add('single_room');
+        circle.classList.add('circle');
+        innercircle.classList.add('innercircle');
+        p.appendChild(RoomTitleText);
+        circle.appendChild(innercircle);
+        room_title.appendChild(circle);
+        room_title.appendChild(p);
+
+
+        var room_hostname = document.createElement('div');
+        room_hostname.classList.add('room_hostname');
+        var p2 = document.createElement('p');
+        var HostNameText = document.createTextNode(room_host_name);
+        p2.appendChild(HostNameText);
+        room_hostname.appendChild(p2);
+
+
+        var room_pic = document.createElement('div');
+        room_pic.classList.add('room_pic');
+
+
+        single_room.appendChild(room_title);
+        single_room.appendChild(room_hostname);
+        single_room.appendChild(room_pic);
+        single_room.onclick = function () {
+            if ('<%= loginStatus.role %>' == 'host') {
+                if ('<%= loginStatus.name %>' == room_host_name) {
+                    window.location = '/hostlive/' + stream_token;
+                } else {
+                    window.location = '/userlive/' + stream_token;
+                }
+            } else {
+                window.location = '/userlive/' + stream_token;
+            }
+        };
+
+        document.getElementById('rooms').appendChild(single_room);
+
+    }
+
 
 </script>
 
