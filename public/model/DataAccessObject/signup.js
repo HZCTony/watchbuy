@@ -1,12 +1,12 @@
 const crypto = require('crypto');
-const access_expired_sec = 3600;
+const config = require('./config.json');
 // MySQL Initialization
 const database = require("../util/rds_mysql.js");
 // Build DAO Object
 module.exports = {
-	userSignUp: function (name, password, email, login_access_token) {
+	userSignUp: function (name, password, email, login_access_token, expire_time) {
 		return new Promise(function (resolve, reject) {
-			
+
 			//checkDuplicatedName先判斷有沒有重複name
 			//if 沒有重複name 才插入 insertUserSignUpInfo
 			//else 重複了 就回覆已重複的username
@@ -23,10 +23,10 @@ module.exports = {
 				});
 			}
 
-			function insertUserSignUpInfo(name, password, email, login_access_token) {
+			function insertUserSignUpInfo(name, password, email, login_access_token, expire_time) {
 				return new Promise(function (resolve, reject) {
-					const insert = `Insert into userlist(name ,password, email,login_access_token) 
-				                              values('${name}', '${password}',  '${email}', '${login_access_token}');`
+					const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
+				                              values('${name}', '${password}',  '${email}', '${login_access_token}', '${expire_time}');`
 					database.connection.query(insert, function (error, insertedHostCheck, fields) {
 						if (error) {
 							reject("[Database Error] " + error);
@@ -46,7 +46,8 @@ module.exports = {
 						name,
 						passwordEcripted,
 						email,
-						login_access_token
+						login_access_token,
+						expire_time
 					);
 					return '[User sign up result]:' + insertUserDataResult;
 				} else {
@@ -64,7 +65,7 @@ module.exports = {
 
 	},
 
-	hostSignUp: function (name, password, email, login_access_token, stream_token, room_name) {
+	hostSignUp: function (name, password, email, login_access_token, stream_token, room_name, expire_time) {
 		return new Promise(function (resolve, reject) {
 			//checkDuplicatedName先判斷有沒有重複name
 			//if 沒有重複name 才插入insertHostSignUpInfo
@@ -82,10 +83,10 @@ module.exports = {
 				});
 			}
 
-			function insertHostSignUpInfo(name, password, email, login_access_token, stream_token, room_name) {
+			function insertHostSignUpInfo(name, password, email, login_access_token, stream_token, room_name, expire_time) {
 				return new Promise(function (resolve, reject) {
-					const insert = `Insert into hostlist(name ,password, email,login_access_token, stream_token, room_name) 
-				                              values('${name}', '${password}',  '${email}', '${login_access_token}', '${stream_token}', '${room_name}');`
+					const insert = `Insert into hostlist(name ,password, email,login_access_token, stream_token, room_name, expire_time) 
+				                              values('${name}', '${password}',  '${email}', '${login_access_token}', '${stream_token}', '${room_name}','${expire_time}');`
 					database.connection.query(insert, function (error, insertedHostCheck, fields) {
 						if (error) {
 							reject("[Database Error] " + error);
@@ -107,7 +108,8 @@ module.exports = {
 						email,
 						login_access_token,
 						stream_token,
-						room_name
+						room_name,
+						expire_time
 					);
 					return '[host sign up result]:' + insertHostDataResult;
 				} else {
@@ -127,7 +129,7 @@ module.exports = {
 	// every host and user should have an access token
 	loginTokenGenerator: function (email) {
 		const date = new Date();
-		const temp = date.setSeconds(date.getSeconds() + access_expired_sec);
+		const temp = date.setSeconds(date.getSeconds() + config.access_expired_sec);
 		const expire_date = new Date(temp);
 		console.log('expire_date ==', expire_date, typeof (expire_date.toString()));
 		const new_access = email + String(expire_date);
@@ -135,7 +137,13 @@ module.exports = {
 		// generate login access token
 		const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
 		const login_access_token = new_access_token.toString('hex');
-		return login_access_token
+
+		var res_obj = {
+			expire: expire_date.toString(),
+			login_access_token: login_access_token
+		}
+
+		return res_obj
 	},
 	// every host should have only one stream id
 	StreamTokenGenerator: function (hostname) {
@@ -146,18 +154,13 @@ module.exports = {
 		const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
 		const stream_token = new_access_token.toString('hex');
 		return stream_token
-
-
 	}
 
 };
-
-
-
-
 
 function passwordEncryption(password) {
 	const new_password = crypto.createHash('sha256').update(password, 'utf8').digest();
 	const new_password_token = new_password.toString('hex');
 	return new_password_token;
 }
+

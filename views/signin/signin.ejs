@@ -68,7 +68,9 @@
           }else if(req.status == 'You have not been signed up as a host yet.'){
             document.getElementById('status').innerText = "你尚未註冊為直播主";
           }else{
+            if(req.status == 'ok'){
             window.location = '/roomlist';
+          }
           }
 
         }

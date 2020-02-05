@@ -24,37 +24,36 @@ router.post('/host', function(req, res){
   console.log(req.body);
 
 
-  var login_access_token  = signup.loginTokenGenerator(req.body.email);
+  var login_info  = signup.loginTokenGenerator(req.body.email);
   var stream_token = signup.StreamTokenGenerator(req.body.name);
-  console.log('login_access_token ==',login_access_token);
+  console.log('login_info ==',login_info);
   console.log('stream_token ==', stream_token);
   signup.hostSignUp(
     req.body.name,
     req.body.password,
     req.body.email,
-    login_access_token,
+    login_info.login_access_token,
     stream_token,
-    req.body.room_name
+    req.body.room_name,
+    login_info.expire
   ).then(insertHostDataResult =>{
     console.log('backend== ',insertHostDataResult);
     resobj.status = insertHostDataResult;
     res.json(resobj);
   });
-  
- 
-
 });
 
 
 router.post('/user', function(req, res){
-
-  var login_access_token  = signup.loginTokenGenerator(req.body.email);
-  console.log('login_access_token ==',login_access_token);
+  console.log('user signup: ',req.body);
+  var login_info  = signup.loginTokenGenerator(req.body.email);
+  console.log('login_access_token ==',login_info.login_access_token);
   signup.userSignUp(
     req.body.name,
     req.body.password,
     req.body.email,
-    login_access_token
+    login_info.login_access_token,
+    login_info.expire
   ).then(insertUserDataResult =>{
     console.log('backend== ',insertUserDataResult);
     resobj.status = insertUserDataResult;
