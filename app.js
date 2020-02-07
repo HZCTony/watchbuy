@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
-
+var cors = require('cors');
 var testOBSRouter = require('./routes/testOBS');
 var homepage = require('./routes/index');
 var signup = require('./routes/sign/signup');
@@ -21,6 +21,17 @@ const io = require('socket.io')(server);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+const corsOptions = {
+  origin: [
+    'http://www.example.com',
+    'http://localhost:8080',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));
 app.use(logger('dev'));

@@ -31,6 +31,11 @@ p{
     width: 100%;
     text-align: center;
 }
+
+.category_box p{
+    font-size: 32px;
+}
+
 #category #category_box_container{
 
     width: calc(100% - 200px);
@@ -59,10 +64,14 @@ p{
 
 #rooms{
     width: 100%;
-    height: calc(100vh - 300px);
+    min-height: calc(100vh - 300px);
     padding-top: 80px;
+    padding-left: 10%;
+    padding-right: 10%;
     display: inline-flex;
     justify-content: center;
+    flex-wrap: wrap ;
+    box-sizing: border-box;
 }
 
 
@@ -70,7 +79,8 @@ p{
     width: 29px;
     height: 29px;
     border-radius: 20px;
-    border: 2px #808080 solid;
+    border-width: 2px;
+    border-style: solid;
     display: inline-flex;
     margin-left: 10px;
     margin-top: 10px;
@@ -90,6 +100,7 @@ p{
 .single_room{
     width: 400px;
     height: 600px;
+    margin: 40px;
 }
 
 

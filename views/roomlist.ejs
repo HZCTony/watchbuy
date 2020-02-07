@@ -18,7 +18,7 @@
         <div id='title'>
             <p>category</p>
         </div>
-        <div id='category_box_container'>
+        <div id='category_box_container' onclick="generateEverySingleRoom('1','2','3')">
             <div class='category_box'>
                 <p>旅遊</p>
             </div>
@@ -34,7 +34,7 @@
     <div id='rooms'>
 
 
-        <div class='single_room' onclick="getStreamToken()">
+        <!-- <div class='single_room' onclick="getStreamToken()">
             <div class='room_title'>
                 <div class='circle'>
                     <div class='innercircle'></div>
@@ -48,7 +48,7 @@
             <div class='room_pic'
                 style="background-image: url('/images/favicon.png'); background-size:contain; background-repeat: no-repeat;">
             </div>
-        </div>
+        </div> -->
 
 
     </div>
@@ -77,21 +77,28 @@
 <script>
 
 
-    var rooms = '<%- rooms %>' ;
+    var rooms = '<%- rooms %>';
     var rooms_obj = JSON.parse(rooms);
     console.log(rooms_obj);
-    
-    for(var iter=0; iter<rooms_obj.length; iter++){
+
+    for (var iter = 0; iter < rooms_obj.length; iter++) {
         const stream_name = rooms_obj[iter].stream_token;
         const room_Title = rooms_obj[iter].room_name;
         const room_host_name = rooms_obj[iter].name;
+        const ActivationStatus = rooms_obj[iter].active;
 
-        generateEverySingleRoom(stream_name, room_Title, room_host_name);
+        generateEverySingleRoom(stream_name, room_Title, room_host_name, ActivationStatus);
     }
 
-    function generateEverySingleRoom(stream_token, room_Title, room_host_name) {
+    function generateEverySingleRoom(stream_token, room_Title, room_host_name, active) {
         //div onclick function
-
+        let background_color = '';
+        console.log(active);
+        if (active == 'close') {
+            background_color = 'rgb(128, 128, 128)';
+        } else if (active == 'open') {
+            background_color = 'rgb(255, 0, 0)';
+        }
         // div construction
         var single_room = document.createElement('div');
 
@@ -104,6 +111,8 @@
         var RoomTitleText = document.createTextNode(room_Title);
         room_title.classList.add('room_title');
         single_room.classList.add('single_room');
+        circle.style.borderColor = background_color;
+        innercircle.style.backgroundColor = background_color;
         circle.classList.add('circle');
         innercircle.classList.add('innercircle');
         p.appendChild(RoomTitleText);
@@ -138,9 +147,7 @@
                 window.location = '/userlive/' + stream_token;
             }
         };
-
         document.getElementById('rooms').appendChild(single_room);
-
     }
 
 

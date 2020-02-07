@@ -77,6 +77,8 @@ module.exports = {
 						}
 					}
 				});
+			}else{
+				reject("No user or host.");
 			}
 
 		});

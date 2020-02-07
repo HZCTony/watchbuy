@@ -25,6 +25,7 @@
   background-image: url('../images/favicon.png');
   background-repeat:no-repeat;
   background-size:cover;
+  cursor: pointer;
 }
 
 #top_bar #rightside{
@@ -42,6 +43,7 @@
   background-image: url('../images/menu.png');
   background-repeat:no-repeat;
   background-size:cover;
+  cursor: pointer;
 }
 
 #menulist{
@@ -96,4 +98,5 @@
 .menuitem:hover{
   color: #9ad7a4;
   background-color: white;
+  cursor: pointer;
 }

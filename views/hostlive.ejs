@@ -4,7 +4,7 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/user_live.css' />
+  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
@@ -16,26 +16,33 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
-    <div id='productlist'>
-
-      <%- include("./model/product/productlist.ejs") %>
-
-
+    <div id='productShow'>
+      <div id='productDescription'>
+        <%- include("./model/product/productdescription.ejs") %>
+      </div>
+      <div id='productlist'>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+      </div>
     </div>
 
     <div id='live'>
-      <div id='video-container'>
-      <div id='liveCheckButton'>
-        <div id='circle'>
-          <div id='innercircle'></div>
-        </div>
-        <div id='circle_text'>影像有出現後按我開播</div>
-      </div>
-      <div id='video'>
-        <video autoplay id="live_video" width="100%" controls muted>
-        </video>
-      </div>
-    </div>
+
+
+          <div id='liveCheckButton'>
+            <div id='circle'>
+              <div id='innercircle'></div>
+            </div>
+            <div id='circle_text'>影像有出現後按我開播</div>
+          </div>
+
+          <div id='video'>
+            <video autoplay id="live_video" controls muted>
+            </video>
+          </div>
     </div>
 
     <div id='chat'>
@@ -43,7 +50,8 @@
       </div>
       <div id='sendMessage'>
         <input type="text" id="message" name="message">
-        <button id='sendMsgBtn'>傳送</button>
+        <button id='sendMsgBtn'>傳 送</button>
+        <p id='msg_status'></p>
       </div>
     </div>
 
@@ -66,63 +74,132 @@
     socket.on('sys', function (status) {
       console.log(status);
     });
+
+    //chat enter event
+    document.getElementById("message").addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("sendMsgBtn").click();
+      }
+    });
+
     // host send message
     document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
     function sendMessage(e) {
       e.preventDefault();
       // var username = document.getElementById('username').innerText;
       var message = document.getElementById('message').value;
-
-      var msg = {
-        username: current_host_name,
-        sender_role: 'host',
-        message: message,
-        room: roomid
+      if (message != '' && current_host_name != '') {
+        var msg = {
+          username: current_host_name,
+          sender_role: 'host',
+          message: message,
+          room: roomid
+        }
+        console.log(msg);
+        socket.emit('usr_message', msg);
       }
-      console.log(msg);
-      socket.emit('usr_message', msg);
+      if (current_host_name == '') {
+        document.getElementById('msg_status').innerText = '請先登入';
+        document.getElementById('msg_status').style.visibility = 'visible';
+      }
     }
     // User receive message 
     socket.on('gotMessage', function (gotMessage) {
-      const msglog = document.getElementById('msglog');
+      let msglog = document.getElementById('msglog');
       if (gotMessage.sender_role == 'host') {
-        msglog.innerHTML += '<div id="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
         msglog.scrollTop = msglog.scrollHeight;
       } else {
-        msglog.innerHTML += '<div id="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
         msglog.scrollTop = msglog.scrollHeight;
       }
     });
   </script>
-  <!-- DASH mpd -->
+
+
+</body>
+
+<script>
+  // live video pull
+  if (flvjs.isSupported()) {
+    // document.querySelector("#video").addEventListener("click", function () {       })
+    const live_url = `https://dcz520qs6parq.cloudfront.net/` + '<%- id %>' + `.flv`;
+    const video = document.getElementById('live_video');
+    //const target = document.querySelector("input").value;
+    const flvPlayer = flvjs.createPlayer({
+      type: 'flv',
+      url: live_url
+      //url: `rtmp://localhost/live/`
+    });
+    flvPlayer.attachMediaElement(video);
+    flvPlayer.load();
+    flvPlayer.play();
+
+  }
+</script>
+
+<!-- DASH mpd
   <script>
     //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
     let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/" + "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" + "/index.mpd";
     let player = dashjs.MediaPlayer().create();
     let videoplayer = document.getElementById('live_video');
     player.initialize(videoplayer, video_url, true);
-  </script>
+  </script> -->
 
 
-  <script>
-    document.getElementById('liveCheckButton').addEventListener('click', function (e) {
-      e.preventDefault();
-      var color = $( '#circle' ).css( "border-color" );
-      if (color == 'rgb(128, 128, 128)') {
-        $('#circle').css('border-color', 'rgb(255, 0, 0)');
-        $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
-        document.getElementById('circle_text').innerHTML = '正在開播中，按我取消';
-      } else if (color == 'rgb(255, 0, 0)') {
-        $('#circle').css('border-color', 'rgb(128, 128, 128)');
-        $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
-        document.getElementById('circle_text').innerHTML = '影像有畫面後按我開播';
+<script>
+  const stream_id = '<%- id %>';
+  document.getElementById('liveCheckButton').addEventListener('click', function (e) {
+    e.preventDefault();
+    var color = $('#circle').css("border-color");
+    if (color == 'rgb(128, 128, 128)') {
+      $('#circle').css('border-color', 'rgb(255, 0, 0)');
+      $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
+      document.getElementById('circle_text').innerHTML = '正在開播中，按我取消';
+      updateLiveActivation('open', stream_id);
+    } else if (color == 'rgb(255, 0, 0)') {
+      $('#circle').css('border-color', 'rgb(128, 128, 128)');
+      $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
+      document.getElementById('circle_text').innerHTML = '影像有畫面後按我開播';
+      updateLiveActivation('close', stream_id);
+    }
+  })
+
+
+  window.addEventListener("beforeunload", function (e) {
+    e.preventDefault();
+    updateLiveActivation('close', stream_id);
+
+  });
+
+  function updateLiveActivation(status) {
+
+    $.ajax({
+      url: '/hostlive/updateLiveActivation',
+      type: "POST",
+      data: {
+        stream_token: stream_id,
+        status: status
+      },
+      success: function (res) {
+        console.log(res.status);
       }
-
-
     })
-  </script>
+  }
+
+</script>
 
 
-</body>
+<script>
+  document.getElementById('Button_text').innerText = '發佈到聊天';
+  document.getElementById('Button_text').addEventListener('click', function () {
+    let msglog = document.getElementById('msglog');
+    msglog.innerHTML += '<div class="hostMsg" style="width:100% display:inline-block;text-align:left;"><span>現在要播出的商品：' + document.getElementById('product_name').innerText + '</span></div>'
+    msglog.innerHTML += '<div class="hostMsg-img"><img src="/images/shirt.jpg" style="width:100px;"></div>';
+    msglog.scrollTop = msglog.scrollHeight;
+  })
+</script>
 
 </html>

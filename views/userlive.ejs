@@ -4,35 +4,47 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/user_live.css' />
+  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-
+  <h2 id='notLiveWord' style='width: 100%;'>目前未開播尚須等待，請稍後重新整理本網頁</h2>
   <%- include("./model/header/call-headers.ejs") %>
-  
+
   <div id='live_container'>
-    <div id='productlist'>
-      <%- include("./model/product/productlist.ejs") %>
-      <%- include("./model/product/productlist.ejs") %>
-      <%- include("./model/product/productlist.ejs") %>
-      <%- include("./model/product/productlist.ejs") %>
-      <%- include("./model/product/productlist.ejs") %>
+    <div id='productShow'>
+      <div id='productDescription'>
+        <%- include("./model/product/productdescription.ejs") %>
+      </div>
+      <div id='productlist'>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+        <%- include("./model/product/productitem.ejs") %>
+      </div>
     </div>
 
     <div id='live'>
-      <div id='video-container'>
-        <div id='video'>
-          <video autoplay id="live_video" width="100%" controls muted>
-          </video>
+
+      <div id='wholeVideoContainer'>
+        <div id='video-container'>
+          <div id='liveCheckButton'>
+            <div id='circle'>
+              <div id='innercircle'></div>
+            </div>
+            <div id='circle_text'>Not live</div>
+          </div>
+          <div id='video'>
+            <video autoplay id="live_video" width="100%" controls muted>
+            </video>
+          </div>
         </div>
       </div>
     </div>
@@ -40,88 +52,126 @@
     <div id='chat'>
       <div id='msglog'>
       </div>
-      <div id='sendMessage'>
-        <!-- <input id='username' type="text" name="username" placeholder="Type your name here"><br> -->
-        <input type="text" id="message" name="message">
-        <button id='sendMsgBtn'>傳送</button>
+      <div id='sendmsg-container'>
+        <div id='sendMessage'>
+          <input type="text" id="message" name="message">
+          <button id='sendMsgBtn'>傳 送</button>
+        </div>
+        <div>
+          <p id='msg_status'></p>
+        </div>
       </div>
     </div>
-
   </div>
 
+</body>
 
+<script>
 
-  <script>
-    socket = io.connect();
-    const roomid = '<%- id %>';
-    const current_user_name = '<%= loginStatus.name %>';
+  socket = io.connect();
+  const roomid = '<%- id %>';
+  const current_user_name = '<%= loginStatus.name %>';
 
-    //check user's room and join
-    console.log(roomid);
-    var user = {
-      name: current_user_name,
-      room: roomid
+  //check user's room and join
+  console.log(roomid);
+  var user = {
+    name: current_user_name,
+    room: roomid
+  }
+  socket.emit('join', user);
+  socket.on('sys', function (status) {
+    console.log(status);
+  });
+
+  //chat enter event
+  document.getElementById("message").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      document.getElementById("sendMsgBtn").click();
     }
-    socket.emit('join', user);
-    socket.on('sys', function (status) {
-      console.log(status);
-    });
+  });
 
-    // User send message
-    document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
-    function sendMessage(e) {
-      e.preventDefault();
-      //var username = document.getElementById('username').value;
-      var message = document.getElementById('message').value;
-
+  // User send message
+  document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
+  function sendMessage(e) {
+    e.preventDefault();
+    //var username = document.getElementById('username').value;
+    var message = document.getElementById('message').value;
+    if (message != '' && current_user_name != '') {
       var msg = {
         username: current_user_name,
         sender_role: 'user',
         message: message,
         room: roomid
       }
-      console.log(msg);
+
       socket.emit('usr_message', msg);
     }
-    // User receive message 
-    socket.on('gotMessage', function (gotMessage) {
-      const msglog = document.getElementById('msglog');
-      if (gotMessage.sender_role == 'host') {
-        msglog.innerHTML += '<div id="hostMsg">' + '<div><span> ' + current_user_name + " : " + gotMessage.message + ' </span></div></div>';
-        msglog.scrollTop = msglog.scrollHeight;
-      } else {
-        msglog.innerHTML += '<div id="userMsg">' + '<div><span> ' + current_user_name + " : " + gotMessage.message + ' </span></div></div>';
-        msglog.scrollTop = msglog.scrollHeight;
-      }
+
+    if (current_user_name == '') {
+      document.getElementById('msg_status').innerText = '請先登入';
+      document.getElementById('msg_status').style.visibility = 'visible';
+    }
+
+  }
+  // User receive message 
+  socket.on('gotMessage', function (gotMessage) {
+    const msglog = document.getElementById('msglog');
+    if (gotMessage.sender_role == 'host') {
+      msglog.innerHTML += '<div id="hostMsg">' + '<div><span> ' + current_user_name + " : " + gotMessage.message + ' </span></div></div>';
+      msglog.scrollTop = msglog.scrollHeight;
+    } else {
+      msglog.innerHTML += '<div id="userMsg">' + '<div><span> ' + current_user_name + " : " + gotMessage.message + ' </span></div></div>';
+      msglog.scrollTop = msglog.scrollHeight;
+    }
+  });
+
+
+</script>
+
+<script>
+  var single_room = '<%- room %>';
+  var room_obj = JSON.parse(single_room);
+  console.log('room ==', room_obj);
+  if (room_obj.active == 'open') {
+    $('#circle').css('border-color', 'rgb(255, 0, 0)');
+    $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
+    document.getElementById('circle_text').innerText = 'Live';
+    document.getElementsByTagName('h1')[0].style.display = 'none';
+  } else if (room_obj.active == 'close') {
+    $('#circle').css('border-color', 'rgb(128, 128, 128)');
+    $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
+    document.getElementById('circle_text').innerText = 'Not live';
+  }
+</script>
+
+
+<script>
+  // live video pull
+  if (flvjs.isSupported()) {
+    // document.querySelector("#video").addEventListener("click", function () {       })
+    const live_url = `https://dcz520qs6parq.cloudfront.net/` + "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" + `.flv`;
+    const video = document.getElementById('live_video');
+    //const target = document.querySelector("input").value;
+    const flvPlayer = flvjs.createPlayer({
+      type: 'flv',
+      url: live_url
+      //url: `rtmp://localhost/live/`
     });
+    flvPlayer.attachMediaElement(video);
+    flvPlayer.load();
+    flvPlayer.play();
+  }
+</script>
 
 
-  </script>
-  <script>
-    // live video pull
-    // if (flvjs.isSupported()) {
-    //  //document.querySelector("#video").addEventListener("click", function () {    })
-    //   const live_url = `http://localhost:8000/live/` + roomid + `.flv`;
-    //   const video = document.getElementById('live_video');
-    //   //const target = document.querySelector("input").value;
-    //   const flvPlayer = flvjs.createPlayer({
-    //     type: 'flv',
-    //     url: live_url
-    //     //url: `rtmp://localhost/live/`
-    //   });
-    //   // flvPlayer.attachMediaElement(video);
-    //   // flvPlayer.load();
-    //   // flvPlayer.play();
-    // }
-  </script>
-  <!-- DASH mpd -->
-  <script>
-    //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
-    let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/"+ "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" +"/index.mpd";
-    let player = dashjs.MediaPlayer().create();
-    let videoplayer = document.getElementById('live_video');
-    player.initialize(videoplayer, video_url, true);
-  </script>
-</body>
+<!-- DASH mpd -->
+<!-- <script>
+  //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
+  let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/"+ "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" +"/index.mpd";
+  let player = dashjs.MediaPlayer().create();
+  let videoplayer = document.getElementById('live_video');
+  player.initialize(videoplayer, video_url, true);
+</script> -->
 
 </html>
