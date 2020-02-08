@@ -87,6 +87,10 @@ body{
     border: 2px #9ad7a4 solid;
     margin-bottom: 50px;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gray;
 }
 
 #basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email{

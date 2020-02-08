@@ -4,10 +4,10 @@ const config = require('./config.json');
 const database = require("../util/rds_mysql.js");
 // Build DAO Object
 module.exports = {
-	userSignInCheck: function (username, password) {
+	userSignInCheck: function (username, password, email) {
 		return new Promise(function (resolve, reject) {
 
-			database.connection.query(`select * from userlist where name='${username}' AND password='${passwordEncryption(password)}';`, function (error, usercheck, fields) {
+			database.connection.query(`select * from userlist where name='${username}' AND password='${passwordEncryption(password)}' AND email='${email}';`, function (error, usercheck, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
@@ -17,9 +17,9 @@ module.exports = {
 		});
 	},
 
-	hostSignInCheck: function (hostname, password) {
+	hostSignInCheck: function (hostname, password, email) {
 		return new Promise(function (resolve, reject) {
-			database.connection.query(`select * from hostlist where name='${hostname}' AND password='${passwordEncryption(password)}';`, function (error, hostcheck, fields) {
+			database.connection.query(`select * from hostlist where name='${hostname}' AND password='${passwordEncryption(password)}' AND email='${email}';`, function (error, hostcheck, fields) {
 				if (error) {
 					reject("[Database Error] " + error);
 				} else {

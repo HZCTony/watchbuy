@@ -16,7 +16,7 @@ router.post('/check', function (req, res) {
   const role = req.body.role;
 
   if (role == 'user') {
-    signin.userSignInCheck(name, password).then(function (data) {
+    signin.userSignInCheck(name, password, email).then(function (data) {
       if (data.length == 0) {
         res.json({ status: 'You have not been signed up as a user yet.' });
       } else {
@@ -37,7 +37,7 @@ router.post('/check', function (req, res) {
     });
 
   } else if (role == 'host') {
-    signin.hostSignInCheck(name, password).then(function (data) {
+    signin.hostSignInCheck(name, password, email).then(function (data) {
       if (data.length == 0) {
         res.json({ status: 'You have not been signed up as a host yet.' });
       } else {
