@@ -97,10 +97,12 @@
         username: current_user_name,
         sender_role: 'user',
         message: message,
-        room: roomid
+        room: roomid,
+        image: ''
       }
 
       socket.emit('usr_message', msg);
+      document.getElementById("message").value = '';
     }
 
     if (current_user_name == '') {
@@ -116,15 +118,16 @@
         msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
         if(gotMessage.image != ''){
           msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
-        }
+          msglog.scrollTop = msglog.scrollHeight;
+        }      
         msglog.scrollTop = msglog.scrollHeight;
-
-      } else {
+      } else if(gotMessage.sender_role == 'user'){
         msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
         if(gotMessage.image != ''){
           msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
+          msglog.scrollTop = msglog.scrollHeight;
         }
-        msglog.scrollTop = msglog.scrollHeight;
+
       }
     });
 

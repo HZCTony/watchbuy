@@ -94,16 +94,18 @@
         }
         console.log(msg);
         socket.emit('usr_message', msg);
+        document.getElementById("message").value = '';
       }
       if (current_host_name == '') {
         document.getElementById('msg_status').innerText = '請先登入';
         document.getElementById('msg_status').style.visibility = 'visible';
       }
+      
     }
 
     //host send current product
     document.getElementById('Button_text').innerText = '發佈到聊天';
-    document.getElementById('Button_text').addEventListener('click', function (e) {
+    document.getElementById('addtoCart').addEventListener('click', function (e) {
       e.preventDefault();
 
       var message = '現在要播出的商品: ' + document.getElementById('product_name').innerText;

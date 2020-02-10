@@ -314,14 +314,14 @@ width: 100%
     text-align:left;
 }
 
-#userMsg{
+.userMsg{
     text-align: right;
     color:white;
     margin-top: 10px;
     margin-right: 6px;
 }
 
-#userMsg span{
+.userMsg span{
     display: inline-block;
     background-color: rgb(101, 101, 101);
     font-size: 20px;
