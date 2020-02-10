@@ -21,28 +21,23 @@
         <%- include("./model/product/productdescription.ejs") %>
       </div>
       <div id='productlist'>
-        <%- include("./model/product/productitem.ejs") %>
-        <%- include("./model/product/productitem.ejs") %>
-        <%- include("./model/product/productitem.ejs") %>
-        <%- include("./model/product/productitem.ejs") %>
-        <%- include("./model/product/productitem.ejs") %>
       </div>
     </div>
 
     <div id='live'>
 
 
-          <div id='liveCheckButton'>
-            <div id='circle'>
-              <div id='innercircle'></div>
-            </div>
-            <div id='circle_text'>影像有出現後按我開播</div>
-          </div>
+      <div id='liveCheckButton'>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='circle_text'>影像有出現後按我開播</div>
+      </div>
 
-          <div id='video'>
-            <video autoplay id="live_video" controls muted>
-            </video>
-          </div>
+      <div id='video'>
+        <video autoplay id="live_video" controls muted>
+        </video>
+      </div>
     </div>
 
     <div id='chat'>
@@ -94,7 +89,8 @@
           username: current_host_name,
           sender_role: 'host',
           message: message,
-          room: roomid
+          room: roomid,
+          image: ''
         }
         console.log(msg);
         socket.emit('usr_message', msg);
@@ -104,21 +100,60 @@
         document.getElementById('msg_status').style.visibility = 'visible';
       }
     }
+
+    //host send current product
+    document.getElementById('Button_text').innerText = '發佈到聊天';
+    document.getElementById('Button_text').addEventListener('click', function (e) {
+      e.preventDefault();
+
+      var message = '現在要播出的商品: ' + document.getElementById('product_name').innerText;
+      if (current_host_name != '') {
+        var msg = {
+          username: current_host_name,
+          sender_role: 'host',
+          message: message,
+          room: roomid,
+          image: document.getElementById('mainimg').src
+        }
+        console.log(msg);
+        socket.emit('usr_message', msg);
+      }
+      // let msglog = document.getElementById('msglog');
+      // msglog.innerHTML += '<div class="hostMsg" style="width:100% display:inline-block;text-align:left;"><span>現在要播出的商品：' + document.getElementById('product_name').innerText + '</span></div>'
+      // msglog.innerHTML += '<div class="hostMsg-img"><img src="' + document.getElementById('mainimg').src + '" style="width:100px;"></div>';
+      // msglog.scrollTop = msglog.scrollHeight;
+    })
+
+
     // User receive message 
     socket.on('gotMessage', function (gotMessage) {
       let msglog = document.getElementById('msglog');
       if (gotMessage.sender_role == 'host') {
         msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        if(gotMessage.image != ''){
+          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
+        }
         msglog.scrollTop = msglog.scrollHeight;
+
       } else {
         msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        if(gotMessage.image != ''){
+          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
+        }
         msglog.scrollTop = msglog.scrollHeight;
       }
     });
   </script>
 
 
+
 </body>
+
+<script>
+
+</script>
+
+
 
 <script>
   // live video pull
@@ -192,14 +227,62 @@
 </script>
 
 
+
+
 <script>
-  document.getElementById('Button_text').innerText = '發佈到聊天';
-  document.getElementById('Button_text').addEventListener('click', function () {
-    let msglog = document.getElementById('msglog');
-    msglog.innerHTML += '<div class="hostMsg" style="width:100% display:inline-block;text-align:left;"><span>現在要播出的商品：' + document.getElementById('product_name').innerText + '</span></div>'
-    msglog.innerHTML += '<div class="hostMsg-img"><img src="/images/shirt.jpg" style="width:100px;"></div>';
-    msglog.scrollTop = msglog.scrollHeight;
+  $.ajax({
+    url: '/hostlive/getAllproducts',
+    type: "POST",
+    data: {
+      stream_token: '<%- id %>',
+    },
+    success: function (gotAllProducts_of_current_host) {
+      console.log('gotAllProducts == ', gotAllProducts_of_current_host);
+      for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
+        console.log(item);
+        let image_S3_url = gotAllProducts_of_current_host[item].image
+        generateProductImages(image_S3_url);
+      }
+    }
   })
+
+  // < div class='item' >
+  //   <div class='productimg'>
+  //   </div>
+  // </div >
+
+  function generateProductImages(imagePath) {
+    var item = document.createElement('div');
+    item.classList.add('item');
+
+    var productimg = document.createElement('div');
+    productimg.classList.add('productimg');
+    productimg.style.backgroundImage = `url('${imagePath}')`;
+    item.appendChild(productimg);
+
+    item.onclick = function () {
+      //get a single product and show the details on the above div
+      $.ajax({
+        url: '/hostlive/getaSingleProduct',
+        type: "POST",
+        data: {
+          image: imagePath,
+        },
+        success: function (singleProduct) {
+          console.log('singleProduct ==', singleProduct);
+
+          document.getElementById('product_name').innerHTML = singleProduct.name;
+          document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
+          document.getElementById('color').innerHTML = singleProduct.color;
+          document.getElementById('size').innerHTML = singleProduct.size;
+          document.getElementById('stock').innerHTML = singleProduct.stock;
+          document.getElementById('description').innerHTML = singleProduct.description;
+          document.getElementById('mainimg').src = singleProduct.image;
+        }
+      })
+    }
+    document.getElementById('productlist').append(item);
+  }
 </script>
 
 </html>

@@ -5,7 +5,7 @@ module.exports = {
 	getAllRooms: function () {
 		return new Promise(function (resolve, reject) {
 
-			database.connection.query(`select id,name,stream_token,room_name,active from hostlist;`, function (error, rooms, fields) {
+			database.connection.query(`select id,name,stream_token,room_name,active,logo from hostlist;`, function (error, rooms, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {

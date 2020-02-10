@@ -1,12 +1,16 @@
 <div id='settings'>
     <div id='basicinfo'>
         <div id='logo'>
+            <img src='<%= loginStatus.logo %>'>
+        </div>
+        <div id='uploadLogoForm'>
             <form action="/profile/logo_upload" method="post" enctype="multipart/form-data">
+                <div class='title'>更新大頭貼</div>
                 <input type="file" name="logo" />
                 <input type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">
-                <input type="text" name='role' value='user' style="display:none;">
+                <input type="text" name='role' value='host' style="display:none;">
                 <input type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">
-                <input type="submit">
+                <input type="submit" value='上傳'>
               </form>
         </div>
         <div id='name'>

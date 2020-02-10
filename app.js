@@ -15,6 +15,7 @@ var roomlist = require('./routes/roomlist');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
+var multer			= require('multer');
 var app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -36,7 +37,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use((req, res, next)=>{
-  res.set('Cache-Control', 'no-cache');
+  res.set('Cache-Control', 'no-store');
   next()
 })
 app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));

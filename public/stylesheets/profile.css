@@ -26,6 +26,7 @@ body{
     height: 100%;
 }
 
+
 #listbox{
     display: inline-flex;
     align-items: center;
@@ -93,6 +94,10 @@ body{
     color: gray;
 }
 
+#basicinfo #logo img{
+    object-fit: contain;
+}
+
 #basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email{
     width: 512px;
     height: 40px;
@@ -101,6 +106,10 @@ body{
     align-items: center;
     margin-top: 40px;
     font-size: 24px;
+}
+
+#basicinfo #uploadLogoFormDiv{
+    margin-top: 50px;
 }
 
 #basicinfo .title{
@@ -113,4 +122,86 @@ body{
     border: 2px #9ad7a4 solid;
     border-radius: 10px;
     overflow:scroll;
+}
+
+
+#UploadDetails{
+    width: 40%;
+    height: 800px;
+    margin-top: 120px;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: lightgray;
+}
+
+#UploadDetails form{
+    height: 800px;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 50px 0;
+}
+
+#UploadDetails .product_li{
+    background-color: white;
+    width: 80%;
+    height: 80px;
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    box-shadow: 2px 2px 2px gray;
+}
+
+#UploadDetails .left_li{
+    height: 50px;
+    width:30%;
+    font-size: 20px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px gray solid;
+
+}
+
+#UploadDetails .left_li p{
+    margin: 0;
+
+}
+
+#UploadDetails .right_li{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width:70%;
+}
+
+#UploadDetails .right_li input{
+    height: 48px;
+    width: 100%;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    color: rgb(120,120,120);
+}
+
+#UploadDetails .right_li input::placeholder {
+    color: lightgray;
+    opacity: 1;
+  }
+  
+
+#UploadDetails .right_li select{
+    height: 48px;
+    width: 120px;
+    text-align: center;
+    border: none;
+    color: rgb(120,120,120);
+    background-color: white;
+    border-radius: 6px;
+    font-size: 20px;
 }

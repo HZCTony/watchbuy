@@ -1,21 +1,20 @@
 <div id='settings'>
     <div id='basicinfo'>
         <div id='logo'>
-            <% if (loginStatus.logo) { %>
              <img src='<%= loginStatus.logo %>'>
-                <% } else { %>
-            <form action="/profile/logo_upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="logo" />
-                <input type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">
-                <input type="text" name='role' value='host' style="display:none;">
-                <input type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">
-                <input type="submit">
+        </div>
+        <div id='uploadLogoFormDiv'>
+            <form id='uploadLogoForm' enctype="multipart/form-data">
+                <div class='title'>更新大頭貼</div>
+                <input  type="file" name="logo" />
+                <input  type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">
+                <input  type="text" name='role' value='host' style="display:none;">
+                <input  type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">
+                <button type="submit">上傳</button>
               </form>
-              <% } %>
-
         </div>
         <div id='name'>
-            <div class='title'>直播名稱</div>
+            <div class='title'>直播間名稱</div>
             <div class='content'></div>
         </div>
         <div id='email'>

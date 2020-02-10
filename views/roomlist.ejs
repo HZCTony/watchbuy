@@ -16,9 +16,9 @@
 
     <div id='category'>
         <div id='title'>
-            <p>category</p>
+            <p> 直播類型</p>
         </div>
-        <div id='category_box_container' onclick="generateEverySingleRoom('1','2','3')">
+        <div id='category_box_container'>
             <div class='category_box'>
                 <p>旅遊</p>
             </div>
@@ -77,7 +77,7 @@
 <script>
 
 
-    var rooms = '<%- rooms %>';
+    var rooms = String(`<%- rooms %>`);
     var rooms_obj = JSON.parse(rooms);
     console.log(rooms_obj);
 
@@ -86,11 +86,12 @@
         const room_Title = rooms_obj[iter].room_name;
         const room_host_name = rooms_obj[iter].name;
         const ActivationStatus = rooms_obj[iter].active;
-
-        generateEverySingleRoom(stream_name, room_Title, room_host_name, ActivationStatus);
+        const logo = rooms_obj[iter].logo;
+        console.log(room_Title);
+        generateEverySingleRoom(stream_name, room_Title, room_host_name, ActivationStatus, logo);
     }
 
-    function generateEverySingleRoom(stream_token, room_Title, room_host_name, active) {
+    function generateEverySingleRoom(stream_token, room_Title, room_host_name, active, logo) {
         //div onclick function
         let background_color = '';
         console.log(active);
@@ -106,8 +107,8 @@
         var room_title = document.createElement('div');
         var circle = document.createElement('div');
         var innercircle = document.createElement('div');
-        var p = document.createElement('p');
-        console.log(room_title);
+        var RoomTitleP = document.createElement('p');
+        
         var RoomTitleText = document.createTextNode(room_Title);
         room_title.classList.add('room_title');
         single_room.classList.add('single_room');
@@ -115,27 +116,31 @@
         innercircle.style.backgroundColor = background_color;
         circle.classList.add('circle');
         innercircle.classList.add('innercircle');
-        p.appendChild(RoomTitleText);
+        RoomTitleP.appendChild(RoomTitleText);
         circle.appendChild(innercircle);
         room_title.appendChild(circle);
-        room_title.appendChild(p);
+        room_title.appendChild(RoomTitleP);
 
 
         var room_hostname = document.createElement('div');
         room_hostname.classList.add('room_hostname');
-        var p2 = document.createElement('p');
-        var HostNameText = document.createTextNode(room_host_name);
-        p2.appendChild(HostNameText);
-        room_hostname.appendChild(p2);
+        var host_owner_name = document.createElement('p');
+        //var HostOwnerNameText = document.createTextNode(room_host_name);
+        //host_owner_name.appendChild(HostOwnerNameText);
+        room_hostname.appendChild(host_owner_name);
 
 
         var room_pic = document.createElement('div');
         room_pic.classList.add('room_pic');
-
+        if(logo){
+        //room_pic.innerHTML = '<img src=' + logo + '>';
+        single_room.style.backgroundImage=`url(${logo})`;
+        }
 
         single_room.appendChild(room_title);
-        single_room.appendChild(room_hostname);
         single_room.appendChild(room_pic);
+        single_room.appendChild(room_hostname);
+
         single_room.onclick = function () {
             if ('<%= loginStatus.role %>' == 'host') {
                 if ('<%= loginStatus.name %>' == room_host_name) {

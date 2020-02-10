@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/profile.css' />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <%- include("../model/header/call-headers.ejs") %>
+    <div id='container'>
+        <div id='profileSettingList'>
+            <div id='listbox'>
+                <div class='topitem profileSettingitem'>
+                    <p>用戶資訊</p>
+                </div>
+                <div class='miditem profileSettingitem'>
+
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>上傳商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>購物車</p>
+                    <% } %>
+
+                </div>
+                <div class='miditem profileSettingitem'>
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>我的商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>我的訂單</p>
+                    <% } %>
+                </div>
+                <div class='bottomitem profileSettingitem'>
+                    <p>登出</p>
+                </div>
+            </div>
+        </div>
+
+
+        this is host products
+
+    </div>
+</body>
+
+<script>
+    var role = '<%= loginStatus.role %>';
+    console.log(role);
+    if (role == 'host') {
+
+    } else if (role == 'user') {
+
+    }
+
+
+    let profile_list = document.getElementsByClassName('profileSettingitem');
+    for (let i = 0; i < profile_list.length; i++) {
+        profile_list[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location = '/profile/' + i;
+        })
+    }
+
+    
+
+
+
+
+</script>
+
+</html>

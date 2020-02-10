@@ -1,18 +1,21 @@
 var express = require('express');
 var signin = require('../../public/model/DataAccessObject/signin.js');
 var Logo = require('../../public/model/DataAccessObject/Logo.js');
+var product = require('../../public/model/DataAccessObject/product.js');
 var s3_credential = require('../../public/model/util/aws.json');
 var router = express.Router();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
 var AWS = require('aws-sdk');
+var multiparty = require('multiparty');
+var util = require('util');
 //var s3 = require('../../public/model/util/s3uploader.js');
 
 //s3 logo uploader
-var upload = multer({
+var host_logo_upload = multer({
   storage: multerS3({
     s3: new AWS.S3(s3_credential),
-    bucket: 'hzctonyforlive/logo',
+    bucket: 'hzctonyforlive/logo/host',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
@@ -24,6 +27,38 @@ var upload = multer({
   })
 })
 
+var user_logo_upload = multer({
+  storage: multerS3({
+    s3: new AWS.S3(s3_credential),
+    bucket: 'hzctonyforlive/logo/user',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())// filename
+    }
+  })
+})
+
+
+var product_upload = multer({
+  storage: multerS3({
+    s3: new AWS.S3(s3_credential),
+    bucket: 'hzctonyforlive/product',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())// filename
+    }
+  })
+})
+
+
 const title = 'WatchBuy';
 
 
@@ -33,16 +68,20 @@ router.get('/', function (req, res, next) {
 
   var role = req.cookies.role;
   var token = req.cookies.token;
+
   if (!role || !token) {
     res.redirect('/signin');
   } else {
+
     signin.personCookieCheck(role, token).then(loginStatus => {
       if (loginStatus.status == 'ok') {
-        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath=>{
+        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
-          console.log('loginStatus.logo == ',loginStatus.logo);
-          res.render('profile', { title: title, loginStatus: loginStatus });
+          console.log('loginStatus.logo == ', loginStatus.logo);
+          res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+
         })
+
       } else {
         res.clearCookie('role');
         res.clearCookie('token');
@@ -56,84 +95,105 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.post('/logo_upload', upload.single('logo'), function (req, res) {
-  const current_name = req.body.username;
+router.get('/:list', function (req, res, next) {
+
+
+  var role = req.cookies.role;
+  var token = req.cookies.token;
+  var profileList = req.params.list;
+  console.log('profileList ==', profileList);
+  if (!role || !token) {
+    res.redirect('/signin');
+  } else {
+
+    signin.personCookieCheck(role, token).then(loginStatus => {
+      if (loginStatus.status == 'ok') {
+        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+          loginStatus.logo = logoPath.logo;
+
+          switch (profileList) {
+            case '0':
+              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+              break;
+            case '1':
+              res.render('./profile/product_upload', { title: title, loginStatus: loginStatus });
+              break;
+            case '2':
+              res.render('./profile/host_products', { title: title, loginStatus: loginStatus });
+              break;
+            case '3':
+              res.clearCookie('role');
+              res.clearCookie('token');
+              console.log('[profile.js]: loginStatus=', loginStatus);
+              res.redirect('/signin');
+              break;
+            default:
+              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+          }
+
+        })
+      } else {
+        res.clearCookie('role');
+        res.clearCookie('token');
+        console.log('[profile.js]: loginStatus=', loginStatus);
+        res.redirect('/signin');
+      }
+
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+});
+
+
+
+
+router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req, res) {
   const role = req.body.role;
-  const filename = req.file.key;
-  const current_user_or_host_email = req.body.email;
-
-  //big head or logo upload
-  // var upload = multer({
-  //   storage: multerS3({
-  //     s3: new AWS.S3(s3_credential),
-  //     bucket: 'hzctonyforlive/logo',
-  //     acl: 'public-read',
-  //     contentType: multerS3.AUTO_CONTENT_TYPE,
-  //     metadata: function (req, file, cb) {
-  //       cb(null, {fieldName: file.fieldname});
-  //     },
-  //     key: function (req, file, cb) {
-  //       cb(null, Date.now().toString())// filename
-  //     }
-  //   })
-  // }).fields([
-  // 	{name:"logo", maxCount:1}
-  // ]);	
-
-  // upload(req, res, function(error){
-  // 	if(error){
-  // 		res.send({error:"Upload Images Error"});
-  // 	}else{
-
-  // 	}
-  // });
-
-  // rename S3 logo file name as a username
-  var NEW_COPIED_KEY = '';
-  if (role == 'host') {
-    NEW_COPIED_KEY = 'host/' + current_name;
-  } else if (BUCKET_NAME == 'user') {
-    NEW_COPIED_KEY = 'user/' + current_name;
-  }
+  const filename = req.file.location;
+  const current_host_email = req.body.email;
+  Logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
+    console.log(UpdatedResult);
+    res.json({ status: 'updated logo path to host database' });
+  }).catch(err => {
+    res.json({ status: err });
+  })
+})
 
 
-  var renameS3Obj = new AWS.S3(s3_credential);
-  var BUCKET_NAME = 'hzctonyforlive/logo'
-  var OLD_KEY = "/" + filename;
-  var NEW_KEY = NEW_COPIED_KEY;
-
-  // Copy the object to a new location
-  renameS3Obj.copyObject({
-    Bucket: BUCKET_NAME,
-    CopySource: `${BUCKET_NAME}${OLD_KEY}`,
-    Key: NEW_KEY,
-    ACL: 'public-read'
-  }).promise().then(() =>
-    // Delete the old object
-    renameS3Obj.deleteObject({
-      Bucket: BUCKET_NAME,
-      Key: filename
-    }).promise().then(function () {
-
-      // save the logo path to AWS RDS 
-      const new_s3_logo_path = 'https://hzctonyforlive.s3-ap-southeast-1.amazonaws.com/logo/' + NEW_COPIED_KEY;
-      console.log(new_s3_logo_path);
-      Logo.UpdateLogoPath(new_s3_logo_path, role, current_user_or_host_email).then(UpdatedResult =>{
-        console.log(UpdatedResult);
-        res.json({ url: 'renamed and update to database' });
-      }).catch(err=>{
-        res.json({ status : err });
-      })
-
-    })
-
-  )
-    // Error handling is left up to reader
-    .catch((e) => console.error(e));
-
+router.post('/user_logo_upload', user_logo_upload.single('logo'), function (req, res) {
+  const role = req.body.role;
+  const filename = req.file.location;
+  const current_user_email = req.body.email;
+  Logo.UpdateLogoPath(filename, 'user', current_user_email).then(UpdatedResult => {
+    console.log(UpdatedResult);
+    res.json({ status: 'updated logo path to user database' });
+  }).catch(err => {
+    res.json({ status: err });
+  })
 
 })
 
+
+router.post('/product_upload', product_upload.single('image'), function (req, res) {
+  const productName = req.body.name;
+  const color = req.body.color;
+  const size = req.body.size;
+  const price = req.body.price;
+  const description = req.body.description;
+  const stock = req.body.stock;
+  const email = req.body.email;
+  const filepath = req.file.location;
+
+  product.InsertNewProduct(productName, color, size, price, description, stock, email, filepath, price)
+  .then(UpdatedResult => {
+    console.log(UpdatedResult);
+    res.json({ status: 'Updated information of a single product to database' });
+  }).catch(err => {
+    res.json({ status: err });
+  })
+
+})
 
 
 module.exports = router;

@@ -1,0 +1,75 @@
+<div id='UploadDetails'>
+    <form id='upload_product' enctype="multipart/form-data">
+        <div class="product_li">
+            <div class='left_li'>
+                <p>商品名稱</p>
+            </div>
+            <div class='right_li'>
+                <input name='name' type='text' placeholder='請輸入中文商品名稱'>
+            </div>
+        </div>
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>顏色</p>
+            </div>
+            <div class='right_li'>
+                <input name='color' type='text' placeholder='商品主要顏色敘述'>
+            </div>
+        </div>
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>尺寸</p>
+            </div>
+            <div class='right_li'>
+                <input name='size' type='text' placeholder='商品大小或外觀描述'>
+            </div>
+        </div>
+
+
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>價格</p>
+            </div>
+            <div class='right_li'>
+                <input name='price' type='text' placeholder='以 NT. 的阿拉伯數字'>
+            </div>
+        </div>
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>商品描述</p>
+            </div>
+            <div class='right_li'>
+                <input name='description' type='text' placeholder='商品本身其他特色、注意事項等'>
+            </div>
+        </div>
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>圖片</p>
+            </div>
+            <div class='right_li'>
+                <input type="file" name="image" />
+            </div>
+        </div>
+
+        <div class="product_li">
+            <div class='left_li'>
+                <p>庫存狀態</p>
+            </div>
+            <div class='right_li'>
+                <select name='stock'>
+                    <option value="庫存充足">庫存充足</option>
+                    <option value="快要沒了">快要沒了</option>
+                    <option value="已經售罄">已經賣完</option>
+                    <option value="正在預購">正在預購</option>
+                </select>
+            </div>
+        </div>
+        <input  type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">
+        <button type="submit">上傳</button>
+    </form>
+</div>
