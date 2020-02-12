@@ -5,8 +5,7 @@
         </div>
         <div id='uploadLogoFormDiv'>
             <form id='uploadLogoForm' enctype="multipart/form-data">
-                <div class='title'>更新大頭貼</div>
-                <input  type="file" name="logo" />
+                <div class='title' id='logotitle'>更新大頭貼<input  type="file" name="logo" style='display:inline;'/></div>
                 <input  type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">
                 <input  type="text" name='role' value='host' style="display:none;">
                 <input  type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">

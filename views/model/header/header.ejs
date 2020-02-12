@@ -1,26 +1,10 @@
-<!-- <div id='menulist' style="visibility: hidden;">
-    <div id='icon_container'>
-        <div id='menulogo_in_menulist'>
-        </div>
-    </div>
-    <div id='list_container'>
-        <div id='basicinfo_btn' class='menuitem'>
-            基本資訊
-        </div>
-        <div class='menuitem'>
-            購物車
-        </div>
-        <div class='menuitem'>
-            訂單查詢
-        </div>
-        <div class='menuitem'>
-            登出
-        </div>
-    </div>
-</div> -->
+
 <div id='top_bar'>
     <div id='leftside'>
         <div id='watchbuylogo'>
+        </div>
+        <div id='roomlistbtn'>
+            直播間
         </div>
     </div>
     <div id='rightside'>
@@ -39,6 +23,10 @@
     })
 
     document.getElementById('watchbuylogo').addEventListener('click', function () {
+        window.location = '/';
+    })
+
+    document.getElementById('roomlistbtn').addEventListener('click', function () {
         window.location = '/roomlist';
     })
 

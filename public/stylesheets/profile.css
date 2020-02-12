@@ -39,6 +39,7 @@ body{
     width:50%;
     min-width: 450px;
     line-height: 180px;
+    cursor: pointer;
 }
 
 .profileSettingitem p{
@@ -95,6 +96,8 @@ body{
 }
 
 #basicinfo #logo img{
+    max-width: 256px;
+    max-height: 256px;
     object-fit: contain;
 }
 
@@ -108,14 +111,16 @@ body{
     font-size: 24px;
 }
 
-#basicinfo #uploadLogoFormDiv{
-    margin-top: 50px;
-}
 
 #basicinfo .title{
     width: 30%;
     color: gray;
 }
+
+#logotitle{
+    display: inline;
+}
+
 #basicinfo .content{
     width: 70%;
     height:100%;

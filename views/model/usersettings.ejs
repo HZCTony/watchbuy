@@ -3,8 +3,8 @@
         <div id='logo'>
             <img src='<%= loginStatus.logo %>'>
         </div>
-        <div id='uploadLogoForm'>
-            <form action="/profile/logo_upload" method="post" enctype="multipart/form-data">
+        <div id='uploadLogoFormDiv'>
+            <form id='uploadLogoForm' enctype="multipart/form-data">
                 <div class='title'>更新大頭貼</div>
                 <input type="file" name="logo" />
                 <input type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">

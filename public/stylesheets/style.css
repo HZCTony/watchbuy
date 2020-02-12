@@ -16,17 +16,43 @@
   height: 100px;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding-left: 50px;
 }
 
 #top_bar #leftside #watchbuylogo{
-  width:60px;
-  height: 60px;
-  background-image: url('../images/favicon.png');
-  background-repeat:no-repeat;
-  background-size:cover;
+  width:100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-image:url("../images/favicon.png");
+  background-size: 60px 60px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
+
+#top_bar #leftside #roomlistbtn{
+  width:100px;
+  height: 100px;
+  color: white;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
+
+#top_bar #leftside #roomlistbtn:hover{
+
+  color: #9ad7a4;
+  background-color: white;
+}
+
 
 #top_bar #rightside{
   width:50%;
@@ -93,6 +119,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .menuitem:hover{

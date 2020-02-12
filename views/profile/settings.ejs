@@ -62,8 +62,6 @@
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
     }
 
-
-
     let profile_list = document.getElementsByClassName('profileSettingitem');
 
     for (let i = 0; i < profile_list.length; i++) {
@@ -85,7 +83,7 @@
     $('#uploadLogoForm').submit(function (e) {
         e.preventDefault();
         const uploadLogoForm = document.getElementById("uploadLogoForm");
-        const role = document.getElementById('form-role').value;
+        const role = '<%= loginStatus.role %>';
         let formData = new FormData(uploadLogoForm);
         let url = '';
         if(role == 'host'){
@@ -102,6 +100,7 @@
             contentType: false,
             success: function (res) {
                 console.log(res);
+                window.location= '/profile'
                 //whatever you wanna do after the form is successfully submitted
             }
         });

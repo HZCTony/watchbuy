@@ -1,6 +1,12 @@
 <% if (loginStatus.status == 'ok') { %>
-    <%- include("./loginedmenu.ejs") %>
-  <% } else { %>
-    <%- include("./notLoginedmenu.ejs") %>
-  <% } %>
-  <%- include("./header.ejs") %>
+<% if (loginStatus.role == 'host') { %>
+<%- include("./host_loginedmenu.ejs") %>
+<% } else if (loginStatus.role == 'user') { %>
+<%- include("./user_loginedmenu.ejs") %>
+<% } else{ %>
+  <%- include("./notLoginedmenu.ejs") %>
+  <% }%>
+<% } else { %>
+<%- include("./notLoginedmenu.ejs") %>
+<% } %>
+<%- include("./header.ejs") %>

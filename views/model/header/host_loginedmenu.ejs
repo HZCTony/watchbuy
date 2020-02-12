@@ -1,0 +1,47 @@
+<div id='menulist' style="visibility: hidden;">
+    <div id='icon_container'>
+        <div id='menulogo_in_menulist'>
+        </div>
+    </div>
+    <div id='list_container'>
+        <div id='basicinfo_btn' class='menuitem'>
+            我的資訊
+        </div>
+        <div id='upload_product_page' class='menuitem'>
+            上傳商品
+        </div>
+        <div id='my_product_page' class='menuitem'>
+            我的商品
+        </div>
+        <div id='logout' class='menuitem'>
+            登出
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('logout').addEventListener('click', function(){
+        $.ajax({
+        url: '/signin/logout',
+        type: "POST",
+        dataType: "json",
+        data: {
+            action:'logout'
+        },
+        success: function (req) {
+          //請求成功時處理
+          console.log(req);
+          window.location = '/signin';
+        }
+      })
+    })
+
+
+    document.getElementById('upload_product_page').addEventListener('click', function(){
+        window.location ='/profile/1'
+    })
+
+    document.getElementById('my_product_page').addEventListener('click', function(){
+        window.location ='/profile/2'
+    })
+</script>

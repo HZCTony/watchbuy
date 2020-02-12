@@ -154,7 +154,7 @@ router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req,
   const current_host_email = req.body.email;
   Logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
     console.log(UpdatedResult);
-    res.json({ status: 'updated logo path to host database' });
+    res.redirect({ status: 'updated logo path to host database' });
   }).catch(err => {
     res.json({ status: err });
   })

@@ -11,6 +11,7 @@ module.exports = {
 				get_logo_query = `select logo from hostlist where email='${email}';`
 			}
 			if (get_logo_query != '') {
+				console.log('update_query ==',update_query);
 				database.connection.query(get_logo_query, function (error, getLogoResult, fields) {
 					if (error) {
 						reject("[Database Error]" + error);
