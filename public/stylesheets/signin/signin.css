@@ -3,11 +3,13 @@ body{
     min-width: 800px;
     font-family: "Helvetica Neue";
     color: white;
+    padding: 0;
+    margin: 0;
 }
 
 
 #background{
-    height: 100vh;
+    height: calc(100vh - 300px);
     width: 100%;
     min-width: 800px;
     display: flex;
@@ -18,7 +20,6 @@ body{
 }
 
 #container{
-    padding-bottom: 40px;
     text-align: center;
 }
 

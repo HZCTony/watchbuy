@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/profile.css' />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <%- include("../model/header/call-headers.ejs") %>
+    <div id='container'>
+        <div id='profileSettingList'>
+            <div id='listbox'>
+                <div class='topitem profileSettingitem'>
+                    <p>我的資訊</p>
+                </div>
+                <div class='miditem profileSettingitem'>
+
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>上傳商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>購物車</p>
+                    <% } %>
+
+                </div>
+                <div class='miditem profileSettingitem'>
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>我的商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>我的訂單</p>
+                    <% } %>
+                </div>
+                <div class='bottomitem profileSettingitem'>
+                    <p>登出</p>
+                </div>
+            </div>
+        </div>
+
+        <div id='settings'>
+            <% if (loginStatus.role == 'host') { %>
+            <%- include("../model/host_upload_product.ejs") %>
+            <% } else if(loginStatus.role == 'user'){ %>
+            <%- include("../model/user_cartlist.ejs") %>
+            <% } %>
+        </div>
+
+    </div>
+</body>
+
+<script>
+    var role = '<%= loginStatus.role %>';
+    console.log(role);
+    if (role == 'host') {
+
+
+    } else if (role == 'user') {
+
+    }
+
+
+    let profile_list = document.getElementsByClassName('profileSettingitem');
+    for (let i = 0; i < profile_list.length; i++) {
+        profile_list[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location = '/profile/' + i;
+        })
+    }
+
+
+    $('#upload_product').submit(function (e) {
+        e.preventDefault();
+        const upload_product = document.getElementById("upload_product");
+        let formData = new FormData(upload_product);
+
+        $.ajax({
+            url: '/profile/product_upload',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                console.log(res);
+                //whatever you wanna do after the form is successfully submitted
+            }
+        });
+    });
+
+</script>
+
+<script>
+    $.ajax({
+        url: '/profile/getProductsinCart',
+        type: "POST",
+        data: {
+            email: '<%= loginStatus.email %>'
+        },
+        success: function (allproducts) {
+            let total = 0;
+            for (let cart_item = 0; cart_item < allproducts.length; cart_item++) {
+                generateEverySingleItemToCart(
+                    allproducts[cart_item].name,
+                    allproducts[cart_item].price,
+                    allproducts[cart_item].color,
+                    allproducts[cart_item].size,
+                    allproducts[cart_item].description,
+                    allproducts[cart_item].image
+                );
+                //reg exp
+                let number = Number(allproducts[cart_item].price.replace(/[^0-9.-]+/g, ""));
+                console.log('number ==',number);
+                total = total + number;
+                if (cart_item == allproducts.length - 1) {
+                    console.log('total ==', total);
+                    document.getElementById('totial_price_value').innerHTML = '<h1>' + total + '</h1>';
+                }
+            }
+        }
+    })
+
+    
+
+
+    //get all products and add to view
+    function generateEverySingleItemToCart(name, price, color, size, description, image) {
+
+        // div construction
+        var peritem = document.createElement('div');
+        peritem.classList.add('peritem');
+
+        var left_pic = document.createElement('div');
+        left_pic.classList.add('left_pic');
+        var img = document.createElement('img');
+        img.src = image;
+        left_pic.appendChild(img);
+
+
+        var right_description = document.createElement('div');
+        right_description.classList.add('right_description');
+
+        var deletebtn = document.createElement('div');
+        deletebtn.innerText = 'x';
+        deletebtn.classList.add('delete');
+
+        var product_name = document.createElement('h3');
+        product_name.classList.add('product_name');
+        product_name.innerHTML = name;
+
+        var price_p = document.createElement('p');
+        price_p.classList.add('price');
+        price_p.innerHTML = price;
+
+        var color_p = document.createElement('p');
+        color_p.classList.add('color');
+        color_p.innerHTML = color;
+
+        var size_p = document.createElement('p');
+        size_p.classList.add('size');
+        size_p.innerHTML = size;
+
+        var description_p = document.createElement('p');
+        description_p.classList.add('description');
+        description_p.innerHTML = description;
+
+        right_description.appendChild(product_name);
+        right_description.appendChild(price_p);
+        right_description.appendChild(color_p);
+        right_description.appendChild(size_p);
+        right_description.appendChild(description_p);
+        right_description.appendChild(deletebtn);
+
+        peritem.appendChild(left_pic);
+        peritem.appendChild(right_description);
+
+        document.getElementById('cartDetails').appendChild(peritem);
+
+        deletebtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/profile/deleteProductInCart',
+                type: 'POST',
+                data: {
+                    email: '<%= loginStatus.email %>',
+                    productName: name
+                },
+                success: function (res) {
+                    console.log('deleted product in cart');
+                    let price_number = Number(price.replace(/[^0-9.-]+/g, ""));
+                    let current_total_price = document.getElementById('totial_price_value').getElementsByTagName('h1')[0].innerText;
+                    document.getElementById('totial_price_value').getElementsByTagName('h1')[0].innerText = String(parseInt(current_total_price) - parseInt(price_number));
+                }
+            })
+            $(this).parents('.peritem').css('display', 'none');
+        })
+
+    }
+
+
+</script>
+
+<!-- <script>
+   let total = 0;
+   var current_cart_prices = document.getElementsByClassName('price').length;
+   console.log('current_cart_prices.length ==', current_cart_prices);
+   for(let p=0; p<current_cart_prices.length; p++ ){
+    let price_value = current_cart_prices[p].innerText;
+    console.log(price_value);
+    total = total + Int(price_value);
+   }
+   document.getElementById('totial_price_value').innerHTML = '<h1>' + String(total) + '</h1>';
+
+</script> -->
+
+
+
+</html>

@@ -4,7 +4,7 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user.css' />
+  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user_2.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
@@ -26,16 +26,21 @@
       </div>
     </div>
 
+
+    <div id='liveCheckButton'>
+      <div id='liveicon-container'>
+      <div id='circle'>
+        <div id='innercircle'></div>
+      </div>
+      <div id='circle_text'>Not live</div>
+    </div>
+      
+    </div>
+
     <div id='live'>
 
       <div id='wholeVideoContainer'>
         <div id='video-container'>
-          <div id='liveCheckButton'>
-            <div id='circle'>
-              <div id='innercircle'></div>
-            </div>
-            <div id='circle_text'>Not live</div>
-          </div>
           <div id='video'>
             <video autoplay id="live_video" width="100%" controls muted>
             </video>
@@ -113,23 +118,23 @@
   }
   // User receive message 
   socket.on('gotMessage', function (gotMessage) {
-      let msglog = document.getElementById('msglog');
-      if (gotMessage.sender_role == 'host') {
-        msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
-        if(gotMessage.image != ''){
-          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
-          msglog.scrollTop = msglog.scrollHeight;
-        }      
+    let msglog = document.getElementById('msglog');
+    if (gotMessage.sender_role == 'host') {
+      msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+      if (gotMessage.image != '') {
+        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
         msglog.scrollTop = msglog.scrollHeight;
-      } else if(gotMessage.sender_role == 'user'){
-        msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
-        if(gotMessage.image != ''){
-          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
-          msglog.scrollTop = msglog.scrollHeight;
-        }
-
       }
-    });
+      msglog.scrollTop = msglog.scrollHeight;
+    } else if (gotMessage.sender_role == 'user') {
+      msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+      if (gotMessage.image != '') {
+        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
+        msglog.scrollTop = msglog.scrollHeight;
+      }
+
+    }
+  });
 
 
 </script>
@@ -140,14 +145,13 @@
   var room_obj = JSON.parse(single_room);
   console.log('room ==', room_obj);
   if (room_obj.active == 'open') {
-    $('#circle').css('border-color', 'rgb(255, 0, 0)');
-    $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
-    document.getElementById('circle_text').innerText = 'Live';
+
+    $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
+    document.getElementById('circle_text').innerText = 'LIVE';
     document.getElementsByTagName('h1')[0].style.display = 'none';
   } else if (room_obj.active == 'close') {
-    $('#circle').css('border-color', 'rgb(128, 128, 128)');
-    $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
-    document.getElementById('circle_text').innerText = 'Not live';
+    $('#liveicon-container').css('background-color', 'rgb(128, 128, 128)');
+    document.getElementById('circle_text').innerText = 'NOT LIVE';
   }
 
 
@@ -185,10 +189,23 @@
     },
     success: function (gotAllProducts_of_current_host) {
       console.log('gotAllProducts == ', gotAllProducts_of_current_host);
+      //for open the live view at the beginning, parse the first product to product show
+      document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
+      document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
+      document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+      document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
+      document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
+      document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
+      document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
+
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
         console.log(item);
         let image_S3_url = gotAllProducts_of_current_host[item].image
         generateProductImages(image_S3_url);
+
+        //assign first product to the productshow div
+
+
       }
     }
   })
@@ -219,7 +236,7 @@
           console.log('singleProduct ==', singleProduct);
 
           document.getElementById('product_name').innerHTML = singleProduct.name;
-          document.getElementById('price').innerHTML = '$ '+singleProduct.price;
+          document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
           document.getElementById('color').innerHTML = singleProduct.color;
           document.getElementById('size').innerHTML = singleProduct.size;
           document.getElementById('stock').innerHTML = singleProduct.stock;
@@ -231,6 +248,40 @@
     document.getElementById('productlist').append(item);
   }
 </script>
+
+
+<script>
+
+// add to cart
+  document.getElementById('Button_text').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const AddToCart = {
+      role: '<%= loginStatus.role %>',
+      email: '<%= loginStatus.email %>',
+      name: document.getElementById('product_name').innerText,
+      color: document.getElementById('color').innerText,
+      size: document.getElementById('size').innerText,
+      price: document.getElementById('price').innerText,
+      stock: document.getElementById('stock').innerText,
+      description: document.getElementById('description').innerText,
+      image: document.getElementById('mainimg').src
+    }
+
+
+    $.ajax({
+      url: '/userlive/addtoCart',
+      type: "POST",
+      data: AddToCart,
+      success: function (result) {
+        console.log('result ==', result);
+      }
+    })
+  })
+
+
+</script>
+
 
 
 <!-- DASH mpd -->

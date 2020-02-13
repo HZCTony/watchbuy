@@ -4,7 +4,7 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user_2.css' />
+  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
@@ -16,7 +16,6 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
-    <div id='openProductShowBtn'><p>-</p></div>
     <div id='productShow'>
       <div id='productDescription'>
         <%- include("./model/product/productdescription.ejs") %>
@@ -25,19 +24,15 @@
       </div>
     </div>
 
-    <div id='liveCheckButton'>
-      <div id='liveicon-container'>
-      <div id='circle'>
-        <div id='innercircle'></div>
-      </div>
-      <div id='liveword'>NOT LIVE</div>
-    </div>
-      <div id='circle_text'>影像有出現後按我開播</div>
-
-    </div>
-    
     <div id='live'>
 
+
+      <div id='liveCheckButton'>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='circle_text'>影像有出現後按我開播</div>
+      </div>
 
       <div id='video'>
         <video autoplay id="live_video" controls muted>
@@ -51,8 +46,8 @@
       <div id='sendMessage'>
         <input type="text" id="message" name="message">
         <button id='sendMsgBtn'>傳 送</button>
+        <p id='msg_status'></p>
       </div>
-      <div id='msg_status'></div>
     </div>
 
 
@@ -195,23 +190,16 @@
   const stream_id = '<%- id %>';
   document.getElementById('liveCheckButton').addEventListener('click', function (e) {
     e.preventDefault();
-    var color = $('#liveicon-container').css("background-color");
-    console.log('color ==',color);
+    var color = $('#circle').css("border-color");
     if (color == 'rgb(128, 128, 128)') {
-      // $('#circle').css('border-color', 'rgb(255, 0, 0)');
-      // $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
-      //$('#liveword').css('background-color', 'rgb(255, 0, 0)');
-      $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
+      $('#circle').css('border-color', 'rgb(255, 0, 0)');
+      $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
       document.getElementById('circle_text').innerHTML = '正在開播中，按我取消';
-      document.getElementById('liveword').innerHTML = 'LIVE';
       updateLiveActivation('open', stream_id);
     } else if (color == 'rgb(255, 0, 0)') {
-      // $('#circle').css('border-color', 'rgb(128, 128, 128)');
-      // $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
-      // $('#liveword').css('background-color', 'rgb(128, 128, 128)');
-      $('#liveicon-container').css('background-color', 'rgb(128, 128, 128)');
+      $('#circle').css('border-color', 'rgb(128, 128, 128)');
+      $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
       document.getElementById('circle_text').innerHTML = '影像有畫面後按我開播';
-      document.getElementById('liveword').innerHTML = 'NOT LIVE';
       updateLiveActivation('close', stream_id);
     }
   })
@@ -301,20 +289,6 @@
     }
     document.getElementById('productlist').append(item);
   }
-</script>
-
-<script>
-  document.getElementById('openProductShowBtn').addEventListener('click',function(e){
-    e.preventDefault();
-    var see = $( '#productShow' ).css( "visibility" );
-      if(see == 'visible'){
-        $( '#productShow' ).css( "visibility", 'hidden' );
-        document.getElementById('openProductShowBtn').innerHTML = '+';
-      }else if(see == 'hidden'){
-        $( '#productShow' ).css( "visibility", 'visible' );
-        document.getElementById('openProductShowBtn').innerHTML = '-';
-      }
-  })
 </script>
 
 </html>

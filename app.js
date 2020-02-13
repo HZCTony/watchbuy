@@ -37,7 +37,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use((req, res, next)=>{
-  res.set('Cache-Control', 'no-store');
+  res.set('Cache-Control', 'no-cache');
   next()
 })
 app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));

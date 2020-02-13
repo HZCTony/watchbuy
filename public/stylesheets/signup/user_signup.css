@@ -7,7 +7,7 @@ body{
 
 
 #background{
-    height: 100vh;
+    height: calc(100vh - 300px);
     width: 100%;
     min-width: 800px;
     display: flex;
@@ -17,7 +17,6 @@ body{
 }
 
 #container{
-    margin-bottom: 160px;
     text-align: center;
 }
 

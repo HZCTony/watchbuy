@@ -10,7 +10,7 @@ module.exports = {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
-					var getAllProducts_query = `select image from products where hostid='${hostid[0].id}';`;
+					var getAllProducts_query = `select name,size,color,image,stock,description,price from products where hostid='${hostid[0].id}';`;
 					if (getAllProducts_query != '') {
 						database.connection.query(getAllProducts_query, function (error, gotAllProducts, fields) {
 							if (error) {

@@ -15,6 +15,7 @@ body{
     width:100%;
     min-height: 800px;
     height: calc(100vh - 100px);
+    position: relative;
     display: inline-flex;
     flex-direction: row ;
     justify-content: center;
@@ -28,17 +29,41 @@ body{
 #live, #chat, #productShow{
     height: calc(100vh - 100px);
     width: 30%;
-    min-width: 480px;
+    
+}
+
+#openProductShowBtn{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top:50px;
+    left:100px;
+    font-size: 50px;
+    padding: 0;
+    color: white;
+    background-color: #9ad7a4;
+    border-radius: 40px;
+    z-index: 3000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #productShow{
-    height: calc(100vh - 100px);
+    height: calc(100vh - 400px);
+    width: 480px;
+    position: absolute;
+    top:50px;
+    left:100px;
+    z-index: 2000;
+    background-color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    border-radius: 40px;
+    visibility: visible;
 }
-
 #productDescription{
     width: 100%;
     min-height: 600px;
@@ -67,12 +92,15 @@ max-height: 360px;
 
 
 #productlist{
-    width:400px;
+    width: 80%;
     height: 240px;
     display: inline-flex;
     flex-direction: row;
-    text-align: center;
-    overflow: auto;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    
 }
 
 #cartbtn-container{
@@ -174,11 +202,16 @@ max-height: 360px;
 }
 
 #live{
-    width: 40%;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: -9999;
+    width: 100%;
     min-width: 600px;
     position: relative;
     background-color: #333333;
 }
+
 
 #notLiveWord{
     position: fixed;
@@ -226,39 +259,67 @@ max-height: 360px;
 
 #liveCheckButton{
     position: absolute;
-    top:0;
-    left:0;
-    z-index: 2000;
-    width: 100%;
+    top:100px;
+    left:50%;
+    z-index: 9999;
+    width: 500px;
     height: 160px;
     font-size: 20px;
     color: white;
     display: inline-flex;
     flex-direction: row;
     justify-content: center;
-    padding-top: 40px;
-    background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.0));
+    align-items: center;
+    transform: translate(-50%,-50%);
+    cursor: pointer;
+}
+
+#liveicon-container{
+    background-color: rgb(128, 128, 128);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+#liveword{
+    height: 40px;
+    width: 140px;
+
+    font-size: 30px;
+    color: white;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 
 
 #circle{
-    width: 29px;
-    height: 29px;
+    width: 24px;
+    height: 24px;
     border-radius: 20px;
-    border: 2px #808080 solid;
+    border: 2px white solid;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    margin-right: 5px;
 }
 
 #innercircle{
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 12px;
     border-width: 0px;
-    background-color: #808080;
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }
 #circle_text{
     margin-left: 10px;
@@ -266,16 +327,25 @@ max-height: 360px;
 }
 
 #chat{
+    position: absolute;
+    top:0px;
+    left:70%;
+    z-index: 2000;
+    height: 80vh;
     display:flex;
+    align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-left: 30px;
+    opacity: 35%;
+}
+
+#chat:hover{
+    opacity: 100%;
 }
 
 #msglog{
     height: 80%;
     width:100%;
-    border-bottom: 2px rgba(240,240,240) solid;
     overflow: auto;
     padding:0;
 }
@@ -285,8 +355,8 @@ max-height: 360px;
     display:flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
 }
+
 
 .hostMsg{
     text-align: left;
@@ -376,6 +446,7 @@ max-height: 360px;
     font-size:20px;
     line-height: 10px; 
     height:10px;
+    width: 100px;
     color: red;
     visibility: hidden;
 }
@@ -387,4 +458,64 @@ max-height: 360px;
 #price{
     font-weight: bolder;
     font-size: 30px;
+}
+
+
+
+
+@media screen and (max-width: 1920px) {
+
+
+    #productimg img{
+        max-width: 300px;
+        max-height: 240px;
+        object-fit: contain;
+    }
+
+    .mainitem{
+        width: 320px;
+        min-height: 500px;
+        display: inline-flex;
+        text-align: center;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-end;
+        border-bottom: 1px gray solid;
+
+}
+
+#productDescription{
+    width: 100%;
+    min-height: 500px;
+
+}
+
+.item, .productimg, #productlist{
+    height: 100px;
+}
+    #productShow{
+        width: 380px;
+        height: calc(100vh - 360px);
+    }
+
+    .productimg{
+        width: 120px;
+        border: 2px black solid;
+    }
+
+    #productlist{
+        height: 140px;
+        max-width: 90%;
+    }
+}
+
+
+@media screen and ( max-width: 1450px ) and( max-height: 950px){
+    
+
+    #liveicon-container{
+        color: blue;
+    }
+
+
 }

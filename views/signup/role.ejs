@@ -3,17 +3,18 @@
 
 <head>
   <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/signup/role.css' />
   
 </head>
 
 <body>
-  <div id="main_title">
-    <p>你是誰</p>
-  </div>
-  <div id='background'>
 
-    <div id="roles">
+  <div id='background' style="height: 100vh;">
+    <div id="main_title" class='rolediv'>
+      <p>你是誰</p>
+    </div>
+    <div id="roles" class='rolediv'>
       <div id='host-ani'>
         <form id='hostform' method="POST" action='/signup'>
         <input type="text" name='name' value="host" style="display: none;">

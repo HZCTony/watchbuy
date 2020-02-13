@@ -1,6 +1,7 @@
 var express = require('express');
 var signin = require('../../public/model/DataAccessObject/signin.js');
 var Logo = require('../../public/model/DataAccessObject/Logo.js');
+var cart = require('../../public/model/DataAccessObject/cart.js');
 var product = require('../../public/model/DataAccessObject/product.js');
 var s3_credential = require('../../public/model/util/aws.json');
 var router = express.Router();
@@ -111,6 +112,8 @@ router.get('/:list', function (req, res, next) {
         Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
 
+
+          if(role == 'host'){
           switch (profileList) {
             case '0':
               res.render('./profile/settings', { title: title, loginStatus: loginStatus });
@@ -130,6 +133,32 @@ router.get('/:list', function (req, res, next) {
             default:
               res.render('./profile/settings', { title: title, loginStatus: loginStatus });
           }
+        }else if(role == 'user'){
+          switch (profileList) {
+            case '0':
+              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+              break;
+            case '1':
+              res.render('./profile/cartlist', { title: title, loginStatus: loginStatus });
+              break;
+            case '2':
+              res.render('./profile/orderlist', { title: title, loginStatus: loginStatus });
+              break;
+            case '3':
+              res.clearCookie('role');
+              res.clearCookie('token');
+              console.log('[profile.js]: loginStatus=', loginStatus);
+              res.redirect('/signin');
+              break;
+            default:
+              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+          }
+        }
+
+
+
+
+
 
         })
       } else {
@@ -194,6 +223,29 @@ router.post('/product_upload', product_upload.single('image'), function (req, re
   })
 
 })
+
+
+router.post('/getProductsinCart', function (req, res, next) {
+  console.log(req.body.email);
+  cart.getAllProductsInCart(req.body.email).then(allproducts=>{
+    console.log('cart == ',allproducts);
+    res.send(allproducts);
+  })
+ 
+ });
+
+ router.post('/deleteProductInCart', function (req, res, next) {
+  var email = req.body.email;
+  var productName = req.body.productName;
+  cart.deleteProductInCart(email,productName).then(result=>{
+    console.log(result);
+    res.send('delete a product in your cart');
+  })
+ });
+
+
+
+
 
 
 module.exports = router;

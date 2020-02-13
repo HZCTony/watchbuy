@@ -11,16 +11,19 @@ body{
     width: 100%;
     min-width: 1200px;
     background-color: black;
-    /*background-image: url('../images/main.jpg');*/
+    background-image: url('../images/desktop.jpg');
     background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #icons-container{
     width: 600px;
     height: 800px;
     position: relative;
-    left: 1400px;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -37,11 +40,12 @@ body{
 
 #slogan{
     position: fixed;
-    top : 700px;
+    top : 600px;
     left: 100px;
     z-index: 1000;
-    color: white;
+    color: black;
     font-size: 50px;
+    display: none;
 }
 
 #logo {
