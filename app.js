@@ -15,6 +15,7 @@ var roomlist = require('./routes/roomlist');
 var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
+var checkout = require('./routes/checkout.js');
 var multer			= require('multer');
 var app = express();
 const server = require('http').Server(app);
@@ -62,6 +63,9 @@ app.use('/userlive', userlive);
 app.use('/hostlive', hostlive);
 app.use('/users', usersRouter);
 
+
+//money
+app.use('/checkout', checkout);
 
 app.use('/testOBS', testOBSRouter);
 // catch 404 and forward to error handler

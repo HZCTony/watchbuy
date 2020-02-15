@@ -16,7 +16,9 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
-    <div id='openProductShowBtn'><p>-</p></div>
+    <div id='openProductShowBtn'>
+      <p>-</p>
+    </div>
     <div id='productShow'>
       <div id='productDescription'>
         <%- include("./model/product/productdescription.ejs") %>
@@ -27,15 +29,15 @@
 
     <div id='liveCheckButton'>
       <div id='liveicon-container'>
-      <div id='circle'>
-        <div id='innercircle'></div>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='liveword'>NOT LIVE</div>
       </div>
-      <div id='liveword'>NOT LIVE</div>
-    </div>
       <div id='circle_text'>影像有出現後按我開播</div>
 
     </div>
-    
+
     <div id='live'>
 
 
@@ -82,6 +84,7 @@
         document.getElementById("sendMsgBtn").click();
       }
     });
+
 
     // host send message
     document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
@@ -196,7 +199,7 @@
   document.getElementById('liveCheckButton').addEventListener('click', function (e) {
     e.preventDefault();
     var color = $('#liveicon-container').css("background-color");
-    console.log('color ==',color);
+    console.log('color ==', color);
     if (color == 'rgb(128, 128, 128)') {
       // $('#circle').css('border-color', 'rgb(255, 0, 0)');
       // $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
@@ -304,16 +307,16 @@
 </script>
 
 <script>
-  document.getElementById('openProductShowBtn').addEventListener('click',function(e){
+  document.getElementById('openProductShowBtn').addEventListener('click', function (e) {
     e.preventDefault();
-    var see = $( '#productShow' ).css( "visibility" );
-      if(see == 'visible'){
-        $( '#productShow' ).css( "visibility", 'hidden' );
-        document.getElementById('openProductShowBtn').innerHTML = '+';
-      }else if(see == 'hidden'){
-        $( '#productShow' ).css( "visibility", 'visible' );
-        document.getElementById('openProductShowBtn').innerHTML = '-';
-      }
+    var see = $('#productShow').css("visibility");
+    if (see == 'visible') {
+      $('#productShow').css("visibility", 'hidden');
+      document.getElementById('openProductShowBtn').innerHTML = '+';
+    } else if (see == 'hidden') {
+      $('#productShow').css("visibility", 'visible');
+      document.getElementById('openProductShowBtn').innerHTML = '-';
+    }
   })
 </script>
 

@@ -11,7 +11,8 @@ router.get('/:id', function (req, res, next) {
   var token = req.cookies.token;
   if (!role || !token) {
     //res.render('hostlive-remade', { title: title, id: id, loginStatus: 'none' });
-    res.render('hostlive', { title: title, id: id, loginStatus: 'none' });
+    //res.render('hostlive', { title: title, id: id, loginStatus: 'none' });
+    res.redirect('/signin');
   } else {
     sigin.personCookieCheck(role, token).then(loginStatus => {
       console.log(loginStatus);
@@ -21,7 +22,6 @@ router.get('/:id', function (req, res, next) {
           res.clearCookie('token');
           res.render('userlive', { title: title, id: id, loginStatus: loginStatus });
         }
-        
         //res.render('hostlive-remade', { title: title, id: id, loginStatus: loginStatus });
         res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
       } else {

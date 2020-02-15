@@ -7,11 +7,11 @@
         <div id='basicinfo_btn' class='menuitem'>
             基本資訊
         </div>
-        <div class='menuitem'>
+        <div id='cartList' class='menuitem'>
             購物車
         </div>
-        <div class='menuitem'>
-            查訂單
+        <div id='checkOrder' class='menuitem'>
+            我的訂單
         </div>
         <div id='logout' class='menuitem'>
             登出
@@ -34,5 +34,13 @@
           window.location = '/signin';
         }
       })
+    })
+
+    document.getElementById('cartList').addEventListener('click', function(){
+        window.location ='/profile/1'
+    })
+
+    document.getElementById('checkOrder').addEventListener('click', function(){
+        window.location ='/profile/2'
     })
 </script>

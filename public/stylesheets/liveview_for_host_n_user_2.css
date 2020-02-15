@@ -26,10 +26,9 @@ body{
 
 
 
-#live, #chat, #productShow{
+#chat, #productShow{
     height: calc(100vh - 100px);
     width: 30%;
-    
 }
 
 #openProductShowBtn{
@@ -47,6 +46,7 @@ body{
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 #productShow{
@@ -203,9 +203,10 @@ max-height: 360px;
 
 #live{
     position: absolute;
+    height: calc(100vh - 100px);
     top:0;
     left:0;
-    z-index: -9999;
+    z-index: 1000;
     width: 100%;
     min-width: 600px;
     position: relative;
@@ -246,14 +247,13 @@ max-height: 360px;
     transform: translate(0,-50%);
     width: 100%;
     max-height: calc(100vh - 100px);
-    min-height: calc(100vh - 100px);
-    z-index: 1000;
+    z-index: 20000;
 }
 
 #video{
     width: 100%;
-    min-width: 480px;
-    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    z-index: 20000;
 }
 
 
@@ -369,7 +369,7 @@ max-height: 360px;
     display: inline-block;
     background-color: #9ad7a4;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 24px;
     border-radius: 20px;
     height: 32px;
     line-height: 32px;
@@ -398,7 +398,7 @@ max-height: 360px;
 .userMsg span{
     display: inline-block;
     background-color: rgb(101, 101, 101);
-    font-size: 20px;
+    font-size: 24px;
     border-radius: 20px;
     height: 32px;
     line-height: 32px;

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/profile.css' />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <%- include("../model/header/call-headers.ejs") %>
+    <div id='container'>
+        <div id='profileSettingList'>
+            <div id='listbox'>
+                <div class='topitem profileSettingitem'>
+                    <p>我的資訊</p>
+                </div>
+                <div class='miditem profileSettingitem'>
+
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>上傳商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>購物車</p>
+                    <% } %>
+
+                </div>
+                <div class='miditem profileSettingitem'>
+                    <% if (loginStatus.role == 'host') { %>
+                    <p>我的商品</p>
+                    <% } else if(loginStatus.role == 'user'){ %>
+                    <p>我的訂單</p>
+                    <% } %>
+                </div>
+                <div class='bottomitem profileSettingitem'>
+                    <p>登出</p>
+                </div>
+            </div>
+        </div>
+
+        <div id='settings'>
+
+            <% if (loginStatus.role == 'host') { %>
+
+                <% } else if(loginStatus.role == 'user'){ %>
+                    <div id='orderSection'>
+
+                    </div>
+                <% } %>
+
+        </div>
+
+    </div>
+</body>
+
+<script>
+    var role = '<%= loginStatus.role %>';
+    console.log(role);
+
+    let profile_list = document.getElementsByClassName('profileSettingitem');
+
+    for (let i = 0; i < profile_list.length; i++) {
+        profile_list[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location = '/profile/' + i;
+        })
+    }
+    if (role == 'host') {
+
+
+    } else if (role == 'user') {
+        
+        //GET ALL ORDERS
+        $.ajax({
+            url: '/checkout/GetAllOrders',
+            type: 'POST',
+            data:{
+                email: '<%= loginStatus.email %>'
+            },
+            success:function(Allorders){
+                console.log('Allorders ==', Allorders);
+                for(let item=0; item<Allorders.length; item++){
+                    generateEveryOrder(
+                        Allorders[item].id,
+                        Allorders[item].amount,
+                        Allorders[item].payment,
+                        Allorders[item].products
+                        );
+                }
+
+            }
+        })
+    }
+
+
+    function generateEveryOrder(orderid, amount, payment, All_products_info){
+        let orderitem = document.createElement('div');
+        orderitem.classList.add('orderitem');
+
+        let order_description = document.createElement('div');
+        order_description.classList.add('order_description');
+        let orderid_div = document.createElement('div');
+        let orderid_div_title = document.createElement('p');
+        let orderid_div_title_content = document.createElement('p');
+        orderid_div_title.innerText = '訂單編號：';
+        orderid_div_title_content.innerText = String(orderid);
+        orderid_div_title_content.classList.add('orderid');
+        orderid_div.appendChild(orderid_div_title);
+        orderid_div.appendChild(orderid_div_title_content);
+
+        let amount_div = document.createElement('div');
+        let amount_title = document.createElement('p');
+        let amount_title_content = document.createElement('p');
+        amount_title.innerText = '總金額：NT. ';
+        amount_title_content.innerText = String(amount);
+        amount_title_content.classList.add('totalamount');
+        amount_div.appendChild(amount_title);
+        amount_div.appendChild(amount_title_content);
+
+        let shipping_div = document.createElement('div');
+        let shipping_title = document.createElement('p');
+        let shipping_title_content = document.createElement('p');
+        shipping_title.innerText = '出貨狀態：';
+        shipping_title_content.innerText = '未出貨';
+        shipping_title_content.classList.add('shipping');
+        shipping_div.appendChild(shipping_title);
+        shipping_div.appendChild(shipping_title_content);
+
+        let payment_div = document.createElement('div');
+        let payment_title = document.createElement('p');
+        let payment_title_content = document.createElement('p');
+        payment_title.innerText = '付款狀態：';
+        payment_title_content.innerText = String(payment);
+        payment_title_content.classList.add('shipping');
+        payment_div.appendChild(payment_title);
+        payment_div.appendChild(payment_title_content);
+
+        order_description.appendChild(orderid_div);
+        order_description.appendChild(amount_div);
+        order_description.appendChild(shipping_div);
+        order_description.appendChild(payment_div);
+
+        let order_imgs = document.createElement('div');
+        order_imgs.classList.add('order_imgs');
+
+
+        for(let p=0; p<All_products_info.length; p++){
+            // every single product img in an order
+            let single_product_in_order = document.createElement('div');
+            single_product_in_order.classList.add('single_product_in_order');
+            let single_img = document.createElement('img');
+            single_img.setAttribute('src', All_products_info[p].image);
+            single_product_in_order.appendChild(single_img);
+
+            //every bought info of a single product
+            let single_product_title = document.createElement('p');
+            let single_product_price = document.createElement('p');
+            let single_product_count = document.createElement('p');
+            single_product_title.innerHTML = '<p>'+ All_products_info[p].name +'</p>';
+            single_product_price.innerHTML = '<p>'+ All_products_info[p].price +'</p>';
+            single_product_count.innerHTML = '<p>'+ '數量 : ' + All_products_info[p].count +'</p>';
+            single_product_in_order.appendChild(single_product_title);
+            single_product_in_order.appendChild(single_product_price);
+            single_product_in_order.appendChild(single_product_count);
+            order_imgs.appendChild(single_product_in_order);
+        }
+        orderitem.appendChild(order_description);
+        orderitem.appendChild(order_imgs);
+        orderSection.appendChild(orderitem);
+    }
+
+</script>
+</html>

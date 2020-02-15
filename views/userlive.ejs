@@ -18,6 +18,7 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
+    <div id='openProductShowBtn'><p>-</p></div>
     <div id='productShow'>
       <div id='productDescription'>
         <%- include("./model/product/productdescription.ejs") %>
@@ -282,7 +283,19 @@
 
 </script>
 
-
+<script>
+  document.getElementById('openProductShowBtn').addEventListener('click',function(e){
+    e.preventDefault();
+    var see = $( '#productShow' ).css( "visibility" );
+      if(see == 'visible'){
+        $( '#productShow' ).css( "visibility", 'hidden' );
+        document.getElementById('openProductShowBtn').innerHTML = '+';
+      }else if(see == 'hidden'){
+        $( '#productShow' ).css( "visibility", 'visible' );
+        document.getElementById('openProductShowBtn').innerHTML = '-';
+      }
+  })
+</script>
 
 <!-- DASH mpd -->
 <!-- <script>

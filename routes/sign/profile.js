@@ -101,7 +101,7 @@ router.get('/:list', function (req, res, next) {
 
   var role = req.cookies.role;
   var token = req.cookies.token;
-  var profileList = req.params.list;
+  let profileList = req.params.list;
   console.log('profileList ==', profileList);
   if (!role || !token) {
     res.redirect('/signin');
@@ -113,47 +113,48 @@ router.get('/:list', function (req, res, next) {
           loginStatus.logo = logoPath.logo;
 
 
-          if(role == 'host'){
-          switch (profileList) {
-            case '0':
-              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
-              break;
-            case '1':
-              res.render('./profile/product_upload', { title: title, loginStatus: loginStatus });
-              break;
-            case '2':
-              res.render('./profile/host_products', { title: title, loginStatus: loginStatus });
-              break;
-            case '3':
-              res.clearCookie('role');
-              res.clearCookie('token');
-              console.log('[profile.js]: loginStatus=', loginStatus);
-              res.redirect('/signin');
-              break;
-            default:
-              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+          if (loginStatus.role == 'host') {
+            switch (profileList) {
+              case '0':
+                res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+                break;
+              case '1':
+                res.render('./profile/product_upload', { title: title, loginStatus: loginStatus });
+                break;
+              case '2':
+                res.render('./profile/host_products', { title: title, loginStatus: loginStatus });
+                break;
+              case '3':
+                res.clearCookie('role');
+                res.clearCookie('token');
+                console.log('[profile.js]: loginStatus=', loginStatus);
+                res.redirect('/signin');
+                break;
+              default:
+                res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+            }
+          } else if (loginStatus.role == 'user') {
+            switch (profileList) {
+              case '0':
+                res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+                break;
+              case '1':
+                res.render('./profile/cartlist', { title: title, loginStatus: loginStatus });
+                break;
+              case '2':
+                console.log('2');
+                res.render('./profile/orderlist', { title: title, loginStatus: loginStatus });
+                break;
+              case '3':
+                res.clearCookie('role');
+                res.clearCookie('token');
+                console.log('[profile.js]: loginStatus=', loginStatus);
+                res.redirect('/signin');
+                break;
+              default:
+                res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+            }
           }
-        }else if(role == 'user'){
-          switch (profileList) {
-            case '0':
-              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
-              break;
-            case '1':
-              res.render('./profile/cartlist', { title: title, loginStatus: loginStatus });
-              break;
-            case '2':
-              res.render('./profile/orderlist', { title: title, loginStatus: loginStatus });
-              break;
-            case '3':
-              res.clearCookie('role');
-              res.clearCookie('token');
-              console.log('[profile.js]: loginStatus=', loginStatus);
-              res.redirect('/signin');
-              break;
-            default:
-              res.render('./profile/settings', { title: title, loginStatus: loginStatus });
-          }
-        }
 
 
 
@@ -215,37 +216,91 @@ router.post('/product_upload', product_upload.single('image'), function (req, re
   const filepath = req.file.location;
 
   product.InsertNewProduct(productName, color, size, price, description, stock, email, filepath, price)
-  .then(UpdatedResult => {
-    console.log(UpdatedResult);
-    res.json({ status: 'Updated information of a single product to database' });
-  }).catch(err => {
-    res.json({ status: err });
-  })
+    .then(UpdatedResult => {
+      console.log(UpdatedResult);
+      res.json({ status: 'Updated information of a single product to database' });
+    }).catch(err => {
+      res.json({ status: err });
+    })
 
 })
 
 
 router.post('/getProductsinCart', function (req, res, next) {
   console.log(req.body.email);
-  cart.getAllProductsInCart(req.body.email).then(allproducts=>{
-    console.log('cart == ',allproducts);
+  cart.getAllProductsInCart(req.body.email).then(allproducts => {
+    console.log('cart == ', allproducts);
     res.send(allproducts);
   })
- 
- });
 
- router.post('/deleteProductInCart', function (req, res, next) {
+});
+
+router.post('/deleteProductInCart', function (req, res, next) {
   var email = req.body.email;
   var productName = req.body.productName;
-  cart.deleteProductInCart(email,productName).then(result=>{
+  cart.deleteProductInCart(email, productName).then(result => {
     console.log(result);
     res.send('delete a product in your cart');
   })
- });
+});
+
+router.post('/checkOrder', function (req, res, next) {
+
+}); 
+
+router.post('/payment', function (req, res, next) {
+  console.log('req.body ==',req.body,'\n');
+
+  const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
+
+  // stripe.customers.create({
+  //   email: 'hzc1033@smail.nchu.edu.tw',
+  // })
+  //   .then(customer => console.log('user create :',customer.id))
+  //   .catch(error => console.error('user create error :',error));
+
+  stripe.charges.create({
+  amount: 9487,
+  currency: "hkd",
+  source: req.body.stripeToken, // obtained with Stripe.js
+  description: "Test Tony Charge"
+},  function(err, charge) {
+  if (err) {
+    res.json({'Tony err:':err})
+  }
+  res.json(charge);
+  // var order = new Order({
+  //   name: req.body.name,
+  //   address: req.body.address,
+  //   cart: cart,
+  //   paymentId: charge.id
+  // })
+  // order.save(function(err, result){
+  //   req.flash('success', 'Successfully bought product')
+  //   req.session.cart = null
+  //   res.redirect('/')
+  // })
+});
 
 
+  (async () => {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        name: 'T-shirt',
+        description: 'Comfortable cotton t-shirt',
+        images: ['https://example.com/t-shirt.png'],
+        amount: 500,
+        currency: 'sgd',
+        quantity: 1,
+      }],
+      success_url: 'http://localhost/',
+      cancel_url: 'http://localhost/signin',
+    });
+  })();
 
-
+  
+})
 
 
 module.exports = router;

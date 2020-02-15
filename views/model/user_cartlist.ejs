@@ -12,12 +12,16 @@
 
 
 <div id='creditCardinput'>
-    <div>
-    <div class='fakebutton'>4214</div>
-    <div class='fakebutton'>4214</div>
-    <div class='fakebutton'>4214</div>
-    <div class='fakebutton'>4214</div>
-    <div class='lastbutton'>01/25</div>
-    </div>
-    <div id='buy'>結帳</div>
+    <!-- <form action="/profile/payment" method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_AisEhm6pGhI1H2P8P1FdOZfo00nTG1vHPY"
+            data-amount="999" data-name="Tony" data-description="Example charge"
+            data-image="" data-locale="auto"
+            data-currency="hkd">  </script>
+    </form> -->
+    <form action="/checkout" method="POST">
+        <input id="amount" name='amount' style="display: none;" readonly>
+        <input id='AllProductIDinCart' name='AllProductIDinCart' style="display: none;" readonly>
+        <input id='cart_email' name='email' style="display: none;" readonly>
+        <button id='sendOrder'>確認送出訂單</button>
+    </form>
 </div>
