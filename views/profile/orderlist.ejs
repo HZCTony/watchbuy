@@ -112,7 +112,7 @@
         let amount_div = document.createElement('div');
         let amount_title = document.createElement('p');
         let amount_title_content = document.createElement('p');
-        amount_title.innerText = '總金額：NT. ';
+        amount_title.innerHTML = '總和金額：NT. &nbsp;';
         amount_title_content.innerText = String(amount);
         amount_title_content.classList.add('totalamount');
         amount_div.appendChild(amount_title);

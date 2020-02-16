@@ -69,7 +69,16 @@ router.post('/GetAllOrders', async function (req, res, next) {
     // use all product ids of an order to get the corresponding images from products table
     let All_images_of_an_Order = await order.GetOrderImages(only_orderID_array);
     for (let img = 0; img < All_images_of_an_Order.length; img++) {
-      products_array[0][img].image = All_images_of_an_Order[img].image;
+      
+      console.log('All_images_of_an_Order == ',All_images_of_an_Order);
+
+      for( c=0; c<All_images_of_an_Order.length; c++ ){
+        if(products_array[0][img].id == All_images_of_an_Order[c].id){
+          products_array[0][img].image = All_images_of_an_Order[c].image;
+        }
+      };
+
+      //products_array[0][img].image = All_images_of_an_Order[img].image;   
     }
 
     All_Orders_of_A_User[i].products = products_array[0];
