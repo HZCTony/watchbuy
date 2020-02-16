@@ -26,19 +26,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 const corsOptions = {
-  origin: [
-    'http://www.example.com',
-    'http://localhost:8080',
-  ],
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use((req, res, next)=>{
-  res.set('Cache-Control', 'no-cache');
+  res.set('Cache-Control', 'no-store');
   next()
 })
 app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));
