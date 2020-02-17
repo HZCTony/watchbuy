@@ -94,11 +94,14 @@
     function generateEverySingleRoom(stream_token, room_Title, room_host_name, active, logo) {
         //div onclick function
         let background_color = '';
+        let liveword = '';
         console.log(active);
         if (active == 'close') {
-            background_color = 'rgb(128, 128, 128)';
+            background_color = 'rgba(128,128,128,0.8)';
+            livewords = 'NOT LIVE';
         } else if (active == 'open') {
-            background_color = 'rgb(255, 0, 0)';
+            background_color = 'rgba(255, 0, 0, 0.8)';
+            livewords = 'LIVE';
         }
         // div construction
         var single_room = document.createElement('div');
@@ -108,37 +111,35 @@
         var circle = document.createElement('div');
         var innercircle = document.createElement('div');
         var RoomTitleP = document.createElement('p');
-        
+
         var RoomTitleText = document.createTextNode(room_Title);
+        var LiveStatusText = document.createTextNode(livewords);
         room_title.classList.add('room_title');
+        room_title.style.backgroundColor = background_color;
         single_room.classList.add('single_room');
-        circle.style.borderColor = background_color;
-        innercircle.style.backgroundColor = background_color;
         circle.classList.add('circle');
         innercircle.classList.add('innercircle');
-        RoomTitleP.appendChild(RoomTitleText);
+        RoomTitleP.appendChild(LiveStatusText);
         circle.appendChild(innercircle);
-        room_title.appendChild(circle);
+        //room_title.appendChild(circle);
         room_title.appendChild(RoomTitleP);
 
 
         var room_hostname = document.createElement('div');
         room_hostname.classList.add('room_hostname');
         var host_owner_name = document.createElement('p');
+        host_owner_name.appendChild(RoomTitleText);
         //var HostOwnerNameText = document.createTextNode(room_host_name);
         //host_owner_name.appendChild(HostOwnerNameText);
         room_hostname.appendChild(host_owner_name);
 
 
-        var room_pic = document.createElement('div');
-        room_pic.classList.add('room_pic');
         if(logo){
         //room_pic.innerHTML = '<img src=' + logo + '>';
         single_room.style.backgroundImage=`url(${logo})`;
         }
 
         single_room.appendChild(room_title);
-        single_room.appendChild(room_pic);
         single_room.appendChild(room_hostname);
 
         single_room.onclick = function () {

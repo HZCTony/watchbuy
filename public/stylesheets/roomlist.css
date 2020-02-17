@@ -77,82 +77,83 @@ p{
 
 
 .circle{
-    width: 32px;
-    height: 29px;
-    border-radius: 20px;
+    width: 36px;
+    height: 21px;
+    border-radius: 30px;
     border-width: 2px;
     border-style: solid;
     display: inline-flex;
     margin-left: 10px;
-    margin-top: 10px;
     align-items: center;
     justify-content: center;
     padding: 0;
+    border-color: rgb(255, 255, 255, 0);
 }
 
 .innercircle{
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     border-radius: 12px;
     border-width: 0px;
-    background-color: #808080;
+    background-color: white;
 }
 
 .single_room{
     width: 400px;
-    height: 600px;
+    height: 500px;
     margin: 40px;
     box-shadow: 3px 7px 10px rgba(0, 0, 0, 0.7);
     border-radius: 20px;
     cursor: pointer;
-    background-size: contain; 
+    background-size: cover; 
     background-repeat: no-repeat;
     background-position:center;
+    position: relative;
 }
 
 
 .single_room .room_title{
-    color: gray;
-    font-size: 40px;
-    font-weight: bolder;
-    width: 100%;
-    height: 50px;
-    text-align: center;
+    color: white;
+    font-size: 22px;
+
+    height: 30px;
+    text-align: left;
     display: inline-flex;
     align-items: center;
+    margin: 5px;
+    border-radius:10px;
+    background-color: rgba(128,128,128,0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.single_room .room_title p{
+    text-align: center;
+    padding:0 8px;
 }
 
 .single_room .room_hostname{
-    color: gray;
-    font-size: 20px;
+    color: white;
+    font-size: 22px;
     font-weight: bolder;
     width: 100%;
-    height: 100px;
+    height: 120px;
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     border-radius: 0 0 20px 20px;
-    background: linear-gradient(rgba(0,0,0,0.0),rgba(0,0,0,0.2));
+    background: linear-gradient(rgba(0,0,0,0.0),rgba(0,0,0,0.8));
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translate(0,-100%);
+
 }
 
 .single_room .room_hostname p{
-    padding-left: 10px;
+margin-left: 10px;
+margin-bottom: 10px;
 text-align: left;
 }
 
-
-.single_room .room_pic{
-    color: white;
-    width: 100%;
-    height: 450px;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: bolder;
-}
-
-.single_room .room_pic img{
-    max-width: 100%;
-    max-height: 500px;
-}

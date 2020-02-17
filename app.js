@@ -31,9 +31,8 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-
-
 app.use(cors());
+
 app.use((req, res, next)=>{
   res.set('Cache-Control', 'no-store');
   next()

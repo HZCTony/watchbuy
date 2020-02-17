@@ -7,7 +7,6 @@
         width: 300px;
         top:10px;
         left:50px;
-        z-index: 4000;
         background-color: white;
         display: inline-flex;
         align-items: center;
@@ -28,7 +27,6 @@
         color: white;
         background-color: #9ad7a4;
         border-radius: 40px;
-        z-index: 4001;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -117,11 +115,3 @@
 
 }
 
-
-@media screen and (max-height: 1500px) {
-
-
-    #msglog{
-        height: 60%;
-    }
-}

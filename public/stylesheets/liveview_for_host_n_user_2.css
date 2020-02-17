@@ -14,7 +14,6 @@ body{
 #live_container{
     width:100%;
     min-height: 800px;
-    min-width: 1440px;
     height: calc(100vh - 100px);
     position: relative;
     display: inline-flex;
@@ -24,13 +23,6 @@ body{
     align-items: center;
 }
 
-
-
-
-#chat{
-    height: calc(100vh - 100px);
-    width: 30%;
-}
 
 #openProductShowBtn{
     width: 80px;
@@ -43,7 +35,7 @@ body{
     color: white;
     background-color: #9ad7a4;
     border-radius: 40px;
-    z-index: 3000;
+    z-index: 12001;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -57,7 +49,7 @@ body{
     position: absolute;
     top:50px;
     left:100px;
-    z-index: 2000;
+    z-index: 12000;
     background-color: white;
     display: inline-flex;
     align-items: center;
@@ -236,12 +228,13 @@ max-height: 75%;
     text-align: center;
     z-index: 9000;
 }
+#wholeVideoContainer{
 
+}
 
 
 
 #video-container{
-    min-width: 480px;
     width: 100%;
     height: calc(100vh - 100px);
     display: inline-flex;
@@ -339,10 +332,14 @@ max-height: 75%;
 }
 
 #chat{
+    height: calc(100vh - 100px);
+    width: 30%;
     position: absolute;
     padding-top: 30px;
+    
     top:0px;
-    left:70%;
+    left: 100%;
+    transform: translate(-100%,0);
     z-index: 2000;
     height: 80vh;
     display:flex;
@@ -358,7 +355,7 @@ max-height: 75%;
 
 #msglog{
     height: 80%;
-    width:95%;
+    width: 95%;
     overflow: auto;
     padding:0;
 }
@@ -422,7 +419,7 @@ max-height: 75%;
     width: 100%;
     display: inline-flex;
     flex-direction: column;
-
+    align-items: center;
 }
 
 
@@ -449,6 +446,7 @@ max-height: 75%;
     margin-left: 5px;
     font-size: 16px;
     width: 80px;
+    min-width: 80px;
     height: 48px;
     border-radius: 5px;
     background-color: #9ad7a4;
@@ -471,6 +469,46 @@ max-height: 75%;
 #price{
     font-weight: bolder;
     font-size: 30px;
+}
+
+
+
+
+
+
+@media screen and (max-height: 1500px) {
+
+
+    #msglog{
+        height: 85%;
+    }
+
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1300px) {
+
+    #chat{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 500px) and (max-width: 1000px) {
+
+    #chat{
+        width: 70%;
+        opacity: 10%;
+    }
+}
+
+
+
+@media screen and (min-width: 400px) and (max-width: 700px) {
+
+    #chat{
+        width: 100%;
+        opacity: 10%;
+
+    }
 }
 
 
