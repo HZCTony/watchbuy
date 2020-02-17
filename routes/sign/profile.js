@@ -244,7 +244,14 @@ router.post('/deleteProductInCart', function (req, res, next) {
   })
 });
 
-router.post('/checkOrder', function (req, res, next) {
+router.post('/getAllHostOwnedProduct', function (req, res, next) {
+  if(req.body.role == 'host'){
+    if(req.body.email){
+      product.getAllHostOwnedProducts(req.body.email).then(AllProducts=>{
+        res.send(AllProducts);
+      })
+    }
+}
 
 }); 
 

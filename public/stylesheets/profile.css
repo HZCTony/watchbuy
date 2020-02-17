@@ -381,6 +381,16 @@ justify-content: center;
 margin-left: 40px;
 }
 
+
+
+
+
+
+
+
+
+
+
 #orderSection .order_description p{
 margin: 0;
 font-size: 20px;
@@ -420,3 +430,78 @@ margin-top: 1px;
 
 }
 
+
+
+
+
+/********** host product list **********/
+
+#hostproductlist{
+
+    min-width: 1000px;
+    height: 100%;
+    width:70%;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+
+
+
+.host_owned_single_product{
+    width: 420px;
+    height: 620px;
+    margin: 40px;
+    background-color: white;
+    box-shadow: 2px 6px 10px black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.single_product_info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.single_product_info p{
+    margin: 0;
+    margin-right: 5px;
+}
+
+.single_product_info div{
+    display: inline-flex;
+    width: 100%;
+}
+
+.host_owned_single_product .host_owned_product_img{
+    width:320px;
+    height:320px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.host_owned_single_product .host_owned_product_name{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.host_owned_single_product .host_owned_product_price{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.host_owned_product_size, .host_owned_product_color,
+.host_owned_product_stock, .host_owned_product_description,
+.host_owned_product_id{
+    font-size: 20px;
+}

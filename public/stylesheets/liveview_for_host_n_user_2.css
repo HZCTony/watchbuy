@@ -71,12 +71,13 @@ body{
 }
 
 #productimg{
-    min-width:300px;
+    max-width: 300px;
+    max-height: 310px;
 }
 
 #productimg img{
 max-width: 80%;
-max-height: 75%;
+max-height: 65%;
 }
 
 
@@ -94,13 +95,14 @@ max-height: 75%;
     justify-content: flex-start;
     overflow-x: auto;
     flex-wrap: nowrap;
+    border-top: 1px gray solid;
 }
 
 #cartbtn-container{
     width: 90%;
     margin-bottom: 12px;
     padding-bottom: 20px;
-    border-bottom: 1px gray solid;
+
 }
 
 #addtoCart{
@@ -164,8 +166,8 @@ max-height: 75%;
 }
 
 #mainimg{
-    max-width: 360px;
-    max-height: 360px;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .item{

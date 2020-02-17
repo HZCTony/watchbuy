@@ -24,9 +24,6 @@ module.exports = {
 					}
 				}
 			});
-
-
-
 		})
 	},
 	getaSingleProduct: function (image) {
@@ -76,7 +73,32 @@ module.exports = {
 
 
 		})
+	},
+	getAllHostOwnedProducts: function (email) {
+		return new Promise(function (resolve, reject) {
+
+			let checkhost_query = `select id, email from hostlist where email='${email}';`;
+			database.connection.query(checkhost_query, function (error, hostid, fields) {
+				if (error) {
+					reject("[Database Error]" + error);
+				} else {
+					var getAllHostOwnedProducts_query = `select id,name,size,color,image,stock,description,price from products where host_email='${hostid[0].email}';`;
+					if (getAllHostOwnedProducts_query != '') {
+						database.connection.query(getAllHostOwnedProducts_query, function (error, gotProducts, fields) {
+							if (error) {
+								reject("[Database Error]" + error);
+							} else {
+								resolve(gotProducts);
+							}
+						});
+					} else {
+						reject("[Database Query Error]: query of getAllHostOwnedProducts is not available");
+					}
+				}
+			});
+		})
 	}
+
 
 };
 

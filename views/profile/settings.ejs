@@ -51,9 +51,9 @@
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
         document.getElementById('ID').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.stream_token %>';
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
-        if ('<%= loginStatus.logo %>' == '') {
-            document.getElementById('username').value = '<%= loginStatus.name %>';
-        }
+        // if ('<%= loginStatus.logo %>' == '') {
+        //     document.getElementById('username').value = '<%= loginStatus.name %>';
+        // }
 
         //  document.getElementById('logo').innerHTML = '<img src=s3link>' ;//shop logo
     } else if (role == 'user') {
@@ -63,7 +63,6 @@
     }
 
     let profile_list = document.getElementsByClassName('profileSettingitem');
-
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
             e.preventDefault();

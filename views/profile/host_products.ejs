@@ -39,9 +39,49 @@
             </div>
         </div>
 
+        <div id='hostproductlist'>
 
-        this is host products
+            <!-- here is template -->
+            <!-- <div class='host_owned_single_product'>
+                <div class='host_owned_product_img'
+                    style=" background-image:url(' https://hzctonyforlive.s3.ap-southeast-1.amazonaws.com/product/1581313321596'); ">
+                </div>
+                <div class="single_product_info">
+                    <div class='host_owned_product_name'>
+                        <p>名稱:</p>
+                        <p>Macbook Pro</p>
+                    </div>
+                    <div class='host_owned_product_price'>
+                        <p>單價:</p>
+                        <p>77900</p>
+                    </div>
+                    <div class='host_owned_product_size'>
+                        <p>尺寸:</p>
+                        <p>16吋</p>
+                    </div>
+                    <div class='host_owned_product_color'>
+                        <p>顏色:</p>
+                        <p>太空灰</p>
+                    </div>
+                    <div class='host_owned_product_stock'>
+                        <p>庫存:</p>
+                        <p>快要沒了</p>
+                    </div>
+                    <div class='host_owned_product_description'>
+                        <p>其他敘述:</p>
+                        <p>最新2019年款式</p>
+                    </div>
+                    <div class='host_owned_product_id'>
+                        <p>編號:</p>
+                        <p>1</p>
+                    </div>
+                </div>
+            </div> -->
 
+
+
+
+        </div>
     </div>
 </body>
 
@@ -49,6 +89,31 @@
     var role = '<%= loginStatus.role %>';
     console.log(role);
     if (role == 'host') {
+
+        $.ajax({
+            url: '/profile/getAllHostOwnedProduct',
+            type: 'POST',
+            data: {
+                role: '<%= loginStatus.role %>',
+                email: '<%= loginStatus.email %>'
+            },
+            success: (function(GotAllProducts){
+
+                for(let p=0; p<GotAllProducts.length; p++){
+                    generateEverySingleHostOwnedProduct(
+                        GotAllProducts[p].image,
+                        GotAllProducts[p].name,
+                        GotAllProducts[p].price,
+                        GotAllProducts[p].size,
+                        GotAllProducts[p].color,
+                        GotAllProducts[p].stock,
+                        GotAllProducts[p].description,
+                        GotAllProducts[p].id
+                    );
+                }
+            })
+        })
+
 
     } else if (role == 'user') {
 
@@ -63,8 +128,66 @@
         })
     }
 
-    
 
+    function generateEverySingleHostOwnedProduct(
+        img,
+        name,
+        price,
+        size,
+        color,
+        stock,
+        description,
+        id) {
+        let host_owned_single_product = document.createElement('div');
+        host_owned_single_product.classList.add('host_owned_single_product');
+
+        let host_owned_product_img = document.createElement('div');
+        host_owned_product_img.classList.add('host_owned_product_img');
+        host_owned_product_img.style.backgroundImage = `url('${img}')`; // image url
+
+        let single_product_info = document.createElement('div');
+        single_product_info.classList.add('single_product_info');
+
+        let host_owned_product_name = document.createElement('div');
+        host_owned_product_name.classList.add('host_owned_product_name');
+        host_owned_product_name.innerHTML = '<p>名稱:</p>' + '<p>' + name +'</p>';
+
+        let host_owned_product_price = document.createElement('div');
+        host_owned_product_price.classList.add('host_owned_product_price');
+        host_owned_product_price.innerHTML = '<p>單價:</p>' + '<p>' + price +'</p>';
+
+        let host_owned_product_size = document.createElement('div');
+        host_owned_product_size.classList.add('host_owned_product_size');
+        host_owned_product_size.innerHTML = '<p>尺寸:</p>' + '<p>' + size +'</p>';
+
+        let host_owned_product_color = document.createElement('div');
+        host_owned_product_color.classList.add('host_owned_product_color');
+        host_owned_product_color.innerHTML = '<p>顏色:</p>' + '<p>' + color +'</p>';
+
+        let host_owned_product_stock = document.createElement('div');
+        host_owned_product_stock.classList.add('host_owned_product_stock');
+        host_owned_product_stock.innerHTML = '<p>庫存:</p>' + '<p>' + stock +'</p>';
+
+        let host_owned_product_description = document.createElement('div');
+        host_owned_product_description.classList.add('host_owned_product_description');
+        host_owned_product_description.innerHTML = '<p>其他敘述:</p>' + '<p>' + description +'</p>';
+
+        let host_owned_product_id = document.createElement('div');
+        host_owned_product_id.classList.add('host_owned_product_id');
+        host_owned_product_id.innerHTML = '<p>編號:</p>' + '<p>' + id + '</p>';
+
+        single_product_info.appendChild(host_owned_product_name);
+        single_product_info.appendChild(host_owned_product_price);
+        single_product_info.appendChild(host_owned_product_size);
+        single_product_info.appendChild(host_owned_product_color);
+        single_product_info.appendChild(host_owned_product_stock);
+        single_product_info.appendChild(host_owned_product_description);
+        single_product_info.appendChild(host_owned_product_id);
+
+        host_owned_single_product.appendChild(host_owned_product_img);
+        host_owned_single_product.appendChild(single_product_info);
+        document.getElementById('hostproductlist').appendChild(host_owned_single_product);
+    }
 
 
 
