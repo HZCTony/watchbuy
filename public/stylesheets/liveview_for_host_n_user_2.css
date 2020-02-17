@@ -487,6 +487,8 @@ max-height: 75%;
 
 @media screen and (min-width: 1000px) and (max-width: 1300px) {
 
+
+
     #chat{
         width: 50%;
     }
@@ -497,6 +499,9 @@ max-height: 75%;
     #chat{
         width: 70%;
         opacity: 10%;
+    }
+    #productShow{
+        max-height: 800px;
     }
 }
 
