@@ -168,19 +168,11 @@
     document.getElementById('notLiveWord').style.display = 'none';
 
 
-    var userAgent = window.navigator.userAgent;
-    console.log('userAgent ==', userAgent);
-    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-      // iPad or iPhone
-      var video = document.getElementById('live_video');
-      if (Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource(`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          video.play();
-        });
-      }
+    var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isSafari && iOS) {
+      document.getElementById('live_video').src = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
+
     } else {
 
       if (flvjs.isSupported()) {
