@@ -169,15 +169,13 @@
 
 
 <script>
-  
-  var userAgent = window.navigator.userAgent;
-  console.log('userAgent ==', userAgent);
-  //if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-    if (userAgent.match(/safari/i) && userAgent.match(/iPhone/i)){
-    // iPad or iPhone
-    document.getElementById('live_video').src =`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
-  } else {
+  var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+  var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isSafari && iOS) {
+    document.getElementById('live_video').src = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
+
+  }  else {
 
     // live video pull
     if (flvjs.isSupported()) {
