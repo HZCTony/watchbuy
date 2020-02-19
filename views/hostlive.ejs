@@ -169,57 +169,37 @@
 
 
 <script>
-
-var userAgent = window.navigator.userAgent;
-console.log('userAgent ==',userAgent);
-if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-   // iPad or iPhone
-   var video = document.getElementById('live_video');
-  if(Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,function() {
-      video.play();
-  });
- }
-}else{
   
-  // live video pull
-  if (flvjs.isSupported()) {
-    // document.querySelector("#video").addEventListener("click", function () {       })
-    const live_url = `https://d2zq147sugqrci.cloudfront.net/` + '<%- id %>' + `.flv`;
-    const video = document.getElementById('live_video');
-    //const target = document.querySelector("input").value;
-    const flvPlayer = flvjs.createPlayer({
-      type: 'flv',
-      url: live_url
-      //url: `rtmp://localhost/live/`
-    });
-    flvPlayer.attachMediaElement(video);
-    flvPlayer.load();
-    flvPlayer.play();
+  var userAgent = window.navigator.userAgent;
+  console.log('userAgent ==', userAgent);
+  //if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
+    if (userAgent.match(/safari/i) && userAgent.match(/iPhone/i)){
+    // iPad or iPhone
+    document.getElementById('live_video').src =`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
+  } else {
+
+    // live video pull
+    if (flvjs.isSupported()) {
+      // document.querySelector("#video").addEventListener("click", function () {       })
+      const live_url = `https://d2zq147sugqrci.cloudfront.net/` + '<%- id %>' + `.flv`;
+      const video = document.getElementById('live_video');
+      //const target = document.querySelector("input").value;
+      const flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: live_url
+        //url: `rtmp://localhost/live/`
+      });
+      flvPlayer.attachMediaElement(video);
+      flvPlayer.load();
+      flvPlayer.play();
+
+    }
   }
-}
 
 </script>
 
-<script>
 
-
- // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
- // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
- // This is using the built-in support of the plain video element, without using hls.js.
- // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
- // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8';
-    video.addEventListener('loadedmetadata',function() {
-      video.play();
-    });
-  }
-</script>
 
 <!-- DASH mpd
   <script>

@@ -15,11 +15,13 @@
 
 <body>
 
-  
+
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
-    <div id='openProductShowBtn'><p>-</p></div>
+    <div id='openProductShowBtn'>
+      <p>-</p>
+    </div>
     <div id='productShow'>
       <div id='productDescription'>
         <%- include("./model/product/productdescription.ejs") %>
@@ -32,12 +34,12 @@
 
     <div id='liveCheckButton'>
       <div id='liveicon-container'>
-      <div id='circle'>
-        <div id='innercircle'></div>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='circle_text'>Not live</div>
       </div>
-      <div id='circle_text'>Not live</div>
-    </div>
-      
+
     </div>
 
     <div id='live'>
@@ -167,35 +169,35 @@
 
 
     var userAgent = window.navigator.userAgent;
-console.log('userAgent ==',userAgent);
-if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-   // iPad or iPhone
-   var video = document.getElementById('live_video');
-  if(Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,function() {
-      video.play();
-  });
- }
-}else{
-  
-  if (flvjs.isSupported()) {
-      // document.querySelector("#video").addEventListener("click", function () {       })
-      const live_url = `https://d2zq147sugqrci.cloudfront.net/` + '<%- id %>' + `.flv`;
-      const video = document.getElementById('live_video');
-      //const target = document.querySelector("input").value;
-      const flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        url: live_url
-        //url: `rtmp://localhost/live/`
-      });
-      flvPlayer.attachMediaElement(video);
-      flvPlayer.load();
-      flvPlayer.play();
+    console.log('userAgent ==', userAgent);
+    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
+      // iPad or iPhone
+      var video = document.getElementById('live_video');
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(`https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      }
+    } else {
+
+      if (flvjs.isSupported()) {
+        // document.querySelector("#video").addEventListener("click", function () {       })
+        const live_url = `https://d2zq147sugqrci.cloudfront.net/` + '<%- id %>' + `.flv`;
+        const video = document.getElementById('live_video');
+        //const target = document.querySelector("input").value;
+        const flvPlayer = flvjs.createPlayer({
+          type: 'flv',
+          url: live_url
+          //url: `rtmp://localhost/live/`
+        });
+        flvPlayer.attachMediaElement(video);
+        flvPlayer.load();
+        flvPlayer.play();
+      }
     }
-}
 
   }
 </script>
@@ -273,7 +275,7 @@ if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
 
 <script>
 
-// add to cart
+  // add to cart
   document.getElementById('Button_text').addEventListener('click', function (e) {
     e.preventDefault();
 
@@ -304,16 +306,16 @@ if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
 </script>
 
 <script>
-  document.getElementById('openProductShowBtn').addEventListener('click',function(e){
+  document.getElementById('openProductShowBtn').addEventListener('click', function (e) {
     e.preventDefault();
-    var see = $( '#productShow' ).css( "visibility" );
-      if(see == 'visible'){
-        $( '#productShow' ).css( "visibility", 'hidden' );
-        document.getElementById('openProductShowBtn').innerHTML = '+';
-      }else if(see == 'hidden'){
-        $( '#productShow' ).css( "visibility", 'visible' );
-        document.getElementById('openProductShowBtn').innerHTML = '-';
-      }
+    var see = $('#productShow').css("visibility");
+    if (see == 'visible') {
+      $('#productShow').css("visibility", 'hidden');
+      document.getElementById('openProductShowBtn').innerHTML = '+';
+    } else if (see == 'hidden') {
+      $('#productShow').css("visibility", 'visible');
+      document.getElementById('openProductShowBtn').innerHTML = '-';
+    }
   })
 </script>
 
