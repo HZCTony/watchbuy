@@ -21,9 +21,10 @@ router.get('/:id', function (req, res, next) {
           res.clearCookie('role');
           res.clearCookie('token');
           res.render('userlive', { title: title, id: id, loginStatus: loginStatus });
-        }
+        }else{
         //res.render('hostlive-remade', { title: title, id: id, loginStatus: loginStatus });
         res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
+      }
       } else {
         //待確認的邏輯
         res.redirect('/signin');
