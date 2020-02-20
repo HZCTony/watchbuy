@@ -1,0 +1,43 @@
+
+<div id='top_bar'>
+    <div id='leftside'>
+        <div id='watchbuylogo'>
+        </div>
+        <div id='roomlistbtn'>
+
+        </div>
+    </div>
+    <div id='rightside'>
+        <div id='bigheadlogo' class='menulogo' style="background-image: url('/images/userundefined.png');"></div>
+        <div id='menulogo' class='menulogo'>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('bigheadlogo').addEventListener('click', function () {
+        window.location = '/signin';
+    })
+
+    document.getElementById('menulogo').addEventListener('click', function () {
+        document.getElementById('menulist').style.visibility = 'visible';
+    })
+
+    document.getElementById('menulogo_in_menulist').addEventListener('click', function () {
+        document.getElementById('menulist').style.visibility = 'hidden';
+    })
+
+    document.getElementById('watchbuylogo').addEventListener('click', function () {
+        window.location = '/';
+    })
+
+    document.getElementById('roomlistbtn').addEventListener('click', function () {
+        window.location = '/roomlist';
+    })
+
+    document.getElementById('basicinfo_btn').addEventListener('click', function () {
+        window.location = '/profile';
+    })
+
+
+</script>

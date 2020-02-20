@@ -4,10 +4,10 @@
         <div id='watchbuylogo'>
         </div>
         <div id='roomlistbtn'>
-            直播間
         </div>
     </div>
     <div id='rightside'>
+        <div id='bigheadlogo' class='menulogo' style="background-image: url('<%= loginStatus.logo %>');"></div>
         <div id='menulogo' class='menulogo'>
         </div>
     </div>
@@ -31,6 +31,10 @@
     })
 
     document.getElementById('basicinfo_btn').addEventListener('click', function () {
+        window.location = '/profile';
+    })
+    
+    document.getElementById('bigheadlogo').addEventListener('click', function () {
         window.location = '/profile';
     })
 </script>

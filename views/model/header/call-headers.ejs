@@ -1,12 +1,20 @@
 <% if (loginStatus.status == 'ok') { %>
 <% if (loginStatus.role == 'host') { %>
-<%- include("./host_loginedmenu.ejs") %>
+
+  <%- include("./host_loginedmenu.ejs") %>
+  <%- include("./host-header.ejs") %>
+
 <% } else if (loginStatus.role == 'user') { %>
-<%- include("./user_loginedmenu.ejs") %>
+
+  <%- include("./user_loginedmenu.ejs") %>
+  <%- include("./user-header.ejs") %>
+  
 <% } else{ %>
   <%- include("./notLoginedmenu.ejs") %>
+  <%- include("./notlogined_header.ejs") %>
   <% }%>
 <% } else { %>
 <%- include("./notLoginedmenu.ejs") %>
+<%- include("./notlogined_header.ejs") %>
 <% } %>
-<%- include("./header.ejs") %>
+

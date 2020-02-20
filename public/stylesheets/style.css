@@ -43,20 +43,25 @@ body{
 
 
 #top_bar #leftside #roomlistbtn{
-  width:100px;
-  height: 100px;
+  width:60px;
+  height: 60px;
   color: white;
   font-size: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-left: 40px;
+  background-image: url('../images/livewhite.png');
+  background-size: cover;
+  background-position: center;
 }
 
 #top_bar #leftside #roomlistbtn:hover{
-
   color: #9ad7a4;
-  background-color: white;
+  background-image: url('../images/live.png');
+  background-size: cover;
+  background-position: center;
 }
 
 
@@ -69,7 +74,7 @@ body{
   padding-right: 50px;
 }
 
-#top_bar #rightside .menulogo{
+#top_bar #rightside #menulogo{
   width:60px;
   height: 60px;
   background-image: url('../images/menu.png');
@@ -78,13 +83,40 @@ body{
   cursor: pointer;
 }
 
+#top_bar #rightside #bigheadlogo{
+  width:60px;
+  height: 60px;
+  background-color: white;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position: center;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 25px;
+  border-radius: 30px;
+}
+
+#top_bar #rightside #cartlogo{
+  width: 65px;
+  height: 65px;
+  background-image: url('../images/cart.png');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position: center;
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+
 #menulist{
   width: 400px;
   background-color: #9ad7a4;
   text-align: right;
   position: absolute;
   z-index: 99999;
-  left: calc(100% - 400px);
+  top:0;
+  left: 100%;
+  transform: translate(-100%,0);
   display: inline-flex;
   flex-direction: column;
 }

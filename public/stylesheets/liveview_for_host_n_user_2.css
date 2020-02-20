@@ -367,6 +367,8 @@ max-height: 65%;
     padding:0;
     background-color: white;
     opacity: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #msglog:hover{
@@ -482,6 +484,8 @@ max-height: 65%;
     font-weight: bolder;
     font-size: 30px;
 }
+
+
 
 @media screen and (max-width: 1500px){
 #chat{
@@ -603,3 +607,17 @@ max-height: 65%;
 
 
 
+@media screen and (min-width:1920px) and (max-width:3000px){
+    #details h1{
+        font-size: 36px;
+    }
+
+    #details #price{
+        font-size: 36px;
+        margin-bottom: 14px;
+    }
+
+    #details p{
+        font-size: 24px;
+    }
+}

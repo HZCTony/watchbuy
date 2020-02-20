@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sigin = require('../public/model/DataAccessObject/signin.js');
 var live = require('../public/model/DataAccessObject/live.js');
+var Logo = require('../public/model/DataAccessObject/Logo.js');
 var cart = require('../public/model/DataAccessObject/cart.js');
 const title = 'WatchBuy';
 /* GET home page. */
@@ -16,7 +17,10 @@ router.get('/:id', function (req, res, next) {
       res.render('userlive', { title: title, id: id, loginStatus: 'none', room: JSON.stringify(a_single_room[0]) });
     } else {
       sigin.personCookieCheck(role, token).then(loginStatus => {
-        res.render('userlive', { title: title, id: id, loginStatus: loginStatus, room: JSON.stringify(a_single_room[0]) });
+        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+          loginStatus.logo = logoPath.logo;
+          res.render('userlive', { title: title, id: id, loginStatus: loginStatus, room: JSON.stringify(a_single_room[0]) });
+        })
       });
     };
   }).catch(err => {
@@ -37,20 +41,20 @@ router.post('/addtoCart', function (req, res, next) {
   var description = req.body.description;
   var stock = req.body.stock;
   var image = req.body.image;
-  console.log('in userlive/addtoCart :',req.body);
+  console.log('in userlive/addtoCart :', req.body);
 
 
   if (!role || !email) {
-    res.json({error:'[userlive.js]: not a user to do adding to cart'});
+    res.json({ error: '[userlive.js]: not a user to do adding to cart' });
   } else {
     cart.InsertSingleProducttoCart(role, email, name, color, size, price, description, stock, image)
-    .then(addedResult => {
-      console.log('[userlive.js]: added product item to cart', JSON.stringify(addedResult));
-      res.send(JSON.stringify(addedResult));
+      .then(addedResult => {
+        console.log('[userlive.js]: added product item to cart', JSON.stringify(addedResult));
+        res.send(JSON.stringify(addedResult));
 
-    }).catch(err => {
-      console.log(err);
-    })
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
 });

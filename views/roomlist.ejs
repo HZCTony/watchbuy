@@ -10,13 +10,10 @@
 </head>
 
 <body>
-
-
     <%- include("./model/header/call-headers.ejs") %>
-
     <div id='category'>
         <div id='title'>
-            <p> 選擇感興趣的直播主吧！</p>
+            <p>選擇感興趣的直播主吧！</p>
         </div>
         <!-- <div id='category_box_container'>
             <div class='category_box'>
@@ -32,8 +29,6 @@
 
     </div>
     <div id='rooms'>
-
-
         <!-- <div class='single_room' onclick="getStreamToken()">
             <div class='room_title'>
                 <div class='circle'>
@@ -49,15 +44,12 @@
                 style="background-image: url('/images/favicon.png'); background-size:contain; background-repeat: no-repeat;">
             </div>
         </div> -->
-
-
     </div>
 </body>
 
 <script>
 
     function getStreamToken() {
-
         const stream_token = document.getElementsByClassName('stream_token')[0].innerText;
         const room_hostname = document.getElementsByClassName('room_hostname')[0].getElementsByTagName('p')[0].innerText;
         console.log(room_hostname);
