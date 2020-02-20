@@ -10,23 +10,24 @@ router.get('/:id', function (req, res, next) {
   var role = req.cookies.role;
   var token = req.cookies.token;
   if (!role || !token) {
-    //res.render('hostlive-remade', { title: title, id: id, loginStatus: 'none' });
-    //res.render('hostlive', { title: title, id: id, loginStatus: 'none' });
     res.redirect('/signin');
   } else {
     sigin.personCookieCheck(role, token).then(loginStatus => {
-      console.log(loginStatus);
+      console.log('loginStatus ==',loginStatus);
       if (role == 'host') {
         if (loginStatus.status == 'not ok') {
           res.clearCookie('role');
           res.clearCookie('token');
-          res.render('userlive', { title: title, id: id, loginStatus: loginStatus });
-        }else{
-        //res.render('hostlive-remade', { title: title, id: id, loginStatus: loginStatus });
-        res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
-      }
+          res.redirect(`/userlive/${id}`);
+        } else {
+          if(id == loginStatus.stream_token){
+            res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
+          }else{
+            res.redirect(`/userlive/${id}`);
+          }
+        }
+
       } else {
-        //待確認的邏輯
         res.redirect('/signin');
       }
     });

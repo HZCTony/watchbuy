@@ -44,14 +44,13 @@
 
     <div id='live'>
 
-      <div id='wholeVideoContainer'>
         <div id='video-container'>
           <div id='video'>
             <video autoplay id="live_video" width="100%" controls muted>
             </video>
           </div>
         </div>
-      </div>
+
     </div>
 
     <div id='chat'>
@@ -127,17 +126,15 @@
     if (gotMessage.sender_role == 'host') {
       msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
       if (gotMessage.image != '') {
-        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
-        msglog.scrollTop = msglog.scrollHeight;
+        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '></div>';
       }
       msglog.scrollTop = msglog.scrollHeight;
-    } else if (gotMessage.sender_role == 'user') {
+    } else{
       msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
       if (gotMessage.image != '') {
-        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '" style="width:100px;"></div>';
-        msglog.scrollTop = msglog.scrollHeight;
+        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '></div>';
       }
-
+      msglog.scrollTop = msglog.scrollHeight;
     }
   });
 

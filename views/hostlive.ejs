@@ -37,7 +37,7 @@
         </div>
         <div id='liveword'>NOT LIVE</div>
       </div>
-      <div id='circle_text'>影像有出現後按我開播</div>
+      <div id='livestatus'>影像有出現後按我開播</div>
 
     </div>
 
@@ -53,11 +53,15 @@
     <div id='chat'>
       <div id='msglog'>
       </div>
-      <div id='sendMessage'>
-        <input type="text" id="message" name="message">
-        <button id='sendMsgBtn'>傳 送</button>
+           <div id='sendmsg-container'>
+            <div id='sendMessage'>
+              <input type="text" id="message" name="message">
+              <button id='sendMsgBtn'>傳 送</button>
+            </div>
+        <div>
+          <p id='msg_status'></p>
+        </div>
       </div>
-      <div id='msg_status'></div>
     </div>
 
 
@@ -220,7 +224,7 @@
       // $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
       //$('#liveword').css('background-color', 'rgb(255, 0, 0)');
       $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
-      document.getElementById('circle_text').innerHTML = '正在開播中，按我取消';
+      document.getElementById('livestatus').innerHTML = '正在開播中，按我取消';
       document.getElementById('liveword').innerHTML = 'LIVE';
       updateLiveActivation('open', stream_id);
     } else if (color == 'rgb(255, 0, 0)') {
@@ -228,7 +232,7 @@
       // $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
       // $('#liveword').css('background-color', 'rgb(128, 128, 128)');
       $('#liveicon-container').css('background-color', 'rgb(128, 128, 128)');
-      document.getElementById('circle_text').innerHTML = '影像有畫面後按我開播';
+      document.getElementById('livestatus').innerHTML = '影像有畫面後按我開播';
       document.getElementById('liveword').innerHTML = 'NOT LIVE';
       updateLiveActivation('close', stream_id);
     }

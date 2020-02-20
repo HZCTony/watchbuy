@@ -13,17 +13,18 @@ p{
 
 #category{
     width:100%;
-    height: 200px;
-    border-bottom: 2px lightgray solid;
+    height: 100px;
     display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 #category #title{
     display: inline-flex;
-    font-size: 40px;
+    font-size: 30px;
+    font-weight: 400;
     color: gray;
-    width: 200px;
-    height: 200px;
     align-items: center;
     
 }
