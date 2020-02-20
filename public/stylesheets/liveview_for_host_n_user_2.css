@@ -108,7 +108,7 @@ max-height: 65%;
 
 #addtoCart{
     width: 175px;
-    height: 45px;
+    height: 55px;
     font-size: 20px;
     background-color: rgb(0, 190, 190);
     color: white;
@@ -118,10 +118,15 @@ max-height: 65%;
     border-radius: 60px;
     margin-top: 40px;
     cursor: pointer;
+    overflow:hidden;
 }
 
 #addtoCart:hover{
     background-color: #9ad7a4;
+}
+
+#checkvid{
+    height: 95px;
 }
 
 
@@ -224,7 +229,7 @@ max-height: 65%;
     top:50%;
     left:50%;
     width: 100%;
-    font-size: 30px;;
+    font-size: 30px;
     color: white;
     text-align: center;
     z-index: 9000;
@@ -335,7 +340,7 @@ max-height: 65%;
     width: 30%;
     position: absolute;
     padding-top: 30px;
-    top:0;
+    top:-1%;
     left: 100%;
     transform: translate(-100%,-4%);
     z-index: 2000;
@@ -432,7 +437,7 @@ max-height: 65%;
     z-index: 30001;
     top: 100%;
     transform: translate(2%,-104%);
-    width: 100%;
+    width: 90%;
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
@@ -450,9 +455,8 @@ max-height: 65%;
 
 #sendMsgBtn{
     margin-left: 10px;
-    margin-right: 15px;
     font-size: 16px;
-    width: 80px;
+    width: 60px;
     min-width: 80px;
     height: 48px;
     border-radius: 5px;
@@ -477,6 +481,16 @@ max-height: 65%;
 #price{
     font-weight: bolder;
     font-size: 30px;
+}
+
+@media screen and (max-width: 1500px){
+#chat{
+    transform: translate(-100%,-4%);
+}
+
+    #notLiveWord{
+        font-size: 24px;
+    }
 }
 
 
@@ -546,7 +560,7 @@ max-height: 65%;
     }
 
     #sendMessage input{
-        width: 350px;
+        width: 300px;
     }
     #notLiveWord{
         font-size: 20px;

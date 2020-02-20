@@ -34,11 +34,10 @@ body{
     width: 100%;
 }
 .profileSettingitem{
-    border: 2px #9ad7a4 solid;
+
     color: gray;
-    width:50%;
-    min-width: 450px;
-    line-height: 180px;
+    width:30%;
+    line-height: 100px;
     cursor: pointer;
 }
 
@@ -51,7 +50,7 @@ body{
 
 .topitem{
     border-bottom: 0px;
-    border-radius: 120px 120px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .miditem{
@@ -59,7 +58,7 @@ body{
 }
 
 .bottomitem{
-    border-radius:  0 0 120px 120px;
+    border-radius:  0 0 20px 20px;
 }
 
 #settings{
@@ -101,7 +100,7 @@ body{
     object-fit: contain;
 }
 
-#basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email{
+#basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email, #basicinfo #url{
     width: 512px;
     height: 40px;
     display: inline-flex;
@@ -111,6 +110,9 @@ body{
     font-size: 24px;
 }
 
+#uploadLogoForm{
+    width: 300px;
+}
 
 #basicinfo .title{
     width: 30%;
@@ -127,12 +129,15 @@ body{
     border: 2px #9ad7a4 solid;
     border-radius: 10px;
     overflow:scroll;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
 
 #cartDetails{
-    box-shadow: 2px 2px 2px gray;
+
     width: 60%;
     max-width: 700px;
     height: 600px;
@@ -140,7 +145,6 @@ body{
     display: inline-flex;
     align-items: center;
     flex-direction: column;
-    background-color: lightgray;
     overflow: scroll;
 }
 
@@ -206,19 +210,23 @@ body{
 
 #totalPrice{
     height: 50px;
-    margin-top: 20px;
+    margin-top: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: black;
+    font-size: 10px;
+}
+
+#sendOrder{
+    padding: 0;
 }
 
 
-
 #creditCardinput{
-
     height: 50px;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -234,11 +242,11 @@ body{
 
 #creditCardinput button{
     height: 60px;
-    width: 300px;
+    width: 200px;
     background-color: #9ad7a4;
     color: white;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 24px;
     box-shadow: 2px 2px 2px gray;
     cursor: pointer;
 }
@@ -261,43 +269,42 @@ body{
 }
 
 #UploadDetails{
-    width: 40%;
-    height: 800px;
-    margin-top: 120px;
+    width: 100%;
+    margin-top: 1%;
     display: inline-flex;
     align-items: center;
     flex-direction: column;
-    background-color: lightgray;
 }
 
 #UploadDetails form{
-    height: 800px;
+    height: 600px;
     display: inline-flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
     padding: 50px 0;
+    width: 60%;
 }
 
 #UploadDetails .product_li{
     background-color: white;
-    width: 80%;
-    height: 80px;
+    width: 100%;
+    height: 50px;
     display: inline-flex;
     text-align: center;
     align-items: center;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 1px 1px 1px lightgray;
 }
 
 #UploadDetails .left_li{
     height: 50px;
-    width:30%;
-    font-size: 20px;
+    width:40%;
+    font-size: 16px;
     color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: 1px gray solid;
+    border-right: 1px lightgray solid;
 
 }
 
@@ -315,13 +322,18 @@ body{
 }
 
 #UploadDetails .right_li input{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     height: 48px;
     width: 100%;
     text-align: center;
     border: none;
     border-radius: 6px;
-    font-size: 20px;
+    font-size: 16px;
     color: rgb(120,120,120);
+    margin: 0;
+    padding: 0;
 }
 
 #UploadDetails .right_li input::placeholder {
@@ -338,15 +350,23 @@ body{
     color: rgb(120,120,120);
     background-color: white;
     border-radius: 6px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
+#UploadDetails .productImgUpload input{
+ height: 21px;
+ width: 200px;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+}
+
+
 #orderSection{
-    margin-top: 10%;
-    width: 80%;
-    height: 70vh;
+    margin-top: 1%;
+    width: 100%;
+    height: 80vh;
     display: flex;
-    background-color: lightgray;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -377,23 +397,37 @@ body{
 #orderSection .order_description div{
 display: inline-flex;
 align-items: center;
-justify-content: center;
-margin-left: 40px;
+justify-content: flex-start;
+}
+
+
+#new_product_upload{
+    background-color: #9ad7a4;
+    height: 40px;
+    width: 100px;
+    border: 1px #9ad7a4 solid;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
 }
 
 
 
-
-
-
-
-
+#new_product_upload{
+    background-color: #9ad7a4;
+    height: 40px;
+    width: 100px;
+    border: 1px #9ad7a4 solid;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+}
 
 
 
 #orderSection .order_description p{
 margin: 0;
-font-size: 20px;
+font-size: 14px;
 color: gray;
 
 }
@@ -438,7 +472,6 @@ margin-top: 1px;
 
 #hostproductlist{
 
-    min-width: 1000px;
     height: 100%;
     width:70%;
     text-align: center;
@@ -446,6 +479,7 @@ margin-top: 1px;
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
+    overflow: scroll;
 }
 
 
@@ -504,4 +538,70 @@ margin-top: 1px;
 .host_owned_product_stock, .host_owned_product_description,
 .host_owned_product_id{
     font-size: 20px;
+}
+
+@media screen and (min-width: 1500px){
+
+    #UploadDetails form{
+        margin-top: 5%;
+        height: 700px;
+        display: inline-flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 50px 0;
+        width: 60%;
+    }
+    
+}
+
+@media screen and (max-width: 1500px){
+    #basicinfo{
+        padding-top: 1%;
+    }
+
+    #basicinfo .content{
+        font-size: 18px;
+
+    }
+    #basicinfo #name, #basicinfo #ID, #basicinfo #description, #basicinfo #email,#basicinfo #url{
+        width: 360px;
+        height: 40px;
+        display: inline-flex;
+        text-align: center;
+        align-items: center;
+        margin-top: 16px;
+        font-size: 18px;
+    }
+   
+   
+    .profileSettingitem{
+        color: gray;
+        width:50%;
+        min-width: 250px;
+        line-height: 80px;
+        cursor: pointer;
+    }
+
+    .profileSettingitem p{
+        font-size: 18px;
+    }
+
+    .topitem{
+        border-bottom: 0px;
+        border-radius: 20px 20px 0 0;
+    }
+    .bottomitem{
+        border-radius:  0 0 20px 20px;
+    }
+
+    #settings{
+        min-width: 600px;
+        height: calc(100vh - 100px);
+        width:70%;
+    }
+    
+    #cartDetails{
+        margin-top: 1%;
+    }
 }

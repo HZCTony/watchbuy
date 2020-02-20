@@ -99,7 +99,7 @@
             },
             success: (function(GotAllProducts){
 
-                for(let p=0; p<GotAllProducts.length; p++){
+                for(let p=GotAllProducts.length-1; 0<p<GotAllProducts.length; p--){
                     generateEverySingleHostOwnedProduct(
                         GotAllProducts[p].image,
                         GotAllProducts[p].name,

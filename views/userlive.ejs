@@ -193,6 +193,7 @@
 
 
 <script>
+
   $.ajax({
     url: '/hostlive/getAllproducts',
     type: "POST",
@@ -227,7 +228,7 @@
   //   </div>
   // </div >
 
-  function generateProductImages(imagePath) {
+  function generateProductImages(imagePath, addtoCartOrigininnerHTML) {
     var item = document.createElement('div');
     item.classList.add('item');
 
@@ -254,6 +255,8 @@
           document.getElementById('stock').innerHTML = singleProduct.stock;
           document.getElementById('description').innerHTML = singleProduct.description;
           document.getElementById('mainimg').src = singleProduct.image;
+          document.getElementById('addtoCart').innerHTML = '<div><img src="/images/cart.png" alt=""></div><div id="Button_text">加入購物車</div>';
+          document.getElementById('addtoCart').style.backgroundColor = 'rgb(0, 190, 190)';
         }
       })
     }
@@ -265,7 +268,7 @@
 <script>
 
   // add to cart
-  document.getElementById('Button_text').addEventListener('click', function (e) {
+  document.getElementById('addtoCart').addEventListener('click', function (e) {
     e.preventDefault();
 
     const AddToCart = {
@@ -287,6 +290,8 @@
       data: AddToCart,
       success: function (result) {
         console.log('result ==', result);
+        document.getElementById('addtoCart').style.backgroundColor = 'rgba(0,0,0,0)';
+        document.getElementById('addtoCart').innerHTML = '<video id="checkvid" autoplay muted src="/images/checkvid2.mp4"><video>'
       }
     })
   })

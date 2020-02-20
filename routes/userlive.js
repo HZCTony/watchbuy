@@ -46,6 +46,7 @@ router.post('/addtoCart', function (req, res, next) {
     cart.InsertSingleProducttoCart(role, email, name, color, size, price, description, stock, image)
     .then(addedResult => {
       console.log('[userlive.js]: added product item to cart', JSON.stringify(addedResult));
+      res.send(JSON.stringify(addedResult));
 
     }).catch(err => {
       console.log(err);
