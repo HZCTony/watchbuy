@@ -85,7 +85,7 @@
     });
 
     //chat enter event
-    document.getElementById("message").addEventListener("keyup", function (event) {
+    document.getElementById("message").addEventListener("keypress", function (event) {
       if (event.keyCode === 13) {
         event.preventDefault();
         document.getElementById("sendMsgBtn").click();
@@ -177,14 +177,14 @@
   var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isSafari && iOS) {
-    document.getElementById('live_video').src = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
+    document.getElementById('live_video').src = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
   }  else {
 
     // live video pull
     if (flvjs.isSupported()) {
       // document.querySelector("#video").addEventListener("click", function () {       })
-      const live_url = `http://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `.flv`;
+      const live_url = `http://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
       const video = document.getElementById('live_video');
       //const target = document.querySelector("input").value;
       const flvPlayer = flvjs.createPlayer({

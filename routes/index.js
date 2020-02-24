@@ -16,6 +16,8 @@ router.get('/', function(req, res, next) {
       Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
         loginStatus.logo = logoPath.logo;
       res.render('index', { title: 'WatchBuy' ,  loginStatus: loginStatus });
+      }).catch(err =>{
+        res.render('index', { title: 'WatchBuy', loginStatus: 'none' });
       });
     });
   };
