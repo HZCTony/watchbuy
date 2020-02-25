@@ -18,7 +18,11 @@ router.get('/:id', function (req, res, next) {
     } else {
       sigin.personCookieCheck(role, token).then(loginStatus => {
         Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
-          loginStatus.logo = logoPath.logo;
+          if(!logoPath){
+            loginStatus.logo = '/images/userundefined.png';
+          }else{
+            loginStatus.logo = logoPath.logo;
+          }
           res.render('userlive', { title: title, id: id, loginStatus: loginStatus, room: JSON.stringify(a_single_room[0]) });
         })
       });
