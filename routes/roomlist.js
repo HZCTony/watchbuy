@@ -13,9 +13,11 @@ router.get('/', function (req, res, next) {
   liveroomlist.getAllRooms().then(rooms => {
     signin.personCookieCheck(role, token).then(loginStatus => {
       Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
-        console.log('[logoPath] == ',logoPath);
-          console.log('[logoPath.logo] == ',logoPath.logo);
+        if(!logoPath){
+          loginStatus.logo = '/images/userundefined.png';
+        }else{
           loginStatus.logo = logoPath.logo;
+        }
           res.render('roomlist', { title: title, loginStatus: loginStatus, rooms: JSON.stringify(rooms) });
       });
     }).catch(err => {
