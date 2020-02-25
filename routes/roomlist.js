@@ -11,24 +11,16 @@ router.get('/', function (req, res, next) {
   var token = req.cookies.token;
 
   liveroomlist.getAllRooms().then(rooms => {
-    if (!role || !token) {
-      res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
-    } else {
-      signin.personCookieCheck(role, token).then(loginStatus => {
-        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
-
-          if (!logoPath.logo) {
-            res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
-          } else {
-            loginStatus.logo = logoPath.logo;
-            res.render('roomlist', { title: title, loginStatus: loginStatus, rooms: JSON.stringify(rooms) });
-          }
-        });
-      }).catch(err => {
-        res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
+    signin.personCookieCheck(role, token).then(loginStatus => {
+      Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+          console.log(logoPath.logo);
+          loginStatus.logo = logoPath.logo;
+          res.render('roomlist', { title: title, loginStatus: loginStatus, rooms: JSON.stringify(rooms) });
       });
-    }
-    })
+    }).catch(err => {
+      res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
+    });
+  })
 
 });
 
