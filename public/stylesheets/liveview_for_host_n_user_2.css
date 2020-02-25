@@ -535,7 +535,6 @@ justify-content: center;
 
 
     #chat{
-        width: 100%;
         justify-content: flex-end;
     }
     #msglog{
@@ -548,7 +547,6 @@ justify-content: center;
 @media screen and (min-width: 750px) and (max-width: 1000px) {
 
     #chat{
-        width: 100%;
         justify-content: flex-end;
     }
     #msglog{
