@@ -13,11 +13,16 @@ router.get('/', function (req, res, next) {
   liveroomlist.getAllRooms().then(rooms => {
     signin.personCookieCheck(role, token).then(loginStatus => {
       Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
-        console.log('logoPath.logo in roomlist.js ==',logoPath.logo);
-        loginStatus['logo'] = logoPath.logo;
-        res.render('roomlist', { title: title, loginStatus: loginStatus, rooms: JSON.stringify(rooms) });
+
+        if (!logoPath.logo) {
+          res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
+        } else {
+          loginStatus.logo = logoPath.logo;
+          res.render('roomlist', { title: title, loginStatus: loginStatus, rooms: JSON.stringify(rooms) });
+        }
+
       });
-    }).catch(err =>{
+    }).catch(err => {
       res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
     });
   })
