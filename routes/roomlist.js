@@ -11,7 +11,6 @@ router.get('/', function (req, res, next) {
   var token = req.cookies.token;
 
   liveroomlist.getAllRooms().then(rooms => {
-
     signin.personCookieCheck(role, token).then(loginStatus => {
       Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
         loginStatus.logo = logoPath.logo;
@@ -20,7 +19,6 @@ router.get('/', function (req, res, next) {
     }).catch(err =>{
       res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
     });
-    
   })
 
 });

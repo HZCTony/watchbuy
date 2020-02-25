@@ -1,6 +1,7 @@
 body{
     padding:0;
     margin:0;
+    max-height: 100vh;
 }
 
 
@@ -96,7 +97,7 @@ max-height: 65%;
     justify-content: flex-start;
     overflow-x: auto;
     flex-wrap: nowrap;
-    border-top: 1px gray solid;
+
 }
 
 #cartbtn-container{
@@ -119,6 +120,7 @@ max-height: 65%;
     margin-top: 40px;
     cursor: pointer;
     overflow:hidden;
+    visibility: hidden;
 }
 
 #addtoCart:hover{
@@ -214,7 +216,7 @@ max-height: 65%;
 
 #live{
     position: absolute;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 120px);
     top:0;
     left:0;
     z-index: 1000;
@@ -257,6 +259,10 @@ max-height: 65%;
     height: calc(100vh - 100px);
     min-height: 600px;
     z-index: 20000;
+}
+
+#live_video input{
+    padding: 0;
 }
 
 #video{
@@ -367,8 +373,6 @@ max-height: 65%;
     padding:0;
     background-color: white;
     opacity: 50%;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 #msglog:hover{
@@ -427,7 +431,7 @@ max-height: 65%;
 
 #sendmsg-container{
     width: 100%;
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -438,32 +442,33 @@ max-height: 65%;
     position: absolute;
     z-index: 30001;
     top: 100%;
-    transform: translate(2%,-104%);
-    width: 90%;
-    display: inline-flex;
-    justify-content: flex-end;
+    transform: translate(0%,-100%);
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
 }
 
 
 #sendMessage input{
-    width: 400px;
+    width: 100%;
     height: 40px;
     border-radius: 5px;
     font-size: 20px;
+
 }
 
 
 
 #sendMsgBtn{
-    margin-left: 10px;
-    font-size: 16px;
-    width: 60px;
-    min-width: 80px;
+    font-size: 14px;
+    width: 48px;
+    min-width: 48px;
     height: 48px;
     border-radius: 5px;
     background-color: #9ad7a4;
     color: white;
+    padding: 0;
 }
 
 #msg_status{
@@ -473,7 +478,6 @@ max-height: 65%;
     width: 100px;
     color: red;
     visibility: hidden;
-
 }
 
 #product_name{
@@ -529,7 +533,7 @@ max-height: 65%;
 
     #chat{
         width: 50%;
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
 }
 
@@ -537,7 +541,7 @@ max-height: 65%;
 
     #chat{
         width: 100%;
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
 }
 

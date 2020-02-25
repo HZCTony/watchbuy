@@ -100,8 +100,8 @@ p{
 }
 
 .single_room{
-    width: 400px;
-    height: 500px;
+    width: 280px;
+    height: 320px;
     margin: 40px;
     box-shadow: 3px 7px 10px rgba(0, 0, 0, 0.7);
     border-radius: 20px;

@@ -53,11 +53,11 @@
     <div id='chat'>
       <div id='msglog'>
       </div>
-           <div id='sendmsg-container'>
-            <div id='sendMessage'>
-              <input type="text" id="message" name="message">
-              <button id='sendMsgBtn'>傳 送</button>
-            </div>
+      <div id='sendmsg-container'>
+        <div id='sendMessage'>
+          <input type="text" id="message" name="message">
+          <button id='sendMsgBtn'>傳 送</button>
+        </div>
         <div>
           <p id='msg_status'></p>
         </div>
@@ -179,7 +179,7 @@
   if (isSafari && iOS) {
     document.getElementById('live_video').src = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
-  }  else {
+  } else {
 
     // live video pull
     if (flvjs.isSupported()) {
@@ -275,6 +275,8 @@
       console.log('gotAllProducts == ', gotAllProducts_of_current_host);
 
       //for open the live view at the beginning, parse the first product to product show
+      if(gotAllProducts_of_current_host.length != 0){
+      document.getElementById('addtoCart').style.visibility = 'visible';
       document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
       document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
       document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
@@ -282,14 +284,19 @@
       document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
       document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
       document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
-
+    }else{
+      document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+    }
 
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
         console.log(item);
         let image_S3_url = gotAllProducts_of_current_host[item].image
         generateProductImages(image_S3_url);
       }
-    }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+          document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+        }
   })
 
 
@@ -332,9 +339,11 @@
     if (see == 'visible') {
       $('#productShow').css("visibility", 'hidden');
       document.getElementById('openProductShowBtn').innerHTML = '+';
+      document.getElementById('addtoCart').style.visibility = 'hidden';
     } else if (see == 'hidden') {
       $('#productShow').css("visibility", 'visible');
       document.getElementById('openProductShowBtn').innerHTML = '-';
+      document.getElementById('addtoCart').style.visibility = 'visible';
     }
   })
 </script>

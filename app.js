@@ -16,7 +16,7 @@ var userlive = require('./routes/userlive');
 var hostlive = require('./routes/hostlive');
 var usersRouter = require('./routes/users');
 var checkout = require('./routes/checkout.js');
-var multer			= require('multer');
+var multer = require('multer');
 var app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -33,17 +33,17 @@ const corsOptions = {
 
 app.use(cors());
 
-app.use((req, res, next)=>{
-  res.set('Cache-Control', 'no-store');
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-cache');
   next()
 })
-app.use(favicon(path.join(__dirname,'public/images/favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 //home
 app.use('/', homepage);
 
@@ -88,22 +88,15 @@ io.on('connection', function (socket) {
   console.log(url);
   var roomID;
   var A_real_user = '';
+  roomInfo[roomID] = [A_real_user];
   console.log('user id ==', socket.id, ' is connected');
 
-  socket.on('usr_message', function (msg) {
-
-    if (roomInfo[roomID].indexOf(A_real_user) === -1) {  
-      return false;
-    }
-    console.log(msg);
-    io.to(roomID).emit('gotMessage', msg);
-  })
+ 
 
 
   socket.on('join', function (user) {
     A_real_user = user.name;
     roomID = user.room;
-
     // 将用户昵称加入房间名单中
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
@@ -112,20 +105,30 @@ io.on('connection', function (socket) {
 
     socket.join(roomID);    // 加入房间
     // notice all users in the room with roomID
-    io.to(roomID).emit('sys', A_real_user + ' joined in this room :', roomInfo[roomID]);  
+    io.to(roomID).emit('sys', A_real_user + ' joined in this room :', roomInfo[roomID]);
     console.log(A_real_user + ' joined in this room ' + roomID);
   });
 
+
+  socket.on('usr_message', function (msg) {
+    if (roomInfo[roomID].indexOf(A_real_user) === -1) {
+      return false;
+    }
+    console.log(msg);
+    io.to(roomID).emit('gotMessage', msg);
+  })
+
+
   socket.on('disconnect', function () {
     // 从房间名单中移除
-    // var index = roomInfo[roomID].indexOf(A_real_user);
-    // if (index !== -1) {
-    //   roomInfo[roomID].splice(index, 1);
-    // }
-
-    // socket.leave(roomID);    // 退出房间
-    // io.to(roomID).emit('sys', A_real_user + '退出了房间', roomInfo[roomID]);
-    // console.log(A_real_user + '退出了' + roomID);
+    //console.log('roomInfo[roomID] == ', roomInfo[roomID]);
+    var index = roomInfo[roomID].indexOf(A_real_user);
+    if (index != -1) {
+      roomInfo[roomID].splice(index, 1);
+    }
+    socket.leave(roomID);    // 退出房间
+    io.to(roomID).emit('sys', A_real_user + ' exit the room: ', roomInfo[roomID]);
+    console.log(A_real_user + ' exit the room: ' + roomID);
   });
 
 
