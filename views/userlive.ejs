@@ -126,13 +126,13 @@
     if (gotMessage.sender_role == 'host') {
       msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
       if (gotMessage.image != '') {
-        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '></div>';
+        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '"></div>';
       }
       msglog.scrollTop = msglog.scrollHeight;
     } else{
       msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
       if (gotMessage.image != '') {
-        msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '></div>';
+        msglog.innerHTML += '<div class="userMsg-img"><img src="' + gotMessage.image + '"></div>';
       }
       msglog.scrollTop = msglog.scrollHeight;
     }

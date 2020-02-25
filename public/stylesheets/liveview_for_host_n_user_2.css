@@ -352,7 +352,7 @@ max-height: 65%;
     z-index: 2000;
     height: 80vh;
     display:flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
     opacity: 50%;
@@ -373,7 +373,7 @@ max-height: 65%;
     padding:0;
     background-color: white;
     opacity: 50%;
-    margin-top: 26%;
+    margin-top: 0;
 }
 
 #msglog:hover{
@@ -444,7 +444,7 @@ max-height: 65%;
     position: absolute;
     z-index: 30001;
     top: 100%;
-    transform: translate(0%,-100%);
+    transform: translate(0%,0%);
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -536,10 +536,12 @@ justify-content: center;
 
     #chat{
         justify-content: flex-end;
+        top:-10%;
     }
     #msglog{
         height: 45%;
-        margin-top:13%;
+        margin-top:15%;
+        
     }
 }
 
@@ -548,6 +550,7 @@ justify-content: center;
 
     #chat{
         justify-content: flex-end;
+        top:-10%;
     }
     #msglog{
         height: 45%;
@@ -560,6 +563,7 @@ justify-content: center;
     #chat{
         width: 100%;
         justify-content: flex-end;
+        top:-10%;
     }
 
     #msglog{
