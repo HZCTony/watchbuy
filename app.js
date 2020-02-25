@@ -34,7 +34,7 @@ const corsOptions = {
 app.use(cors());
 
 app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-cache');
+  res.set('Cache-Control', 'no-store');
   next()
 })
 app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
@@ -88,7 +88,7 @@ io.on('connection', function (socket) {
   console.log(url);
   var roomID;
   var A_real_user = '';
-  roomInfo[roomID] = [A_real_user];
+  roomInfo[roomID] = [];
   console.log('user id ==', socket.id, ' is connected');
 
  
@@ -97,7 +97,7 @@ io.on('connection', function (socket) {
   socket.on('join', function (user) {
     A_real_user = user.name;
     roomID = user.room;
-    // 将用户昵称加入房间名单中
+    // 將用戶暱稱加入房間
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
     }
