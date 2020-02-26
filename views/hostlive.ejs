@@ -19,6 +19,7 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
+    <div id='vidplay'></div>
     <div id='openProductShowBtn'>
       <p>-</p>
     </div>
@@ -45,7 +46,7 @@
 
 
       <div id='video'>
-        <video autoplay id="live_video" controls muted>
+        <video id="live_video" autoplay>
         </video>
       </div>
     </div>
@@ -58,12 +59,8 @@
           <input type="text" id="message" name="message">
           <button id='sendMsgBtn'>傳 送</button>
         </div>
-        <div>
-          <p id='msg_status'></p>
-        </div>
       </div>
     </div>
-
 
   </div>
   <script>
@@ -195,7 +192,6 @@
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
       flvPlayer.play();
-
     }
   }
 
@@ -275,18 +271,18 @@
       console.log('gotAllProducts == ', gotAllProducts_of_current_host);
 
       //for open the live view at the beginning, parse the first product to product show
-      if(gotAllProducts_of_current_host.length != 0){
-      document.getElementById('addtoCart').style.visibility = 'visible';
-      document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
-      document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
-      document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
-      document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
-      document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
-      document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
-      document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
-    }else{
-      document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
-    }
+      if (gotAllProducts_of_current_host.length != 0) {
+        document.getElementById('addtoCart').style.visibility = 'visible';
+        document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
+        document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
+        document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+        document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
+        document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
+        document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
+        document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
+      } else {
+        document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+      }
 
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
         console.log(item);
@@ -295,8 +291,8 @@
       }
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-          document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
-        }
+      document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+    }
   })
 
 
@@ -347,5 +343,29 @@
     }
   })
 </script>
+
+
+
+<script>
+  let live_video_check = document.getElementById('live_video');
+  document.getElementById('vidplay').addEventListener('click', function () {
+    if (live_video_check.paused) {
+      if (live_video_check.buffered.end(0) >= 1) {
+        live_video_check.currentTime = live_video_check.buffered.end(0) - 0.5;
+      }
+      live_video_check.play();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/pause.png")';
+    } else {
+      live_video_check.pause();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/play.png")';
+    }
+  })
+
+  live_video_check.addEventListener("timeupdate", function () {
+    console.log('vid.buffered.end(0) == ', live_video_check.buffered.end(0));
+    console.log('currentTime ==', live_video_check.currentTime);
+  })
+</script>
+
 
 </html>

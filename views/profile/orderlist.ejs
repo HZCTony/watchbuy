@@ -45,7 +45,9 @@
 
                 <% } else if(loginStatus.role == 'user'){ %>
                     <div id='orderSection'>
-
+                        <div id='loading'>
+                            <img src="/images/loading.gif">
+                        </div>
                     </div>
                 <% } %>
 
@@ -79,6 +81,7 @@
                 email: '<%= loginStatus.email %>'
             },
             success:function(Allorders){
+                document.getElementById('loading').style.display='none';
                 console.log('Allorders ==', Allorders);
                 for(let item=0; item<Allorders.length; item++){
                     generateEveryOrder(

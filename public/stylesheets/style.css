@@ -105,6 +105,18 @@ body{
   background-position: center;
   cursor: pointer;
   margin-right: 30px;
+  position: relative;
+}
+
+#cartlogo #reddot{
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  position: absolute;
+  top: 70%;
+  left: 30%;
+  transform: translate(-50%,-50%);
+  background-color: red;
 }
 
 

@@ -28,13 +28,14 @@ app.set('view engine', 'ejs');
 const corsOptions = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: '*',
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store');
+  res.header("Access-Control-Allow-Origin", "*");
   next()
 })
 app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));

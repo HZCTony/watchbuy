@@ -19,6 +19,7 @@
   <%- include("./model/header/call-headers.ejs") %>
 
   <div id='live_container'>
+    <div id='vidplay'></div>
     <div id='openProductShowBtn'>
       <p>-</p>
     </div>
@@ -46,7 +47,7 @@
 
         <div id='video-container'>
           <div id='video'>
-            <video autoplay id="live_video" width="100%" controls muted>
+            <video autoplay id="live_video" width="100%">
             </video>
           </div>
         </div>
@@ -61,10 +62,11 @@
           <input type="text" id="message" name="message">
           <button id='sendMsgBtn'>傳 送</button>
         </div>
-        <div id='msg_status_div'>
-          <p id='msg_status'></p>
-        </div>
+
       </div>
+    </div>
+    <div id='msg_status_div'>
+      <p id='msg_status'></p>
     </div>
   </div>
 
@@ -275,7 +277,7 @@
   // add to cart
   document.getElementById('addtoCart').addEventListener('click', function (e) {
     e.preventDefault();
-
+    document.getElementById('reddot').style.visibility='visible';
     const AddToCart = {
       role: '<%= loginStatus.role %>',
       email: '<%= loginStatus.email %>',
@@ -328,5 +330,28 @@
   let videoplayer = document.getElementById('live_video');
   player.initialize(videoplayer, video_url, true);
 </script> -->
+
+
+<script>
+  let live_video_check = document.getElementById('live_video');
+  document.getElementById('vidplay').addEventListener('click', function () {
+    if (live_video_check.paused) {
+      if (live_video_check.buffered.end(0) >= 1) {
+        live_video_check.currentTime = live_video_check.buffered.end(0) - 0.5;
+      }
+      live_video_check.play();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/pause.png")';
+    } else {
+      live_video_check.pause();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/play.png")';
+    }
+  })
+
+  live_video_check.addEventListener("timeupdate", function () {
+    console.log('vid.buffered.end(0) == ', live_video_check.buffered.end(0));
+    console.log('currentTime ==', live_video_check.currentTime);
+  })
+</script>
+
 
 </html>

@@ -9,7 +9,7 @@
     </div>
     <div id='rightside'>
         <div id='bigheadlogo' class='menulogo' style="background-image: url('<%= loginStatus.logo %>');"></div>
-        <div id='cartlogo' class='menulogo'></div>
+        <div id='cartlogo' class='menulogo'><div id='reddot' style="visibility:hidden"></div></div>
         <div id='menulogo' class='menulogo'>
         </div>
     </div>
@@ -42,5 +42,22 @@
 
     document.getElementById('cartlogo').addEventListener('click', function () {
         window.location = '/profile/1';
+    })
+
+
+
+    $.ajax({
+        url: '/profile/getProductsinCart',
+        type: "POST",
+        data: {
+            email: '<%= loginStatus.email %>'
+        },
+        success: function (allproducts) {
+            if(allproducts.length > 0){
+                document.getElementById('reddot').style.visibility='visible';
+            }else{
+                document.getElementById('reddot').style.visibility='hidden';
+            }
+        }
     })
 </script>

@@ -373,6 +373,14 @@ body{
     overflow-y: scroll;
 }
 
+#orderSection #loading{
+ width: 100%;
+ height: 80vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
 #orderSection .orderitem{
     margin-top: 30px;
     width: 80%;
@@ -539,6 +547,10 @@ margin-top: 1px;
 .host_owned_product_id{
     font-size: 20px;
 }
+
+
+
+
 
 @media screen and (min-width: 1500px){
 

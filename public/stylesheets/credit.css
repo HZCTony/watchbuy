@@ -1,0 +1,82 @@
+ /** 
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+body{
+    background-color: #9ad7a4;
+}
+
+ .StripeElement {
+    box-sizing: border-box;
+    height: 60px;
+    padding: 10px 12px;
+    padding-top: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+  
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+
+  }
+  
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+  
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+  
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  button{
+    margin-top: 40px;
+    background: white;
+    color: #9ad7a4;
+    font-size: 20px;
+    height: 60px;
+    border-radius: 10px;
+  }
+
+  #checkform{
+      width: 800px;
+      height: 300px;
+      background-color: #9ad7a4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding-top: 20px;
+  }
+
+  .form-row{
+      width: 600px;
+      border-radius: 50px;
+  }
+
+  #card-element{
+      border-radius: 50px;
+  }
+
+  #card-errors{
+      margin-top: 20px;
+      height:60px;
+      background-color: #9ad7a4;
+      color: red;
+
+  }
+
+  #test p{
+    background: #9ad7a4;
+    color: white;
+    margin: 0;
+
+  }
+
+  #test{
+    visibility: hidden;
+  }
