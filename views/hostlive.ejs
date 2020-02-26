@@ -191,7 +191,7 @@
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
-      flvPlayer.play();
+      //flvPlayer.play();
     }
   }
 
@@ -361,10 +361,6 @@
     }
   })
 
-  live_video_check.addEventListener("timeupdate", function () {
-    console.log('vid.buffered.end(0) == ', live_video_check.buffered.end(0));
-    console.log('currentTime ==', live_video_check.currentTime);
-  })
 </script>
 
 
