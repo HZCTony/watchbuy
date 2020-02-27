@@ -3,10 +3,10 @@
 
     #productShow{
         height: calc(100vh - 850px);
-        min-height: 600px;
+        min-height: 540px;
         width: 300px;
-        top:10px;
-        left:10px;
+        top:5px;
+        left:5px;
         background-color: white;
         display: inline-flex;
         align-items: center;
@@ -20,8 +20,8 @@
         width: 80px;
         height: 80px;
         position: absolute;
-        top:10px;
-        left:10px;
+        top:5px;
+        left:5px;
         font-size: 50px;
         padding: 0;
         color: white;
@@ -32,10 +32,13 @@
         justify-content: center;
         cursor: pointer;
     }
-
+    #productimg{
+        width: 200px;
+        height: 200px;
+    }
     #productimg img{
-        max-width: 60%;
-        max-height: 60%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
     }
 

@@ -181,7 +181,7 @@
     // live video pull
     if (flvjs.isSupported()) {
       // document.querySelector("#video").addEventListener("click", function () {       })
-      const live_url = `http://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
+      const live_url = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
       const video = document.getElementById('live_video');
       //const target = document.querySelector("input").value;
       const flvPlayer = flvjs.createPlayer({
