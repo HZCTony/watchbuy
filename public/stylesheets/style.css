@@ -45,6 +45,8 @@ body{
 #top_bar #leftside #roomlistbtn{
   width:60px;
   height: 60px;
+  margin-top: 5px;
+  line-height: 100%;
   color: white;
   font-size: 25px;
   display: flex;

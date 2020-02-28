@@ -3,39 +3,38 @@ body{
     font-family: "Helvetica Neue";
     padding: 0;
     margin: 0;
-    min-width: 1440px;
+    min-width: 1240px;
 }
 
 #background{
     height: calc(100vh - 100px);
     width: 100%;
     background-color: black;
-    background-image: url('../images/desktop.jpg');
+    background-image: url('../images/desktop_smaller.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: inline-flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 }
 
 #icons-container{
-    padding-top: 140px;
-    width: 600px;
+    width: 40%;
     position: relative;
     display: inline-flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 #signs{
     margin-top: 20px;
     width: 100%;
     display: inline-flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 #slogan{
@@ -48,20 +47,27 @@ body{
     display: none;
 }
 
-#logo {
+#logo{
     color: white;
-    font-size: 50px;
-    width: 360px;
-    height: 240px;
+    font-size: 40px;
+    width: 100%;
     display: inline-block;
-    text-align: center;
+    text-align: left;
 }
 
 #logo h3{
     text-align: center;
     margin:0;
+    margin-left:20px;
     padding: 0;
     font-size: 24px;
+}
+
+#logo h2, #logo h3{
+    margin: 10px;
+    margin-left:20px;
+    padding: 0;
+    color: rgb(80, 80, 80);
 }
 
 h1{
@@ -84,12 +90,58 @@ h1{
     font-weight: bold;
     border: white;
     border-radius: 50px;
+    cursor: pointer;
 }
 
-
-
-.sign_btn:hover{
+#signup{
     background-color: #9ad7a4;
     color: white;
 }
 
+#signin{
+    background-color: #9ad7a4;
+    color: white;
+}
+
+
+#signup:hover{
+    background-color: rgba(0, 217, 255, 1);
+
+}
+
+#signup:active{
+    background-color: white;
+    border: 2px rgba(0, 217, 255, 1) solid;
+    color: rgba(0, 217, 255, 1);
+}
+
+#signin:hover{
+    background-color: rgba(0, 217, 255, 1);
+}
+
+#signin:active{
+    background-color: white;
+    border: 2px rgba(0, 217, 255, 1) solid;
+    color: rgba(0, 217, 255, 1);
+}
+
+@media screen and (max-width: 1440px){
+    #logo h2{
+        font-size: 36px;
+    }
+
+    .sign_btn{
+        margin: 10px;
+        margin-top: 0px;
+        margin-left: 20px;
+        height: 50px;
+        width: 140px;
+        background-color: white;
+        color: #9ad7a4;
+        font-size: 26px;
+        font-weight: bold;
+        border: white;
+        border-radius: 50px;
+    }
+    
+}

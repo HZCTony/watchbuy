@@ -69,6 +69,11 @@
 
 
 @media screen and (max-width: 1920px) and (max-height: 1440px) {
+
+    .mainitem{
+        justify-content: center;
+    }
+
     #productlist{
         height: 160px;
         max-width: 90%;
@@ -91,15 +96,16 @@
     }
 
     #product_name{
-        display: inline;
-        font-size: 20px;
+        display: block;
+        font-size: 24px;
         margin: 0;
+        margin-top: 10px;
 
     }
     #price{
         display: inline;
-        font-size: 16px;
-        margin-left: 10px;
+        font-size: 24px;
+        margin: 0;
     }
 
 

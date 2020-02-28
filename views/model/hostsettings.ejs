@@ -2,14 +2,15 @@
     <div id='basicinfo'>
         <div id='logo'>
              <img src='<%= loginStatus.logo %>'>
+             <label for='logofile'><p>點我選擇大頭貼圖片</p></label>
         </div>
         <div id='uploadLogoFormDiv'>
-            <form id='uploadLogoForm' enctype="multipart/form-data">
-                <div class='title' id='logotitle'>更新大頭貼<input  type="file" name="logo" style='display:inline;'/></div>
+            <form id='uploadLogoForm' enctype="multipart/form-data" style="display:none;">
+                <div class='title' id='logotitle'><input id='logofile' type="file" name="logo" style='display:none;'/></div>
                 <input  type="text" name='username' value='<%= loginStatus.name %>' style="display:none;">
                 <input  type="text" name='role' value='host' style="display:none;">
                 <input  type="text" name='email' value='<%= loginStatus.email %>' style="display:none;">
-                <button type="submit">上傳</button>
+                <button id='logo_sumbit' type="submit">上傳</button>
               </form>
         </div>
         <div id='name'>

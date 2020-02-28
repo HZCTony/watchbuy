@@ -14,7 +14,6 @@ body{
 
 #live_container{
     width:100%;
-    min-height: 600px;
     height: calc(100vh - 100px);
     position: relative;
     display: inline-flex;
@@ -23,7 +22,16 @@ body{
     text-align: center;
     align-items: center;
 }
-
+#openProductShowBtn p{
+    margin: 0;
+    padding:0;
+    width: 80px;
+    height:80px;
+    padding-bottom: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 
 #openProductShowBtn{
     width: 80px;
@@ -31,22 +39,22 @@ body{
     position: absolute;
     top:50px;
     left:100px;
-    font-size: 50px;
+    font-size: 40px;
     padding: 0;
     color: white;
     background-color: #9ad7a4;
     border-radius: 40px;
     z-index: 40001;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
     cursor: pointer;
+    padding:0;
+    margin:0;
 }
 
 #productShow{
     height: calc(100vh - 600px);
-    min-height: 800px;
-    width: 400px;
+    min-height: 700px;
+    width: 360px;
     position: absolute;
     top:50px;
     left:100px;
@@ -62,8 +70,7 @@ body{
 
 #productDescription{
     width: 100%;
-    min-height: 600px;
-    margin-bottom: 12px;
+    min-height: 500px;
     text-align: center;
     display: inline-flex;
     align-items: center;
@@ -98,7 +105,6 @@ body{
 
 #cartbtn-container{
     width: 90%;
-    padding-bottom: 20px;
 
 }
 
@@ -112,7 +118,6 @@ body{
     justify-content: center;
     align-items: center;
     border-radius: 60px;
-    margin-top: 40px;
     cursor: pointer;
     overflow:hidden;
     visibility: hidden;
@@ -158,12 +163,12 @@ body{
 
 .mainitem{
         width: 400px;
-        height: 550px;
+        height: 450px;
         display: inline-flex;
         text-align: center;
         align-items: center;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
 
 
 }
@@ -207,6 +212,21 @@ body{
 
 #details h1, #details p{
     margin: 0;
+}
+
+
+
+#details p{
+    font-size: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+#details #price{
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
 }
 
 #live{
@@ -349,14 +369,8 @@ body{
     align-items: center;
     justify-content: flex-end;
     flex-direction: column;
-    opacity: 50%;
 }
 
-
-
-#chat:hover{
-    opacity: 90%;
-}
 
 #livestatus{
     word-wrap:normal;
@@ -366,8 +380,23 @@ body{
     width: 100%;
     overflow: auto;
     padding:0;
-    opacity: 50%;
     margin-top: 0;
+}
+
+.msglog{
+    opacity: 100%;
+}
+
+.msglog:hover{
+    opacity: 100%;
+}
+
+.msglog_opacity{
+    opacity: 20%;
+}
+
+.msglog_opacity:hover{
+    opacity: 100%;
 }
 
 #msglog img{
@@ -375,9 +404,6 @@ body{
     box-shadow: 6px 6px 6px rgb(20, 20, 20);    
 }
 
-#msglog:hover{
-    opacity: 90%;
-}
 
 
 
@@ -469,6 +495,8 @@ body{
     padding: 0;
 }
 
+
+
 #msg_status_div{
     position: absolute;
     top:100%;
@@ -491,11 +519,14 @@ body{
 
 #product_name{
     white-space:nowrap;
+    display: block;
 }
 
 #price{
     font-weight: bolder;
     font-size: 30px;
+    margin: 0;
+    margin-top: 20px;
 }
 
 
@@ -511,7 +542,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 30002;
-    opacity: 5%;
+    opacity: 15%;
 }
 
 #vidplay:hover{
@@ -519,10 +550,13 @@ body{
 }
 
 
+
+
 @media screen and (max-width: 1500px){
 #notLiveWord{
         font-size: 24px;
     }
+
 }
 
 
@@ -545,14 +579,6 @@ body{
 
 }
 
-@media screen and (min-width: 1000px) and (max-width: 1300px) {
-
-
-    #msglog{
-        height: 80%;
-    }
-}
-
 
 @media screen and (min-width: 750px) and (max-width: 1000px) {
 
@@ -562,7 +588,7 @@ body{
     }
     #msglog{
         width: 100%;
-        height: 80%;
+        height: 40%;
     }
 }
 
@@ -574,7 +600,7 @@ body{
     }
 
     #msglog{
-        height: 50%;
+        height: 40%;
         width: 100%;
     }
 
@@ -607,17 +633,15 @@ body{
     
     }
 
-    #sendMessage{
-        opacity: 100%;
-    }
-
     #liveCheckButton{
         flex-direction: column;
     }
     #liveicon-container{
         margin: 0;
     }
-
+    .msglog_opacity{
+        opacity: 20%;
+    }
 
 }
 
@@ -625,9 +649,6 @@ body{
 
 @media screen and (max-width: 500px) {
 
-    #chat{
-        opacity: 10%;
-    }
 
     #chat{
         width: 100%;
@@ -635,7 +656,7 @@ body{
     }
     #msglog{
         width: 100%;
-        height: 80%;
+        height: 40%;
     }
 
     #roomlistbtn{

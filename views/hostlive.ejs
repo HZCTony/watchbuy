@@ -52,7 +52,7 @@
     </div>
 
     <div id='chat'>
-      <div id='msglog'>
+      <div id='msglog' class="msglog_opacity">
       </div>
       <div id='sendmsg-container'>
         <div id='sendMessage'>
@@ -191,6 +191,7 @@
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
+      video.pause();
       //flvPlayer.play();
     }
   }
@@ -275,9 +276,9 @@
         document.getElementById('addtoCart').style.visibility = 'visible';
         document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
         document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
-        document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
         document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
-        document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
+        document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+        //document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
         document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
         document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
       } else {
@@ -316,9 +317,9 @@
 
           document.getElementById('product_name').innerHTML = singleProduct.name;
           document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
-          document.getElementById('color').innerHTML = singleProduct.color;
           document.getElementById('size').innerHTML = singleProduct.size;
-          document.getElementById('stock').innerHTML = singleProduct.stock;
+          document.getElementById('color').innerHTML = singleProduct.color;
+          //document.getElementById('stock').innerHTML = singleProduct.stock;
           document.getElementById('description').innerHTML = singleProduct.description;
           document.getElementById('mainimg').src = singleProduct.image;
         }
@@ -334,11 +335,11 @@
     var see = $('#productShow').css("visibility");
     if (see == 'visible') {
       $('#productShow').css("visibility", 'hidden');
-      document.getElementById('openProductShowBtn').innerHTML = '+';
+      document.getElementById('openProductShowBtn').innerHTML = '<p>' + '+' + '</p>';
       document.getElementById('addtoCart').style.visibility = 'hidden';
     } else if (see == 'hidden') {
       $('#productShow').css("visibility", 'visible');
-      document.getElementById('openProductShowBtn').innerHTML = '-';
+      document.getElementById('openProductShowBtn').innerHTML = '<p>' + '-' + '</p>';
       document.getElementById('addtoCart').style.visibility = 'visible';
     }
   })
@@ -363,5 +364,19 @@
 
 </script>
 
+
+<script>
+
+document.getElementById('message').addEventListener('focus', (event) => {
+  $("#msglog").addClass('msglog');
+  $("#msglog").removeClass('msglog_opacity');  
+});
+
+document.getElementById('message').addEventListener('blur', (event) => {
+  $("#msglog").removeClass('msglog');  
+  $("#msglog").addClass('msglog_opacity');
+});
+
+</script>
 
 </html>

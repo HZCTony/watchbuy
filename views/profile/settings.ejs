@@ -79,17 +79,31 @@
 
 <script>
 
+    $('#logo').hover(function () {
+        $('label').css('visibility', 'visible');
+        $('label').css('opacity', '0.5');
+    },function () {
+            $('label').css('visibility', 'hidden');
+        });
+
+    $('#logofile').change(function () {
+        $('#logo_sumbit').click();
+    });
+
+
     $('#uploadLogoForm').submit(function (e) {
         e.preventDefault();
         const uploadLogoForm = document.getElementById("uploadLogoForm");
         const role = '<%= loginStatus.role %>';
         let formData = new FormData(uploadLogoForm);
         let url = '';
-        if(role == 'host'){
+        if (role == 'host') {
             url = '/profile/host_logo_upload';
-        }else if(role == 'user'){
+        } else if (role == 'user') {
             url = '/profile/user_logo_upload';
         }
+
+        document.getElementById('logo').getElementsByTagName('img')[0].src = '/images/loading.gif';
 
         $.ajax({
             url: url,
@@ -99,12 +113,15 @@
             contentType: false,
             success: function (res) {
                 console.log(res);
-                window.location= '/profile'
+                window.location = '/profile'
                 //whatever you wanna do after the form is successfully submitted
             }
         });
     });
 
+
+
 </script>
+
 
 </html>

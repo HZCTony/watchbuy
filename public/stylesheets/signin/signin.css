@@ -9,7 +9,7 @@ body{
 
 
 #background{
-    height: calc(100vh - 300px);
+    height: calc(100vh - 200px);
     width: 100%;
     min-width: 800px;
     display: flex;
