@@ -164,8 +164,9 @@
   //////////////////////////
   if (room_obj.active == 'open') {
     // live video pull
-    document.getElementById('notLiveWord').style.display = 'none';
-
+    //document.getElementById('notLiveWord').style.display = 'none';
+    document.getElementById('notLiveWord').innerHTML = '請點播放以開始觀看';
+    document.getElementById('notLiveWord').style.marginTop = '150px';
 
     var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -336,11 +337,14 @@
 <script>
   let live_video_check = document.getElementById('live_video');
   document.getElementById('vidplay').addEventListener('click', function () {
+
     if (live_video_check.paused) {
       if (live_video_check.buffered.end(0) >= 1) {
         live_video_check.currentTime = live_video_check.buffered.end(0) - 0.5;
+        
       }
       live_video_check.play();
+      document.getElementById('notLiveWord').style.display = 'none';
       document.getElementById('vidplay').style.backgroundImage = 'url("/images/pause.png")';
     } else {
       live_video_check.pause();
