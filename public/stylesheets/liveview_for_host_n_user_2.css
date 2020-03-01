@@ -14,7 +14,7 @@ body{
 
 #live_container{
     width:100%;
-    height: calc(100vh - 100px);
+    min-height: calc(100vh - 103px);
     position: relative;
     display: inline-flex;
     flex-direction: row ;
@@ -482,7 +482,9 @@ body{
     border-radius: 5px;
     font-size: 20px;
     z-index: 30002;
+    padding-left: 10px;
 }
+
 
 #sendMsgBtn{
     font-size: 14px;

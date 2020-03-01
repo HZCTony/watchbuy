@@ -18,10 +18,12 @@
 <script>
     document.getElementById('menulogo').addEventListener('click', function () {
         document.getElementById('menulist').style.visibility = 'visible';
+        document.getElementById('menulist').style.left = '100%';
     })
 
     document.getElementById('menulogo_in_menulist').addEventListener('click', function () {
-        document.getElementById('menulist').style.visibility = 'hidden';
+        //document.getElementById('menulist').style.visibility = 'hidden';
+        document.getElementById('menulist').style.left = '150%';
     })
 
     document.getElementById('watchbuylogo').addEventListener('click', function () {

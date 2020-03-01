@@ -1,6 +1,5 @@
 @media screen and (max-width: 1920px) {
 
-
     #productShow{
         height: calc(100vh - 850px);
         min-height: 540px;
@@ -32,10 +31,12 @@
         justify-content: center;
         cursor: pointer;
     }
+
     #productimg{
         width: 200px;
         height: 200px;
     }
+
     #productimg img{
         max-width: 100%;
         max-height: 100%;
@@ -50,18 +51,16 @@
         align-items: center;
         flex-direction: column;
         justify-content: flex-end;
+    }
 
-}
+    #productDescription{
+        width: 100%;
+        min-height: 500px;
+    }
 
-#productDescription{
-    width: 100%;
-    min-height: 500px;
-
-}
-
-.item, .productimg{
-    height: 100px;
-}
+    .item, .productimg{
+        height: 100px;
+    }
 
 
 }

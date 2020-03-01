@@ -83,6 +83,7 @@ body{
   background-repeat:no-repeat;
   background-size:cover;
   cursor: pointer;
+
 }
 
 #top_bar #rightside #bigheadlogo{
@@ -126,14 +127,16 @@ body{
   width: 400px;
   background-color: #9ad7a4;
   text-align: right;
-  position: absolute;
+  position: fixed;
   z-index: 99999;
   top:0;
-  left: 100%;
+  left: 150%;
   transform: translate(-100%,0);
   display: inline-flex;
   flex-direction: column;
+  transition: left 0.3s;
 }
+
 
 #icon_container{
   width:100%;
