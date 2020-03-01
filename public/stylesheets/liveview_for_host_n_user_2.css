@@ -544,7 +544,8 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 30002;
-    opacity: 15%;
+    opacity: 45%;
+    cursor: pointer;
 }
 
 #vidplay:hover{
