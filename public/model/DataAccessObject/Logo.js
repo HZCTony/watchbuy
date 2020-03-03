@@ -32,17 +32,33 @@ module.exports = {
 				update_query = `UPDATE hostlist SET logo='${logoPath}' where email='${email}';`
 			}
 			if (update_query != '') {
-				database.connection.query(update_query, function (error, UpdatedResult, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(UpdatedResult);
+				database.connection.getConnection(function (err, connection) {
+					if (err) {
+						reject(err);
 					}
+					connection.query(update_query, function (error, UpdatedResult, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(UpdatedResult);
+								connection.release();
+							});
+						}
+					});
 				});
 			} else {
 				reject("[Database Query Error]: query of Update Logo Path is not available");
 			}
 		})
+
+
 	}
 
 };

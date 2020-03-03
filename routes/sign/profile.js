@@ -78,7 +78,6 @@ router.get('/', function (req, res, next) {
       if (loginStatus.status == 'ok') {
         Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
-          console.log('loginStatus.logo == ', loginStatus.logo);
           res.render('./profile/settings', { title: title, loginStatus: loginStatus });
 
         })
@@ -142,13 +141,11 @@ router.get('/:list', function (req, res, next) {
                 res.render('./profile/cartlist', { title: title, loginStatus: loginStatus });
                 break;
               case '2':
-                console.log('2');
                 res.render('./profile/orderlist', { title: title, loginStatus: loginStatus });
                 break;
               case '3':
                 res.clearCookie('role');
                 res.clearCookie('token');
-
                 res.redirect('/signin');
                 break;
               default:
@@ -250,8 +247,6 @@ router.post('/getAllHostOwnedProduct', function (req, res, next) {
 }); 
 
 router.post('/payment', function (req, res, next) {
-  console.log('req.body ==',req.body,'\n');
-
   const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
 
   stripe.charges.create({

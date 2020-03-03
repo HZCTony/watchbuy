@@ -91,7 +91,6 @@ module.exports = {
 				var duplicatedHostNameorNot = await checkDuplicatedName(email);
 				const passwordEcripted = passwordEncryption(password);
 				if (duplicatedHostNameorNot.length == 0) {
-
 					var insertHostDataResult = await insertHostSignUpInfo(
 						name,
 						passwordEcripted,
