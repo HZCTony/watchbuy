@@ -19,15 +19,7 @@ router.post('/', function (req, res, next) {
       currency: 'usd',
       payment_method_types: ['card'],
     });
-    console.log('paymentIntent == ', paymentIntent.client_secret);
-
-    //get all product IDs in products first
-
-
-
-    //insert data to orderlist table after getting the client_secret code 
     order.InsertSingleOrder(email, Products_object_of_an_order, amount).then(insert_order_result => {
-      console.log('insert_order_result ==\n', insert_order_result.insertId);
       res.render('checkout', { secret: paymentIntent.client_secret, orderid: insert_order_result.insertId });
     })
 
@@ -37,7 +29,6 @@ router.post('/', function (req, res, next) {
 });
 
 router.post('/cancelOrder', function (req, res, next) {
-  console.log('In cancelOrder: ', req.body);
   order.DeleteSingleOrder(req.body.order).then(Deleted_order_result => {
     res.send(Deleted_order_result);
   })
@@ -45,7 +36,6 @@ router.post('/cancelOrder', function (req, res, next) {
 
 
 router.post('/UpdateOrderStatus', function (req, res, next) {
-  console.log('In UpdateOrderStatus: ', req.body);
   order.UpdateOrderStatus(req.body.order).then(Deleted_order_result => {
     res.send(Deleted_order_result);
   })
@@ -70,7 +60,6 @@ router.post('/GetAllOrders', async function (req, res, next) {
     let All_images_of_an_Order = await order.GetOrderImages(only_orderID_array);
     for (let img = 0; img < All_images_of_an_Order.length; img++) {
       
-      console.log('All_images_of_an_Order == ',All_images_of_an_Order);
 
       for( c=0; c<All_images_of_an_Order.length; c++ ){
         if(products_array[0][img].id == All_images_of_an_Order[c].id){

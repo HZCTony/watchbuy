@@ -12,7 +12,6 @@ router.get('/:id', function (req, res, next) {
   var token = req.cookies.token;
 
   live.getOnlyOneRoom(id).then(a_single_room => {
-    console.log('[userlive.js]: ', JSON.stringify(a_single_room[0]));
     if (!role || !token) {
       res.render('userlive', { title: title, id: id, loginStatus: 'none', room: JSON.stringify(a_single_room[0]) });
     } else {

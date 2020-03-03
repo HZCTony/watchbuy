@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
 var cors = require('cors');
-var testOBSRouter = require('./routes/testOBS');
+
 var homepage = require('./routes/index');
 var signup = require('./routes/sign/signup');
 var signin = require('./routes/sign/signin');
@@ -24,13 +24,6 @@ const io = require('socket.io')(server);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// const corsOptions = {
-//   origin: '*',
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-//   allowedHeaders: '*',
-// };
-
 app.all(cors());
 
 app.all((req, res, next) => {
@@ -64,10 +57,9 @@ app.use('/hostlive', hostlive);
 app.use('/users', usersRouter);
 
 
-//money
+//payment
 app.use('/checkout', checkout);
 
-app.use('/testOBS', testOBSRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -89,28 +81,22 @@ var roomInfo = {};
 
 io.on('connection', function (socket) {
   var url = socket.request.headers.referer;
-  console.log(url);
   var roomID;
   var A_real_user = '';
   roomInfo[roomID] = [];
-  console.log('user id ==', socket.id, ' is connected');
-
- 
 
 
   socket.on('join', function (user) {
     A_real_user = user.name;
     roomID = user.room;
-    // 將用戶暱稱加入房間
+
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
     }
     roomInfo[roomID].push(A_real_user);
 
-    socket.join(roomID);    // 加入房间
-    // notice all users in the room with roomID
+    socket.join(roomID);   
     io.to(roomID).emit('sys', A_real_user + ' joined in this room :', roomInfo[roomID]);
-    console.log(A_real_user + ' joined in this room ' + roomID);
   });
 
 
@@ -118,29 +104,18 @@ io.on('connection', function (socket) {
     if (roomInfo[roomID].indexOf(A_real_user) === -1) {
       return false;
     }
-    console.log(msg);
     io.to(roomID).emit('gotMessage', msg);
   })
 
-
   socket.on('disconnect', function () {
-    // 从房间名单中移除
-    //console.log('roomInfo[roomID] == ', roomInfo[roomID]);
     var index = roomInfo[roomID].indexOf(A_real_user);
     if (index != -1) {
       roomInfo[roomID].splice(index, 1);
     }
-    socket.leave(roomID);    // 退出房间
+    socket.leave(roomID);
     io.to(roomID).emit('sys', A_real_user + ' exit the room: ', roomInfo[roomID]);
-    console.log(A_real_user + ' exit the room: ' + roomID);
   });
-
-
-
 });
-
-
-
 
 server.listen(80, function () {
   console.log('listening on port 80');

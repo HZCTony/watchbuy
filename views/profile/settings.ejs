@@ -51,11 +51,6 @@
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
         document.getElementById('ID').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.stream_token %>';
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
-        // if ('<%= loginStatus.logo %>' == '') {
-        //     document.getElementById('username').value = '<%= loginStatus.name %>';
-        // }
-
-        //  document.getElementById('logo').innerHTML = '<img src=s3link>' ;//shop logo
     } else if (role == 'user') {
         document.getElementById('name').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.name %>';
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
@@ -112,16 +107,9 @@
             processData: false,
             contentType: false,
             success: function (res) {
-                console.log(res);
                 window.location = '/profile'
-                //whatever you wanna do after the form is successfully submitted
             }
         });
     });
-
-
-
 </script>
-
-
 </html>

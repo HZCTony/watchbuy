@@ -51,10 +51,8 @@ module.exports = {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
-					console.log('HostID[0].id == ', HostID[0].id);
 					var update_query = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
 										VALUES('${HostID[0].id}', '${email}','${productName}','${size}','${color}','${filepath}','${stock}','${description}', '${price}');`;
-					console.log(update_query);
 					if (update_query != '') {
 						database.connection.query(update_query, function (error, UpdatedResult, fields) {
 							if (error) {

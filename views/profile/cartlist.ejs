@@ -52,15 +52,12 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
-    console.log(role);
     if (role == 'host') {
 
 
     } else if (role == 'user') {
 
     }
-
-
     let profile_list = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
@@ -82,8 +79,6 @@
             processData: false,
             contentType: false,
             success: function (res) {
-                console.log(res);
-                //whatever you wanna do after the form is successfully submitted
             }
         });
     });
@@ -112,9 +107,7 @@
                     allproducts[cart_item].image,
                     allproducts[cart_item].count
                 );
-                //update AllProductIDinCart content 
                 let number = Number(allproducts[cart_item].price.replace(/[^0-9.-]+/g, ""));
-                console.log('number ==', number);
                 total = total + number * parseInt(allproducts[cart_item].count);
                 productIds.push(allproducts[cart_item].product_id);
                 object = new Object();
@@ -124,9 +117,6 @@
                 object['count'] = allproducts[cart_item].count;
                 temp.push(object);
                 if (cart_item == allproducts.length - 1) {
-                    console.log('total ==', total);
-                    console.log('total ==', String(productIds));
-                    console.log('temp ==\n', temp);
                     document.getElementById('totial_price_value').innerHTML = '<h1>' + total + '</h1>';
                     document.getElementById('AllProductIDinCart').value = '[' + JSON.stringify(temp) + ']';
                     document.getElementById('cart_email').value = '<%= loginStatus.email %>';
@@ -208,18 +198,9 @@
                     productName: name
                 },
                 success: function (res) {
-                    console.log('deleted product in cart');
-
-                    //count total price of current cartlist
                     let price_number = Number(price.replace(/[^0-9.-]+/g, ""));
                     let current_total_price = document.getElementById('totial_price_value').getElementsByTagName('h1')[0].innerText;
                     document.getElementById('totial_price_value').getElementsByTagName('h1')[0].innerText = String(parseInt(current_total_price) - parseInt(price_number) * count);
-
-
-
-
-
-
                     $.ajax({
                         url: '/profile/getProductsinCart',
                         type: "POST",
@@ -234,7 +215,6 @@
                             for (let cart_item = 0; cart_item < allproducts.length; cart_item++) {
                                 //update AllProductIDinCart content 
                                 let number = Number(allproducts[cart_item].price.replace(/[^0-9.-]+/g, ""));
-                                console.log('number ==', number);
                                 total = total + number * parseInt(allproducts[cart_item].count);
                                 productIds.push(allproducts[cart_item].product_id);
                                 object = new Object();
@@ -243,15 +223,9 @@
                                 object['price'] = String(allproducts[cart_item].price);
                                 object['count'] = allproducts[cart_item].count;
 
-                                //這裡要有一個基本的排序
                                 temp.push(object);
-                                
-                                
-                                
+
                                 if (cart_item == allproducts.length - 1) {
-                                    console.log('total ==', total);
-                                    console.log('total ==', String(productIds));
-                                    console.log('temp ==\n', temp);
                                     document.getElementById('totial_price_value').innerHTML = '<h1>' + total + '</h1>';
                                     document.getElementById('AllProductIDinCart').value = '[' + JSON.stringify(temp) + ']';
                                     document.getElementById('cart_email').value = '<%= loginStatus.email %>';
@@ -260,55 +234,10 @@
                             }
                         }
                     })
-
-
-
-
-
-
-
-
-
-
                 }
             })
             $(this).parents('.peritem').css('display', 'none');
         })
-
     }
-
-
 </script>
-
-<!-- <script>
-   let total = 0;
-   var current_cart_prices = document.getElementsByClassName('price').length;
-   console.log('current_cart_prices.length ==', current_cart_prices);
-   for(let p=0; p<current_cart_prices.length; p++ ){
-    let price_value = current_cart_prices[p].innerText;
-    console.log(price_value);
-    total = total + Int(price_value);
-   }
-   document.getElementById('totial_price_value').innerHTML = '<h1>' + String(total) + '</h1>';
-
-</script> -->
-<!-- <script>
-    document.getElementById('sendOrder').addEventListener('click',function(e){
-        e.preventDefault();
-
-                $.ajax({
-                url: '/profile/checkOrder',
-                type: 'POST',
-                data: {
-                    email: '<%= loginStatus.email %>',
-                    price: document.getElementById('totial_price_value').getElementsByTagName('h1')[0].innerText
-                },
-                success: function (res) {
-                    
-                }
-            })
-    })
-</script> -->
-
-
 </html>

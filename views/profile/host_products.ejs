@@ -40,43 +40,6 @@
         </div>
         <div id='settings'>
         <div id='hostproductlist'>
-
-            <!-- here is template -->
-            <!-- <div class='host_owned_single_product'>
-                <div class='host_owned_product_img'
-                    style=" background-image:url(' https://hzctonyforlive.s3.ap-southeast-1.amazonaws.com/product/1581313321596'); ">
-                </div>
-                <div class="single_product_info">
-                    <div class='host_owned_product_name'>
-                        <p>名稱:</p>
-                        <p>Macbook Pro</p>
-                    </div>
-                    <div class='host_owned_product_price'>
-                        <p>單價:</p>
-                        <p>77900</p>
-                    </div>
-                    <div class='host_owned_product_size'>
-                        <p>尺寸:</p>
-                        <p>16吋</p>
-                    </div>
-                    <div class='host_owned_product_color'>
-                        <p>顏色:</p>
-                        <p>太空灰</p>
-                    </div>
-                    <div class='host_owned_product_stock'>
-                        <p>庫存:</p>
-                        <p>快要沒了</p>
-                    </div>
-                    <div class='host_owned_product_description'>
-                        <p>其他敘述:</p>
-                        <p>最新2019年款式</p>
-                    </div>
-                    <div class='host_owned_product_id'>
-                        <p>編號:</p>
-                        <p>1</p>
-                    </div>
-                </div>
-            </div> -->
         </div>
         </div>
     </div>
@@ -84,9 +47,7 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
-    console.log(role);
     if (role == 'host') {
-
         $.ajax({
             url: '/profile/getAllHostOwnedProduct',
             type: 'POST',
@@ -110,13 +71,7 @@
                 }
             })
         })
-
-
-    } else if (role == 'user') {
-
     }
-
-
     let profile_list = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
@@ -124,8 +79,6 @@
             window.location = '/profile/' + i;
         })
     }
-
-
     function generateEverySingleHostOwnedProduct(
         img,
         name,
@@ -185,9 +138,5 @@
         host_owned_single_product.appendChild(single_product_info);
         document.getElementById('hostproductlist').appendChild(host_owned_single_product);
     }
-
-
-
 </script>
-
 </html>

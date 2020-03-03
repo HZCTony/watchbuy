@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'WatchBuy', loginStatus: 'none' });
   } else {
     sigin.personCookieCheck(role, token).then(loginStatus => {
-      console.log(loginStatus);
       Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
         loginStatus.logo = logoPath.logo;
       res.render('index', { title: 'WatchBuy' ,  loginStatus: loginStatus });

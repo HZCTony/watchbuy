@@ -102,7 +102,7 @@ router.get('/:list', function (req, res, next) {
   var role = req.cookies.role;
   var token = req.cookies.token;
   let profileList = req.params.list;
-  console.log('profileList ==', profileList);
+
   if (!role || !token) {
     res.redirect('/signin');
   } else {
@@ -127,7 +127,7 @@ router.get('/:list', function (req, res, next) {
               case '3':
                 res.clearCookie('role');
                 res.clearCookie('token');
-                console.log('[profile.js]: loginStatus=', loginStatus);
+
                 res.redirect('/signin');
                 break;
               default:
@@ -148,7 +148,7 @@ router.get('/:list', function (req, res, next) {
               case '3':
                 res.clearCookie('role');
                 res.clearCookie('token');
-                console.log('[profile.js]: loginStatus=', loginStatus);
+
                 res.redirect('/signin');
                 break;
               default:
@@ -183,7 +183,6 @@ router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req,
   const filename = req.file.location;
   const current_host_email = req.body.email;
   Logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
-    console.log(UpdatedResult);
     res.redirect({ status: 'updated logo path to host database' });
   }).catch(err => {
     res.json({ status: err });
@@ -196,7 +195,6 @@ router.post('/user_logo_upload', user_logo_upload.single('logo'), function (req,
   const filename = req.file.location;
   const current_user_email = req.body.email;
   Logo.UpdateLogoPath(filename, 'user', current_user_email).then(UpdatedResult => {
-    console.log(UpdatedResult);
     res.json({ status: 'updated logo path to user database' });
   }).catch(err => {
     res.json({ status: err });
@@ -217,7 +215,6 @@ router.post('/product_upload', product_upload.single('image'), function (req, re
 
   product.InsertNewProduct(productName, color, size, price, description, stock, email, filepath, price)
     .then(UpdatedResult => {
-      console.log(UpdatedResult);
       res.json({ status: 'Updated information of a single product to database' });
     }).catch(err => {
       res.json({ status: err });
@@ -227,9 +224,7 @@ router.post('/product_upload', product_upload.single('image'), function (req, re
 
 
 router.post('/getProductsinCart', function (req, res, next) {
-  console.log(req.body.email);
   cart.getAllProductsInCart(req.body.email).then(allproducts => {
-    console.log('cart == ', allproducts);
     res.send(allproducts);
   })
 
@@ -239,7 +234,6 @@ router.post('/deleteProductInCart', function (req, res, next) {
   var email = req.body.email;
   var productName = req.body.productName;
   cart.deleteProductInCart(email, productName).then(result => {
-    console.log(result);
     res.send('delete a product in your cart');
   })
 });
@@ -260,12 +254,6 @@ router.post('/payment', function (req, res, next) {
 
   const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
 
-  // stripe.customers.create({
-  //   email: 'hzc1033@smail.nchu.edu.tw',
-  // })
-  //   .then(customer => console.log('user create :',customer.id))
-  //   .catch(error => console.error('user create error :',error));
-
   stripe.charges.create({
   amount: 9487,
   currency: "hkd",
@@ -276,17 +264,6 @@ router.post('/payment', function (req, res, next) {
     res.json({'Tony err:':err})
   }
   res.json(charge);
-  // var order = new Order({
-  //   name: req.body.name,
-  //   address: req.body.address,
-  //   cart: cart,
-  //   paymentId: charge.id
-  // })
-  // order.save(function(err, result){
-  //   req.flash('success', 'Successfully bought product')
-  //   req.session.cart = null
-  //   res.redirect('/')
-  // })
 });
 
 

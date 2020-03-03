@@ -23,7 +23,6 @@ module.exports = {
 				if (error) {
 					reject("[Database Error] " + error);
 				} else {
-					console.log('host: ', hostcheck);
 					resolve(hostcheck);
 				}
 			});
@@ -67,7 +66,6 @@ module.exports = {
 							loginStatus.status = 'none';
 							resolve(loginStatus);
 						} else {
-							console.log(hostcookiecheck[0]);
 							loginStatus.role = 'host';
 							loginStatus.status = Expire_calculation(hostcookiecheck[0].expire_time);
 							loginStatus.name = hostcookiecheck[0].name;
@@ -86,21 +84,17 @@ module.exports = {
 	Update_login_access_token: function (role, email) {
 		return new Promise(function (resolve, reject) {
 			Updated = loginTokenGenerator(email);
-			console.log('Updated == ',Updated);
 			var UpdateloginInfoQuery = '';
 			if (role == 'user') {
 				UpdateloginInfoQuery = `Update userlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
 			} else if (role == 'host') {
 				UpdateloginInfoQuery = `Update hostlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
 			}
-			console.log('Updated == ',Updated);
-			console.log(UpdateloginInfoQuery);
 			if (UpdateloginInfoQuery != '') {
 				database.connection.query(UpdateloginInfoQuery, function (error, Update_Token_and_Expire_result, fields) {
 					if (error) {
 						reject("[Database Error] " + error);
 					} else {
-						console.log(Updated.login_access_token);
 						resolve(Updated.login_access_token);
 					}
 				});
@@ -124,7 +118,6 @@ function loginTokenGenerator(email) {
 	const date = new Date();
 	const temp = date.setSeconds(date.getSeconds() + config.access_expired_sec);
 	const expire_date = new Date(temp);
-	console.log('expire_date ==', expire_date, typeof (expire_date.toString()));
 	const new_access = email + String(expire_date);
 
 	// generate login access token
@@ -157,8 +150,6 @@ function Expire_calculation(expire_time){
 	  const current = new Date();
       const expire = new Date(expire_time);
       const difference = (expire - current) / 1000;
-	  console.log('difference = ', difference);
-
 	  var expire_judgement = '';
 
 	  if(difference > 0){

@@ -62,7 +62,6 @@ router.post('/check', function (req, res) {
 
 
 router.post('/logout', function (req, res, next) {
-  console.log(req.body);
   res.clearCookie('role');
   res.clearCookie('token');
   res.json({msg:'already logout'});

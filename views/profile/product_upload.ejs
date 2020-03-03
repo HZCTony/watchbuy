@@ -54,15 +54,6 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
-    console.log(role);
-    if (role == 'host') {
-
-
-    } else if (role == 'user') {
-
-    }
-
-
     let profile_list = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
@@ -87,7 +78,6 @@
                 console.log(res);
                 document.getElementById('upload_result').innerHTML = '<h3>上傳成功</h3>';
                 document.getElementById('upload_result').style.visibility = 'visible';
-                //whatever you wanna do after the form is successfully submitted
             }
         });
     });

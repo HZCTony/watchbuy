@@ -15,35 +15,8 @@
         <div id='title'>
             <p>選擇感興趣的直播主吧！</p>
         </div>
-        <!-- <div id='category_box_container'>
-            <div class='category_box'>
-                <p>旅遊</p>
-            </div>
-            <div class='category_box'>
-                <p>服飾</p>
-            </div>
-            <div class='category_box'>
-                <p>美食</p>
-            </div>
-        </div> -->
-
     </div>
     <div id='rooms'>
-        <!-- <div class='single_room' onclick="getStreamToken()">
-            <div class='room_title'>
-                <div class='circle'>
-                    <div class='innercircle'></div>
-                </div>
-                <p>Tony's room</p>
-            </div>
-            <div class='room_hostname'>
-                <p>tony</p>
-            </div>
-            <div class='stream_token' style='display:none;'>6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26</div>
-            <div class='room_pic'
-                style="background-image: url('/images/favicon.png'); background-size:contain; background-repeat: no-repeat;">
-            </div>
-        </div> -->
     </div>
 </body>
 
@@ -84,7 +57,6 @@
     }
 
     function generateEverySingleRoom(stream_token, room_Title, room_host_name, active, logo) {
-        //div onclick function
         let background_color = '';
         let liveword = '';
         console.log(active);
@@ -95,10 +67,7 @@
             background_color = 'rgba(255, 0, 0, 0.8)';
             livewords = 'LIVE';
         }
-        // div construction
         var single_room = document.createElement('div');
-
-
         var room_title = document.createElement('div');
         var circle = document.createElement('div');
         var innercircle = document.createElement('div');
@@ -113,7 +82,6 @@
         innercircle.classList.add('innercircle');
         RoomTitleP.appendChild(LiveStatusText);
         circle.appendChild(innercircle);
-        //room_title.appendChild(circle);
         room_title.appendChild(RoomTitleP);
 
 
@@ -121,13 +89,10 @@
         room_hostname.classList.add('room_hostname');
         var host_owner_name = document.createElement('p');
         host_owner_name.appendChild(RoomTitleText);
-        //var HostOwnerNameText = document.createTextNode(room_host_name);
-        //host_owner_name.appendChild(HostOwnerNameText);
         room_hostname.appendChild(host_owner_name);
 
 
         if(logo){
-        //room_pic.innerHTML = '<img src=' + logo + '>';
         single_room.style.backgroundImage=`url(${logo})`;
         }
 

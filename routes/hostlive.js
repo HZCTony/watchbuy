@@ -14,8 +14,6 @@ router.get('/:id', function (req, res, next) {
     res.redirect('/signin');
   } else {
     sigin.personCookieCheck(role, token).then(loginStatus => {
-      console.log('loginStatus ==',loginStatus);
-
       if (role == 'host') {
         if (loginStatus.status == 'not ok') {
           res.clearCookie('role');
@@ -42,10 +40,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.post('/updateLiveActivation', function (req, res) {
-
-  console.log(req.body);
   live.updateLiveActivation(req.body).then(UpdatedResult => {
-    console.log(UpdatedResult);
     res.json({ status: 'ok' });
   })
 
@@ -53,8 +48,6 @@ router.post('/updateLiveActivation', function (req, res) {
 
 
 router.post('/getAllproducts', function (req, res) {
-  console.log(req.body);
-
   product.getAllProducts(req.body.stream_token).then(gotAllProducts => {
     res.send(gotAllProducts);
   })
@@ -62,8 +55,6 @@ router.post('/getAllproducts', function (req, res) {
 
 
 router.post('/getaSingleProduct', function (req, res) {
-  console.log(req.body);
-
   product.getaSingleProduct(req.body.image).then(singleProduct => {
     res.send(singleProduct);
   })

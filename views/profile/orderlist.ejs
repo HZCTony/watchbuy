@@ -58,7 +58,6 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
-    console.log(role);
 
     let profile_list = document.getElementsByClassName('profileSettingitem');
 
@@ -69,11 +68,7 @@
         })
     }
     if (role == 'host') {
-
-
     } else if (role == 'user') {
-        
-        //GET ALL ORDERS
         $.ajax({
             url: '/checkout/GetAllOrders',
             type: 'POST',
@@ -82,7 +77,6 @@
             },
             success:function(Allorders){
                 document.getElementById('loading').style.display='none';
-                console.log('Allorders ==', Allorders);
                 for(let item=0; item<Allorders.length; item++){
                     generateEveryOrder(
                         Allorders[item].id,
@@ -95,8 +89,6 @@
             }
         })
     }
-
-
     function generateEveryOrder(orderid, amount, payment, All_products_info){
         let orderitem = document.createElement('div');
         orderitem.classList.add('orderitem');

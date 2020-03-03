@@ -6,11 +6,6 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	userSignUp: function (name, password, email, login_access_token, expire_time) {
 		return new Promise(function (resolve, reject) {
-
-			//checkDuplicatedName先判斷有沒有重複name
-			//if 沒有重複name 才插入 insertUserSignUpInfo
-			//else 重複了 就回覆已重複的username
-
 			function checkDuplicatedName(useremail) {
 				return new Promise(function (resolve, reject) {
 					database.connection.query(`select * from userlist where email='${useremail}';`, function (error, usernamecheck, fields) {
@@ -56,7 +51,6 @@ module.exports = {
 
 			}
 			UserSignUpProcess().then(value => {
-				console.log(value);
 				resolve(value);
 			}).catch(err => {
 				reject(err);
@@ -67,10 +61,6 @@ module.exports = {
 
 	hostSignUp: function (name, password, email, login_access_token, stream_token, room_name, expire_time) {
 		return new Promise(function (resolve, reject) {
-			//checkDuplicatedName先判斷有沒有重複name
-			//if 沒有重複name 才插入insertHostSignUpInfo
-			//else 重複了 就回覆已重複的username
-
 			function checkDuplicatedName(hostemail) {
 				return new Promise(function (resolve, reject) {
 					database.connection.query(`select * from hostlist where email='${hostemail}';`, function (error, hostcheck, fields) {
@@ -118,7 +108,6 @@ module.exports = {
 
 			}
 			HostSignUpProcess().then(value => {
-				console.log(value);
 				resolve(value);
 			}).catch(err => {
 				reject(err);
@@ -131,7 +120,6 @@ module.exports = {
 		const date = new Date();
 		const temp = date.setSeconds(date.getSeconds() + config.access_expired_sec);
 		const expire_date = new Date(temp);
-		console.log('expire_date ==', expire_date, typeof (expire_date.toString()));
 		const new_access = email + String(expire_date);
 
 		// generate login access token

@@ -4,8 +4,6 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	InsertSingleOrder: function (email, products_in_an_order, amount) {
 		return new Promise(function (resolve, reject) {
-			//let arr = '['+ String(products) + ']'
-			console.log(products_in_an_order);
 			var InsertSingleOrder_query = `INSERT INTO orderlist (email,products,amount,payment) VALUES('${email}','${products_in_an_order}','${amount}','unpaid');`;
 
 			if (InsertSingleOrder_query != '') {

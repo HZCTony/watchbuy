@@ -4,7 +4,7 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user_2.css' />
+  <link rel='stylesheet' href='/stylesheets/live/liveview_for_host_n_user.css' />
   <link rel='stylesheet' href='/stylesheets/live/rwd.css' />
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
@@ -159,9 +159,7 @@
   }
 
 
-  //////////////////////////
-  //for video manipulation//
-  //////////////////////////
+  //for video manipulation
   if (room_obj.active == 'open') {
     // live video pull
     //document.getElementById('notLiveWord').style.display = 'none';
@@ -176,14 +174,11 @@
     } else {
 
       if (flvjs.isSupported()) {
-        // document.querySelector("#video").addEventListener("click", function () {       })
         const live_url = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
         const video = document.getElementById('live_video');
-        //const target = document.querySelector("input").value;
         const flvPlayer = flvjs.createPlayer({
           type: 'flv',
           url: live_url
-          //url: `rtmp://localhost/live/`
         });
         flvPlayer.attachMediaElement(video);
         flvPlayer.load();
@@ -232,10 +227,6 @@
     }
   })
 
-  // < div class='item' >
-  //   <div class='productimg'>
-  //   </div>
-  // </div >
 
   function generateProductImages(imagePath, addtoCartOrigininnerHTML) {
     var item = document.createElement('div');
@@ -319,19 +310,9 @@
     } else if (see == 'hidden') {
       $('#productShow').css("visibility", 'visible');
       document.getElementById('openProductShowBtn').innerHTML = '<p>-</p>';
-      //document.getElementById('addtoCart').style.visibility = 'visible';
     }
   })
 </script>
-
-<!-- DASH mpd -->
-<!-- <script>
-  //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
-  let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/"+ "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" +"/index.mpd";
-  let player = dashjs.MediaPlayer().create();
-  let videoplayer = document.getElementById('live_video');
-  player.initialize(videoplayer, video_url, true);
-</script> -->
 
 
 <script>
@@ -353,8 +334,6 @@
   })
 
   live_video_check.addEventListener("timeupdate", function () {
-    console.log('vid.buffered.end(0) == ', live_video_check.buffered.end(0));
-    console.log('currentTime ==', live_video_check.currentTime);
   })
 </script>
 

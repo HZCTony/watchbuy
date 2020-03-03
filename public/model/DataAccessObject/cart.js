@@ -49,7 +49,7 @@ module.exports = {
 									if (ParsedCartlistResult.length == 0) {
 										let insertToCart_query = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
 											VALUES('${role}','${email}','${productName}','${size}','${color}','${filepath}','${stock}', '${price}', '${description}', '${foundID[0].id}','1');`;
-										console.log(insertToCart_query);
+
 										if (insertToCart_query != '') {
 											database.connection.query(insertToCart_query, function (error, insertToCartResult, fields) {
 												if (error) {
@@ -66,8 +66,7 @@ module.exports = {
 									else {
 										let current_count = ParsedCartlistResult[0].count;
 										let new_count =	parseInt(current_count) + 1;
-										let Update_count_query = `UPDATE cartlist SET count='${new_count}' WHERE email='${email}' AND product_id='${foundID[0].id}';`;
-										console.log('Update_count_query ==',Update_count_query);
+										let Update_count_query = `UPDATE cartlist SET count='${new_count}' WHERE email='${email}' AND product_id='${foundID[0].id}';`;	
 										database.connection.query(Update_count_query, function (error, UpdatedCountResult, fields) {
 											if (error) {
 												reject("[Database Error]: unable to update count of an existed product in cartlist" + error);

@@ -4,7 +4,7 @@
 <head>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/liveview_for_host_n_user_2.css' />
+  <link rel='stylesheet' href='/stylesheets/live/liveview_for_host_n_user.css' />
   <link rel='stylesheet' href='/stylesheets/live/rwd.css' />
 
   <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
@@ -132,10 +132,6 @@
         console.log(msg);
         socket.emit('usr_message', msg);
       }
-      // let msglog = document.getElementById('msglog');
-      // msglog.innerHTML += '<div class="hostMsg" style="width:100% display:inline-block;text-align:left;"><span>現在要播出的商品：' + document.getElementById('product_name').innerText + '</span></div>'
-      // msglog.innerHTML += '<div class="hostMsg-img"><img src="' + document.getElementById('mainimg').src + '"></div>';
-      // msglog.scrollTop = msglog.scrollHeight;
     })
 
 
@@ -180,14 +176,11 @@
 
     // live video pull
     if (flvjs.isSupported()) {
-      // document.querySelector("#video").addEventListener("click", function () {       })
       const live_url = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
       const video = document.getElementById('live_video');
-      //const target = document.querySelector("input").value;
       const flvPlayer = flvjs.createPlayer({
         type: 'flv',
         url: live_url
-        //url: `rtmp://localhost/live/`
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
@@ -200,16 +193,6 @@
 
 
 
-<!-- DASH mpd
-  <script>
-    //let video_url = "http://localhost:8000/live/hzctony/index.mpd";
-    let video_url = "http://d2bdydyr5nl3wu.cloudfront.net/live/" + "6a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26" + "/index.mpd";
-    let player = dashjs.MediaPlayer().create();
-    let videoplayer = document.getElementById('live_video');
-    player.initialize(videoplayer, video_url, true);
-  </script> -->
-
-
 <script>
   const stream_id = '<%- id %>';
   document.getElementById('liveCheckButton').addEventListener('click', function (e) {
@@ -217,17 +200,11 @@
     var color = $('#liveicon-container').css("background-color");
     console.log('color ==', color);
     if (color == 'rgb(128, 128, 128)') {
-      // $('#circle').css('border-color', 'rgb(255, 0, 0)');
-      // $('#innercircle').css('background-color', 'rgb(255, 0, 0)');
-      //$('#liveword').css('background-color', 'rgb(255, 0, 0)');
       $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
       document.getElementById('livestatus').innerHTML = '正在開播中，按我取消';
       document.getElementById('liveword').innerHTML = 'LIVE';
       updateLiveActivation('open', stream_id);
     } else if (color == 'rgb(255, 0, 0)') {
-      // $('#circle').css('border-color', 'rgb(128, 128, 128)');
-      // $('#innercircle').css('background-color', 'rgb(128, 128, 128)');
-      // $('#liveword').css('background-color', 'rgb(128, 128, 128)');
       $('#liveicon-container').css('background-color', 'rgb(128, 128, 128)');
       document.getElementById('livestatus').innerHTML = '影像有畫面後按我開播';
       document.getElementById('liveword').innerHTML = 'NOT LIVE';
@@ -271,14 +248,12 @@
     success: function (gotAllProducts_of_current_host) {
       console.log('gotAllProducts == ', gotAllProducts_of_current_host);
 
-      //for open the live view at the beginning, parse the first product to product show
       if (gotAllProducts_of_current_host.length != 0) {
         document.getElementById('addtoCart').style.visibility = 'visible';
         document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
         document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
         document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
         document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
-        //document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
         document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
         document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
       } else {
