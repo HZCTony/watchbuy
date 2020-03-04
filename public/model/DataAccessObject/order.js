@@ -4,105 +4,146 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	InsertSingleOrder: function (email, products_in_an_order, amount) {
 		return new Promise(function (resolve, reject) {
-			var InsertSingleOrder_query = `INSERT INTO orderlist (email,products,amount,payment) VALUES('${email}','${products_in_an_order}','${amount}','unpaid');`;
+			//var InsertSingleOrder_query = `INSERT INTO orderlist (email,products,amount,payment) VALUES('${email}','${products_in_an_order}','${amount}','unpaid');`;
+			const InsertSingleOrderQuery = `INSERT INTO orderlist (email, products, amount, payment) VALUES( ?, ?, ?,'unpaid');`;
+			const InsertSingleOrderParams = [email, products_in_an_order, amount];
 
-			if (InsertSingleOrder_query != '') {
-				database.connection.query(InsertSingleOrder_query, function (error, insert_order_result, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(insert_order_result);
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
+					connection.query(InsertSingleOrderQuery, InsertSingleOrderParams, function (error, insert_order_result, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(insert_order_result);
+								connection.release();
+							});
+						}
+					});
 				});
-			} else {
-				reject("[Database Query Error]: query of insert_order_result is not available");
-			}
+			});
 		})
 	},
 	DeleteSingleOrder: function (orderID) {
 		return new Promise(function (resolve, reject) {
-
-			var DeleteSingleOrder_query = `delete from orderlist where id='${orderID}'`;
-
-			if (DeleteSingleOrder_query != '') {
-				database.connection.query(DeleteSingleOrder_query, function (error, Deleted_order_result, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(Deleted_order_result);
+			//const DeleteSingleOrderQuery = `delete from orderlist where id='${orderID}';`;
+			const DeleteSingleOrderQuery = `delete from orderlist where id=? ;`;
+			const DeleteSingleOrderParam = [orderID];
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
+					connection.query(DeleteSingleOrderQuery, DeleteSingleOrderParam, function (error, Deleted_order_result, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(Deleted_order_result);
+								connection.release();
+							});
+						}
+					});
 				});
-			} else {
-				reject("[Database Query Error]: query of Deleted_order_result is not available");
-			}
+			});
 		})
 	},
 	UpdateOrderStatus: function (orderID) {
 		return new Promise(function (resolve, reject) {
-
-			var UpdateOrderStatus_query = `Update orderlist set payment='paid' where id='${orderID}'`;
-
-			if (UpdateOrderStatus_query != '') {
-				database.connection.query(UpdateOrderStatus_query, function (error, Updated_order_result, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(Updated_order_result);
+			//var UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id='${orderID}';`;
+			const UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id=? ;`;
+			const UpdateOrderStatusParam = [orderID];
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
+					connection.query(UpdateOrderStatusQuery, UpdateOrderStatusParam, function (error, Updated_order_result, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(Updated_order_result);
+								connection.release();
+							});
+						}
+					});
 				});
-			} else {
-				reject("[Database Query Error]: query of Updated_order_result is not available");
-			}
+			});
 		})
 	},
 	GetAllOrders: function (email) {
 		return new Promise(function (resolve, reject) {
 
-			var GetAllOrders_query = `select * from orderlist where email='${email}'`;
-
-			if (GetAllOrders_query != '') {
-				database.connection.query(GetAllOrders_query, function (error, getBack_order_result, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(getBack_order_result);
-					}
-				});
-			} else {
-				reject("[Database Query Error]: query of Updated_order_result is not available");
-			}
+			const GetAllOrdersQuery = `select * from orderlist where email=? ;`;
+			const GetAllOrdersParam = [email];
+			database.connection.query(GetAllOrdersQuery, GetAllOrdersParam, function (error, getBack_order_result, fields) {
+				if (error) {
+					reject("[Database Error]" + error);
+				} else {
+					resolve(getBack_order_result);
+				}
+			});
 		})
 	},
 	GetOrderImages: function (id_array) {
 		return new Promise(function (resolve, reject) {
-			console.log('id_array ==',id_array);
 			let ids_str = '';
-
-			for(let id=0; id<id_array.length; id++){
-					//console.log('ids[id] ==',String(ids[id]));
-					if(id == 0){
-						ids_str += String(id_array[id]);
-					}else{
-						ids_str += ','+ String(id_array[id]);
-					}
+			for (let id = 0; id < id_array.length; id++) {
+				if (id == 0) {
+					ids_str += String(id_array[id]);
+				} else {
+					ids_str += ',' + String(id_array[id]);
+				}
 			}
-			var GetAllOrdersImage_query = `select * from products where id IN (${ids_str});`;
-			if (GetAllOrdersImage_query != '') {
-				database.connection.query(GetAllOrdersImage_query, function (error, GotImages, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(GotImages);
-					}
-				});
-			} else {
-				reject("[Database Query Error]: query of Updated_order_result is not available");
-			}
+			//`select * from products where id IN (${ids_str});`;
+			const GetAllOrdersImageQuery = `select * from products where id IN (?);`;
+			const GetAllOrdersImageParam = [ids_str];
+			database.connection.query(GetAllOrdersImageQuery, GetAllOrdersImageParam, function (error, GotImages, fields) {
+				if (error) {
+					reject("[Database Error]" + error);
+				} else {
+					resolve(GotImages);
+				}
+			});
 		})
 	}
-
-
-
-
 };
 

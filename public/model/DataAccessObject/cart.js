@@ -4,101 +4,152 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	getAllProductsInCart: function (email) {
 		return new Promise(function (resolve, reject) {
-			var getallproductsInCart_query = `select * from cartlist where email='${email}';`;
-			if (getallproductsInCart_query != '') {
-				database.connection.query(getallproductsInCart_query, function (error, gotAllProductsInCart, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(gotAllProductsInCart);
-					}
-				});
-			} else {
-				reject("[Database Query Error]: query of getting all product of a user's cart is not available");
-			}
+			//var getallproductsInCart_query = `select * from cartlist where email='${email}';`;
+			var getallproductsInCartQuery = `select * from cartlist where email=? ;`;
+			const getAllProductsInCartParam = [email];
+			database.connection.query(getallproductsInCartQuery, getAllProductsInCartParam, function (error, gotAllProductsInCart, fields) {
+				if (error) {
+					reject("[Database Error]" + error);
+				} else {
+					resolve(gotAllProductsInCart);
+				}
+			});
 		})
 	},
 	InsertSingleProducttoCart: function (role, email, productName, color, size, price, description, stock, filepath) {
 		return new Promise(function (resolve, reject) {
-			let FindpersonId_query = '';
+			let findPersonIdQuery = '';
 			if (role == 'user') {
-				FindpersonId_query = `select id from userlist where email='${email}';`;
+				findPersonIdQuery = `select id from userlist where email=?;`;
 			} else if (role == 'host') {
-				FindpersonId_query = `select id from hostlist where email='${email}';`;
+				findPersonIdQuery = `select id from hostlist where email=?;`;
 			} else {
 				reject('[cart.js]: No role existed');
 			}
-			database.connection.query(FindpersonId_query, function (error, personID, fields) {
-				if (error) {
-					reject("[Database Error]" + error);
-				} else {
-					if (personID.length != 0) {
+			const findpersonIdParam = [email];
 
-						// find real product_id
-						let FindProductId_query = `select id from products where name='${productName}' AND image='${filepath}';`;
-						database.connection.query(FindProductId_query, function (error, foundID, fields) {
-
-							//check if there is a product in one's current cartlist
-							let parse_current_cartlist_query = `select * from cartlist where email='${email}' AND product_id='${foundID[0].id}';`;
-							database.connection.query(parse_current_cartlist_query, function (error, ParsedCartlistResult, fields) {
-								if (error) {
-									reject("[Database Error]" + error);
-								} else {
-
-									// if there is no duplicate product, insert the new product into cartlist table, the count will be 1 at first;
-									if (ParsedCartlistResult.length == 0) {
-										let insertToCart_query = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
-											VALUES('${role}','${email}','${productName}','${size}','${color}','${filepath}','${stock}', '${price}', '${description}', '${foundID[0].id}','1');`;
-
-										if (insertToCart_query != '') {
-											database.connection.query(insertToCart_query, function (error, insertToCartResult, fields) {
-												if (error) {
-													reject("[Database Error] unable to insert a new data into cartlist" + error);
-												} else {
-													resolve(insertToCartResult);
-												}
-											});
-										} else {
-											reject("[Database Query Error]: query of inserting data into cartlist is not available");
-										}
-									}
-									// Yes, there is an existed product in one's cartlist
-									else {
-										let current_count = ParsedCartlistResult[0].count;
-										let new_count =	parseInt(current_count) + 1;
-										let Update_count_query = `UPDATE cartlist SET count='${new_count}' WHERE email='${email}' AND product_id='${foundID[0].id}';`;	
-										database.connection.query(Update_count_query, function (error, UpdatedCountResult, fields) {
-											if (error) {
-												reject("[Database Error]: unable to update count of an existed product in cartlist" + error);
-											} else {
-												resolve(UpdatedCountResult);
-											}
-										});
-									}
-								}
-							});
-						});
-
-					} else {
-						reject("[Database Query Error]: no user existed");
-					}
-
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
 				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
+					}
+					connection.query(findPersonIdQuery, findpersonIdParam, function (error, personID, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							if (personID.length != 0) {
+								// find real product_id
+								const FindProductIdQuery = `select id from products where name=? AND image=? ;`;
+								const FindProductIdParams = [productName, filepath];
+								connection.query(FindProductIdQuery, FindProductIdParams, function (error, foundID, fields) {
+
+									//check if there is a product in one's current cartlist
+									const parseCurrentCartlistQuery = `select * from cartlist where email=? AND product_id=?;`;
+									const parseCurrentCartlistParams = [email, foundID[0].id];
+									connection.query(parseCurrentCartlistQuery, parseCurrentCartlistParams, function (error, ParsedCartlistResult, fields) {
+										if (error) {
+											reject("[Database Error]" + error);
+										} else {
+
+											// if there is no duplicate product, insert the new product into cartlist table, the count will be 1 at first;
+											if (ParsedCartlistResult.length == 0) {
+												// 	let insertToCart_query = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
+												// VALUES('${role}','${email}','${productName}','${size}','${color}','${filepath}','${stock}', '${price}', '${description}', '${foundID[0].id}','1');`;
+
+												const insertToCartQuery = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
+																				VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'1');`;
+												const insertToCartParams = [role, email, productName, size, color, filepath, stock, price, description, foundID[0].id];
+												connection.query(insertToCartQuery, insertToCartParams, function (error, insertToCartResult, fields) {
+													if (error) {
+														reject("[Database Error] unable to insert a new data into cartlist" + error);
+													} else {
+														connection.commit(function (commitErr) {
+															if (commitErr) {
+																connection.rollback(function () {
+																	connection.release();
+																	reject(commitErr);
+																});
+															}
+															resolve(insertToCartResult);
+															connection.release();
+														});
+													}
+												});
+											}
+											// Yes, there is an existed product in one's cartlist
+											else {
+												let current_count = ParsedCartlistResult[0].count;
+												let new_count = parseInt(current_count) + 1;
+												//let Update_count_query = `UPDATE cartlist SET count='${new_count}' WHERE email='${email}' AND product_id='${foundID[0].id}';`;
+												const updateCountQuery = `UPDATE cartlist SET count=? WHERE email=? AND product_id=?;`;
+												const updateCountParams = [new_count, email, foundID[0].id];
+												connection.query(updateCountQuery, updateCountParams, function (error, UpdatedCountResult, fields) {
+													if (error) {
+														reject("[Database Error]: unable to update count of an existed product in cartlist" + error);
+													} else {
+														connection.commit(function (commitErr) {
+															if (commitErr) {
+																connection.rollback(function () {
+																	connection.release();
+																	reject(commitErr);
+																});
+															}
+															resolve(UpdatedCountResult);
+															connection.release();
+														});
+													}
+												});
+											}
+										}
+									});
+								});
+							} else {
+								reject("[Database Query Error]: no user existed");
+							}
+						}
+					});
+				});
 			});
-
-
 		})
 	},
 	deleteProductInCart: function (email, productName) {
 		return new Promise(function (resolve, reject) {
 			var deleteProductInCart_query = `delete from cartlist where email='${email}' AND name='${productName}';`;
 			if (deleteProductInCart_query != '') {
-				database.connection.query(deleteProductInCart_query, function (error, gotAllProductsInCart, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(gotAllProductsInCart);
+
+				database.connection.getConnection(function (err, connection) {
+					if (err) {
+						reject(err);
 					}
+
+					connection.beginTransaction(function (Transaction_err) {
+						if (Transaction_err) {
+							connection.rollback(function () {
+								reject(Transaction_err);
+							});
+						}
+						connection.query(deleteProductInCart_query, function (error, gotAllProductsInCart, fields) {
+							if (error) {
+								reject("[Database Error]" + error);
+							} else {
+								connection.commit(function (commitErr) {
+									if (commitErr) {
+										connection.rollback(function () {
+											connection.release();
+											reject(commitErr);
+										});
+									}
+									resolve(gotAllProductsInCart);
+									connection.release();
+								});
+							}
+						});
+					});
 				});
 			} else {
 				reject("[Database Query Error]: query of deleting product in cart is not available");
@@ -107,18 +158,37 @@ module.exports = {
 	},
 	deleteAllProductInCart: function (email) {
 		return new Promise(function (resolve, reject) {
-			var deleteAllProductInCart_query = `delete from cartlist where email='${email}';`;
-			if (deleteAllProductInCart_query != '') {
-				database.connection.query(deleteAllProductInCart_query, function (error, gotAllProductsInCart, fields) {
-					if (error) {
-						reject("[Database Error]" + error);
-					} else {
-						resolve(gotAllProductsInCart);
+			const deleteAllProductInCartQuery = `delete from cartlist where email=? ;`;
+			const deleteAllProductInCartParam = [email];
+
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
+					connection.query(deleteAllProductInCartQuery, deleteAllProductInCartParam, function (error, gotAllProductsInCart, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(gotAllProductsInCart);
+								connection.release();
+							});
+						}
+					});
 				});
-			} else {
-				reject("[Database Query Error]: query of deleting product in cart is not available");
-			}
+			});
 		})
 	}
 

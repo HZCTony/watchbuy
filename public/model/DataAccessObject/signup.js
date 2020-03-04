@@ -8,7 +8,9 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			function checkDuplicatedName(useremail) {
 				return new Promise(function (resolve, reject) {
-					database.connection.query(`select * from userlist where email='${useremail}';`, function (error, usernamecheck, fields) {
+					const checkUserSignUpQuery = `select * from userlist where email=? ;`
+					const checkUserSignUpParam = [useremail];
+					database.connection.query(checkUserSignUpQuery, checkUserSignUpParam, function (error, usernamecheck, fields) {
 						if (error) {
 							reject("[Database Error] " + error);
 						} else {
@@ -20,24 +22,48 @@ module.exports = {
 
 			function insertUserSignUpInfo(name, password, email, login_access_token, expire_time) {
 				return new Promise(function (resolve, reject) {
+					// const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
+					// 						  values('${name}', '${password}',  '${email}', '${login_access_token}', '${expire_time}');`
 					const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
-				                              values('${name}', '${password}',  '${email}', '${login_access_token}', '${expire_time}');`
-					database.connection.query(insert, function (error, insertedHostCheck, fields) {
-						if (error) {
-							reject("[Database Error] " + error);
-						} else {
-							resolve(insertedHostCheck);
+									values(?, ?, ?, ?, ?);`;
+					const insertparams = [name, password, email, login_access_token, expire_time];
+					database.connection.getConnection(function (err, connection) {
+						if (err) {
+							reject(err);
 						}
-					});
+						connection.beginTransaction(function (Transaction_err) {
+							if (Transaction_err) {
+								connection.rollback(function () {
+									reject(Transaction_err);
+								});
+							}
+							connection.query(insert, insertparams, function (error, insertedHostCheck, fields) {
+								if (error) {
+									reject("[Database Error] " + error);
+								} else {
+									connection.commit(function (commitErr) {
+										if (commitErr) {
+											connection.rollback(function () {
+												connection.release();
+												reject(commitErr);
+											});
+										}
+										resolve(insertedHostCheck);
+										connection.release();
+									});
+								}
+							});
+						});
+					})
 				});
 			}
 
 			async function UserSignUpProcess() {
-				var duplicatedUserNameorNot = await checkDuplicatedName(email);
+				let duplicatedUserNameorNot = await checkDuplicatedName(email);
 				const passwordEcripted = passwordEncryption(password);
 				if (duplicatedUserNameorNot.length == 0) {
 
-					var insertUserDataResult = await insertUserSignUpInfo(
+					let insertUserDataResult = await insertUserSignUpInfo(
 						name,
 						passwordEcripted,
 						email,
@@ -63,7 +89,9 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			function checkDuplicatedName(hostemail) {
 				return new Promise(function (resolve, reject) {
-					database.connection.query(`select * from hostlist where email='${hostemail}';`, function (error, hostcheck, fields) {
+					const checkHostSignUpQuery = `select * from hostlist where email=? ;`;
+					const checkHostSignUpParam = [hostemail];
+					database.connection.query(checkHostSignUpQuery, checkHostSignUpParam, function (error, hostcheck, fields) {
 						if (error) {
 							reject("[Database Error] " + error);
 						} else {
@@ -73,17 +101,41 @@ module.exports = {
 				});
 			}
 
+
+
 			function insertHostSignUpInfo(name, password, email, login_access_token, stream_token, room_name, expire_time) {
 				return new Promise(function (resolve, reject) {
-					const insert = `Insert into hostlist(name ,password, email,login_access_token, stream_token, room_name, expire_time) 
-				                              values('${name}', '${password}',  '${email}', '${login_access_token}', '${stream_token}', '${room_name}','${expire_time}');`
-					database.connection.query(insert, function (error, insertedHostCheck, fields) {
-						if (error) {
-							reject("[Database Error] " + error);
-						} else {
-							resolve(insertedHostCheck);
+					const insert = `Insert into hostlist(name , password, email, login_access_token, stream_token, room_name, expire_time) 
+									values(?, ?, ?, ?, ?, ?, ?);`;
+					const insertparams = [name, password, email, login_access_token, stream_token, room_name, expire_time];
+					database.connection.getConnection(function (err, connection) {
+						if (err) {
+							reject(err);
 						}
-					});
+						connection.beginTransaction(function (Transaction_err) {
+							if (Transaction_err) {
+								connection.rollback(function () {
+									reject(Transaction_err);
+								});
+							}
+							connection.query(insert, insertparams, function (error, insertedHostCheck, fields) {
+								if (error) {
+									reject("[Database Error] " + error);
+								} else {
+									connection.commit(function (commitErr) {
+										if (commitErr) {
+											connection.rollback(function () {
+												connection.release();
+												reject(commitErr);
+											});
+										}
+										resolve(insertedHostCheck);
+										connection.release();
+									});
+								}
+							});
+						});
+					})
 				});
 			}
 

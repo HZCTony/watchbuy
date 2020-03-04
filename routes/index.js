@@ -5,7 +5,6 @@ var Logo = require('../public/model/DataAccessObject/Logo.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
   var role = req.cookies.role;
   var token = req.cookies.token;
   if (!role || !token) {
@@ -20,9 +19,6 @@ router.get('/', function(req, res, next) {
       });
     });
   };
-
-
-
 });
 
 module.exports = router;

@@ -18,13 +18,11 @@
                     <p>我的資訊</p>
                 </div>
                 <div class='miditem profileSettingitem'>
-
                     <% if (loginStatus.role == 'host') { %>
                     <p>上傳商品</p>
                     <% } else if(loginStatus.role == 'user'){ %>
                     <p>購物車</p>
                     <% } %>
-
                 </div>
                 <div class='miditem profileSettingitem'>
                     <% if (loginStatus.role == 'host') { %>
@@ -52,12 +50,6 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
-    if (role == 'host') {
-
-
-    } else if (role == 'user') {
-
-    }
     let profile_list = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
@@ -65,8 +57,6 @@
             window.location = '/profile/' + i;
         })
     }
-
-
     $('#upload_product').submit(function (e) {
         e.preventDefault();
         const upload_product = document.getElementById("upload_product");
@@ -126,9 +116,6 @@
             }
         }
     })
-
-
-
 
     //get all products and add to view
     function generateEverySingleItemToCart(name, price, color, size, description, image, count) {

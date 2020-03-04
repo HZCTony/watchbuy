@@ -6,8 +6,10 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	userSignInCheck: function (username, password, email) {
 		return new Promise(function (resolve, reject) {
-
-			database.connection.query(`select * from userlist where name='${username}' AND password='${passwordEncryption(password)}' AND email='${email}';`, function (error, usercheck, fields) {
+			//`select * from userlist where name='${username}' AND password='${passwordEncryption(password)}' AND email='${email}';`
+			const userSignInCheckQuery = `select * from userlist where name=? AND password=? AND email=? ;`;
+			const userSignInCheckParams = [username, passwordEncryption(password), email];
+			database.connection.query(userSignInCheckQuery, userSignInCheckParams, function (error, usercheck, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
@@ -19,7 +21,10 @@ module.exports = {
 
 	hostSignInCheck: function (hostname, password, email) {
 		return new Promise(function (resolve, reject) {
-			database.connection.query(`select * from hostlist where name='${hostname}' AND password='${passwordEncryption(password)}' AND email='${email}';`, function (error, hostcheck, fields) {
+			//`select * from hostlist where name='${hostname}' AND password='${passwordEncryption(password)}' AND email='${email}';`
+			const hostSignInCheckQuery = `select * from hostlist where name=? AND password=? AND email=? ;`;
+			const hostSignInCheckParams = [hostname, passwordEncryption(password), email];
+			database.connection.query(hostSignInCheckQuery, hostSignInCheckParams, function (error, hostcheck, fields) {
 				if (error) {
 					reject("[Database Error] " + error);
 				} else {
@@ -38,7 +43,10 @@ module.exports = {
 				stream_token: ''
 			};
 			if (role == 'user') {
-				database.connection.query(`select * from userlist where login_access_token='${token}';`, function (error, usercookiecheck, fields) {
+				//`select * from userlist where login_access_token='${token}';`
+				cookieCheckQuery = `select * from userlist where login_access_token=? ;`;
+				cookieCheckParam = [token];
+				database.connection.query(cookieCheckQuery, cookieCheckParam, function (error, usercookiecheck, fields) {
 					if (error) {
 						reject("[Database Error] " + error);
 					} else {
@@ -47,17 +55,20 @@ module.exports = {
 							loginStatus.status = 'none';
 							resolve(loginStatus);
 						} else {
-							
-									loginStatus.role = 'user';
-									loginStatus.status = Expire_calculation(usercookiecheck[0].expire_time);
-									loginStatus.name = usercookiecheck[0].name;
-									loginStatus.email = usercookiecheck[0].email;
-									resolve(loginStatus);
+
+							loginStatus.role = 'user';
+							loginStatus.status = Expire_calculation(usercookiecheck[0].expire_time);
+							loginStatus.name = usercookiecheck[0].name;
+							loginStatus.email = usercookiecheck[0].email;
+							resolve(loginStatus);
 						}
 					}
 				});
 			} else if (role == 'host') {
-				database.connection.query(`select * from hostlist where login_access_token='${token}';`, function (error, hostcookiecheck, fields) {
+				//`select * from hostlist where login_access_token='${token}';`
+				hostCookieQuery = `select * from hostlist where login_access_token=? ;`;
+				hostCookieParam = [token];
+				database.connection.query(hostCookieQuery, hostCookieParam, function (error, hostcookiecheck, fields) {
 					if (error) {
 						reject("[Database Error] " + error);
 					} else {
@@ -75,32 +86,56 @@ module.exports = {
 						}
 					}
 				});
-			}else{
+			} else {
 				reject("No user or host.");
 			}
-
 		});
 	},
+
 	Update_login_access_token: function (role, email) {
 		return new Promise(function (resolve, reject) {
 			Updated = loginTokenGenerator(email);
-			var UpdateloginInfoQuery = '';
+			let UpdateloginInfoQuery = '';
+			// if (role == 'user') {
+			// 	UpdateloginInfoQuery = `Update userlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
+			// } else if (role == 'host') {
+			// 	UpdateloginInfoQuery = `Update hostlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
+			// }
 			if (role == 'user') {
-				UpdateloginInfoQuery = `Update userlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
+				UpdateloginInfoQuery = `Update userlist SET login_access_token=?, expire_time=? where email=? ;`;
 			} else if (role == 'host') {
-				UpdateloginInfoQuery = `Update hostlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
+				UpdateloginInfoQuery = `Update hostlist SET login_access_token=?, expire_time=? where email=? ;`;
 			}
-			if (UpdateloginInfoQuery != '') {
-				database.connection.query(UpdateloginInfoQuery, function (error, Update_Token_and_Expire_result, fields) {
-					if (error) {
-						reject("[Database Error] " + error);
-					} else {
-						resolve(Updated.login_access_token);
+			const UpdateloginInfoParams = [Updated.login_access_token, Updated.expire, email];
+
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
+					connection.query(UpdateloginInfoQuery, UpdateloginInfoParams, function (error, Update_Token_and_Expire_result, fields) {
+						if (error) {
+							reject("[Database Error] " + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(Updated.login_access_token);
+								connection.release();
+							});
+						}
+					});
 				});
-			} else {
-				reject('UpdateloginInfoQuery is broken. Check Database to ensure updating login_access_token and expire time is correct');
-			};
+			});
 		})
 	}
 
@@ -125,7 +160,7 @@ function loginTokenGenerator(email) {
 	const login_access_token = new_access_token.toString('hex');
 
 	var res_obj = {
-		expire : expire_date.toString(),
+		expire: expire_date.toString(),
 		login_access_token: login_access_token
 	}
 
@@ -145,18 +180,18 @@ function StreamTokenGenerator(hostname) {
 
 }
 
-function Expire_calculation(expire_time){
+function Expire_calculation(expire_time) {
 
-	  const current = new Date();
-      const expire = new Date(expire_time);
-      const difference = (expire - current) / 1000;
-	  var expire_judgement = '';
+	const current = new Date();
+	const expire = new Date(expire_time);
+	const difference = (expire - current) / 1000;
+	var expire_judgement = '';
 
-	  if(difference > 0){
+	if (difference > 0) {
 		expire_judgement = 'ok';
-	  }else{
+	} else {
 		expire_judgement = 'not ok';
-	  }
-	  return expire_judgement;
+	}
+	return expire_judgement;
 
 }

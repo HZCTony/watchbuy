@@ -45,8 +45,7 @@
             <% } else if(loginStatus.role == 'user'){ %>
 
             <% } %>
-            <div id='upload_result' style="visibility: hidden;">
-            </div>
+            
         </div>
         
     </div>
@@ -54,6 +53,8 @@
 
 <script>
     var role = '<%= loginStatus.role %>';
+
+
     let profile_list = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {

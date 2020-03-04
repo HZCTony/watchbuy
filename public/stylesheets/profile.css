@@ -462,6 +462,7 @@ body{
 
 #orderSection .order_description{
     width: 30%;
+    min-width: 210px;
     height: 240px;
     background-color: white;
     margin-right: 10px;
@@ -469,6 +470,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    border-right: 1px rgba(120,120,120, 0.4) solid;
 
 }
 #orderSection .order_description div{
@@ -505,8 +507,10 @@ justify-content: flex-start;
 
 #orderSection .order_description p{
 margin: 0;
-font-size: 14px;
+font-size: 20px;
+font-weight: bold;
 color: gray;
+margin-top: 10px;
 
 }
 

@@ -44,17 +44,13 @@ router.post('/addtoCart', function (req, res, next) {
   var description = req.body.description;
   var stock = req.body.stock;
   var image = req.body.image;
-  console.log('in userlive/addtoCart :', req.body);
-
 
   if (!role || !email) {
     res.json({ error: '[userlive.js]: not a user to do adding to cart' });
   } else {
     cart.InsertSingleProducttoCart(role, email, name, color, size, price, description, stock, image)
       .then(addedResult => {
-        console.log('[userlive.js]: added product item to cart', JSON.stringify(addedResult));
         res.send(JSON.stringify(addedResult));
-
       }).catch(err => {
         console.log(err);
       })

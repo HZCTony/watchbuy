@@ -152,12 +152,6 @@ router.get('/:list', function (req, res, next) {
                 res.render('./profile/settings', { title: title, loginStatus: loginStatus });
             }
           }
-
-
-
-
-
-
         })
       } else {
         res.clearCookie('role');
@@ -165,7 +159,6 @@ router.get('/:list', function (req, res, next) {
         console.log('[profile.js]: loginStatus=', loginStatus);
         res.redirect('/signin');
       }
-
     }).catch((err) => {
       console.log(err);
     });
@@ -236,49 +229,29 @@ router.post('/deleteProductInCart', function (req, res, next) {
 });
 
 router.post('/getAllHostOwnedProduct', function (req, res, next) {
-  if(req.body.role == 'host'){
-    if(req.body.email){
-      product.getAllHostOwnedProducts(req.body.email).then(AllProducts=>{
+  if (req.body.role == 'host') {
+    if (req.body.email) {
+      product.getAllHostOwnedProducts(req.body.email).then(AllProducts => {
         res.send(AllProducts);
       })
     }
-}
+  }
 
-}); 
+});
 
 router.post('/payment', function (req, res, next) {
   const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
-
   stripe.charges.create({
-  amount: 9487,
-  currency: "hkd",
-  source: req.body.stripeToken, // obtained with Stripe.js
-  description: "Test Tony Charge"
-},  function(err, charge) {
-  if (err) {
-    res.json({'Tony err:':err})
-  }
-  res.json(charge);
-});
-
-
-  (async () => {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        name: 'T-shirt',
-        description: 'Comfortable cotton t-shirt',
-        images: ['https://example.com/t-shirt.png'],
-        amount: 500,
-        currency: 'sgd',
-        quantity: 1,
-      }],
-      success_url: 'http://localhost/',
-      cancel_url: 'http://localhost/signin',
-    });
-  })();
-
-  
+    amount: 9487,
+    currency: "hkd",
+    source: req.body.stripeToken, // obtained with Stripe.js
+    description: "Test Tony Charge"
+  }, function (err, charge) {
+    if (err) {
+      res.json({ 'Tony err:': err })
+    }
+    res.json(charge);
+  });
 })
 
 

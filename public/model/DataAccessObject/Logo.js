@@ -4,58 +4,60 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	getLogoImgPath: function (role, email) {
 		return new Promise(function (resolve, reject) {
-			var update_query = '';
+			let getLogoQuery = '';
 			if (role == 'user') {
-				get_logo_query = `select logo from userlist where email='${email}';`
+				getLogoQuery = `select logo from userlist where email=? ;`
 			} else if (role == 'host') {
-				get_logo_query = `select logo from hostlist where email='${email}';`
+				getLogoQuery = `select logo from hostlist where email=? ;`
 			}
-			if (get_logo_query != '') {
-				database.connection.query(get_logo_query, function (error, getLogoResult, fields) {
+			const getLogoParams = [email];
+				database.connection.query(getLogoQuery, getLogoParams, function (error, getLogoResult, fields) {
 					if (error) {
 						reject("[Database Error]" + error);
 					} else {
 						resolve(getLogoResult[0]);
 					}
 				});
-			} else {
-				reject("[Database Query Error]: query of Update Logo Path is not available");
-			}
 		})
 	},
 	UpdateLogoPath: function (logoPath, role, email) {
 		return new Promise(function (resolve, reject) {
-			var update_query = '';
+			let updateQuery = '';
 			if (role == 'user') {
-				update_query = `UPDATE userlist SET logo='${logoPath}' where email='${email}';`
+				updateQuery = `UPDATE userlist SET logo=? where email=? ;`
 			} else if (role == 'host') {
-				update_query = `UPDATE hostlist SET logo='${logoPath}' where email='${email}';`
+				updateQuery = `UPDATE hostlist SET logo=? where email=? ;`
 			}
-			if (update_query != '') {
+			const updateParams = [logoPath, email];
+
 				database.connection.getConnection(function (err, connection) {
 					if (err) {
 						reject(err);
 					}
-					connection.query(update_query, function (error, UpdatedResult, fields) {
-						if (error) {
-							reject("[Database Error]" + error);
-						} else {
-							connection.commit(function (commitErr) {
-								if (commitErr) {
-									connection.rollback(function () {
-										connection.release();
-										reject(commitErr);
-									});
-								}
-								resolve(UpdatedResult);
-								connection.release();
+					connection.beginTransaction(function (Transaction_err) {
+						if (Transaction_err) {
+							connection.rollback(function () {
+								reject(Transaction_err);
 							});
 						}
+						connection.query(updateQuery, updateParams, function (error, UpdatedResult, fields) {
+							if (error) {
+								reject("[Database Error]" + error);
+							} else {
+								connection.commit(function (commitErr) {
+									if (commitErr) {
+										connection.rollback(function () {
+											connection.release();
+											reject(commitErr);
+										});
+									}
+									resolve(UpdatedResult);
+									connection.release();
+								});
+							}
+						});
 					});
 				});
-			} else {
-				reject("[Database Query Error]: query of Update Logo Path is not available");
-			}
 		})
 
 

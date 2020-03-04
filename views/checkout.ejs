@@ -13,7 +13,7 @@
 
   <div id='checkform'>
     <form id="payment-form">
-      
+
       <div class="form-row">
         <div id="card-element">
           <!-- A Stripe Element will be inserted here. -->
@@ -24,7 +24,9 @@
       <button id='submit' type="submit">確認付款</button>
     </form>
     <div id="card-errors" role="alert"></div>
-    <div id='test'><p>現在僅支援測試帳號: 4242 4242 4242 4242</p></div>
+    <div id='test'>
+      <p>現在僅支援測試帳號: 4242 4242 4242 4242</p>
+    </div>
   </div>
 
 
@@ -65,7 +67,7 @@
       iconColor: '#fa755a'
     }
   };
-  
+
   var card = elements.create("card", { style: style });
   card.mount("#card-element");
 
@@ -87,7 +89,7 @@
       payment_method: {
         card: card,
         billing_details: {
-          name: 'Jenny Rosen'
+          name: 'Jenny Rosen' //default
         }
       }
     }).then(function (result) {
@@ -131,4 +133,5 @@
     })
   }
 </script>
+
 </html>

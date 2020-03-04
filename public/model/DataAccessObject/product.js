@@ -4,33 +4,32 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	getAllProducts: function (stream_token) {
 		return new Promise(function (resolve, reject) {
-
-			var gethostid_query = `select id from hostlist where stream_token='${stream_token}';`;
-			database.connection.query(gethostid_query, function (error, hostid, fields) {
+			const getHostIdQuery = `select id from hostlist where stream_token=? ;`;
+			const getHostIdParam = [stream_token];
+			database.connection.query(getHostIdQuery, getHostIdParam, function (error, hostid, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
-					var getAllProducts_query = `select name,size,color,image,stock,description,price from products where hostid='${hostid[0].id}';`;
-					if (getAllProducts_query != '') {
-						database.connection.query(getAllProducts_query, function (error, gotAllProducts, fields) {
-							if (error) {
-								reject("[Database Error]" + error);
-							} else {
-								resolve(gotAllProducts);
-							}
-						});
-					} else {
-						reject("[Database Query Error]: query of Update Logo Path is not available");
-					}
+					const getAllProductsQuery = `select name, size, color, image, stock, description, price from products where hostid=? ;`;
+					const getAllProductsParam = [hostid[0].id];
+
+					database.connection.query(getAllProductsQuery, getAllProductsParam, function (error, gotAllProducts, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							resolve(gotAllProducts);
+						}
+					});
 				}
 			});
 		})
 	},
 	getaSingleProduct: function (image) {
 		return new Promise(function (resolve, reject) {
-			var getaSingleProduct_query = `select name,size,color,image,stock,description,price from products where image='${image}'`;
+			const getaSingleProductQuery = `select name, size, color, image, stock, description, price from products where image=? ;`;
+			const getaSingleProductParam = [image];
 			if (getaSingleProduct_query != '') {
-				database.connection.query(getaSingleProduct_query, function (error, singleProduct, fields) {
+				database.connection.query(getaSingleProductQuery, getaSingleProductParam, function (error, singleProduct, fields) {
 					if (error) {
 						reject("[Database Error]" + error);
 					} else {
@@ -44,59 +43,80 @@ module.exports = {
 	},
 	InsertNewProduct: function (productName, color, size, price, description, stock, email, filepath, price) {
 		return new Promise(function (resolve, reject) {
-
 			//find hostid
-			const FindHostId_query = `select id from hostlist where email='${email}';`;
-			database.connection.query(FindHostId_query, function (error, HostID, fields) {
-				if (error) {
-					reject("[Database Error]" + error);
-				} else {
-					var update_query = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
-										VALUES('${HostID[0].id}', '${email}','${productName}','${size}','${color}','${filepath}','${stock}','${description}', '${price}');`;
-					if (update_query != '') {
-						database.connection.query(update_query, function (error, UpdatedResult, fields) {
+			// const FindHostId_query = `select id from hostlist where email='${email}';`;
+			const FindHostIdQuery = `select id from hostlist where email=?;`;
+			const FindHostIdParam = [email];
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+				connection.query(FindHostIdQuery, FindHostIdParam, function (FindIderror, HostID, fields) {
+					if (FindIderror) {
+						reject("[Database Error]" + FindIderror);
+					} else {
+						// var update_query = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
+						// 				VALUES('${HostID[0].id}', '${email}','${productName}','${size}','${color}','${filepath}','${stock}','${description}', '${price}');`;
+						var updateQuery = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
+							VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+						const updateParams = [HostID[0].id, email, productName, size, color, filepath, stock, description, price];
+						connection.query(updateQuery, updateParams, function (error, UpdatedResult, fields) {
 							if (error) {
 								reject("[Database Error]" + error);
 							} else {
-								resolve(UpdatedResult);
+								connection.commit(function (commitErr) {
+									if (commitErr) {
+										connection.rollback(function () {
+											connection.release();
+											reject(commitErr);
+										});
+									}
+									resolve(UpdatedResult);
+									connection.release();
+								});
 							}
 						});
-					} else {
-						reject("[Database Query Error]: query of Update Logo Path is not available");
 					}
-
-
-				}
+				});
 			});
-
-
 		})
 	},
 	getAllHostOwnedProducts: function (email) {
 		return new Promise(function (resolve, reject) {
-
-			let checkhost_query = `select id, email from hostlist where email='${email}';`;
-			database.connection.query(checkhost_query, function (error, hostid, fields) {
-				if (error) {
-					reject("[Database Error]" + error);
-				} else {
-					var getAllHostOwnedProducts_query = `select id,name,size,color,image,stock,description,price from products where host_email='${hostid[0].email}';`;
-					if (getAllHostOwnedProducts_query != '') {
-						database.connection.query(getAllHostOwnedProducts_query, function (error, gotProducts, fields) {
-							if (error) {
-								reject("[Database Error]" + error);
-							} else {
-								resolve(gotProducts);
-							}
-						});
-					} else {
-						reject("[Database Query Error]: query of getAllHostOwnedProducts is not available");
-					}
+			// `select id, email from hostlist where email='${email}';`;
+			const checkhostQuery = `select id, email from hostlist where email=? ;`;
+			const checkhostParam = [email];
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
 				}
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
+					}
+					connection.query(checkhostQuery, checkhostParam, function (error, hostid, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+							connection.release();
+						} else {
+							//`select id,name,size,color,image,stock,description,price from products where host_email='${hostid[0].email}';`;
+							const getAllHostOwnedProductsQuery = `select id, name, size, color, image, stock, description, price from products where host_email=? ;`;
+							const getAllHostOwnedProductsParam = [hostid[0].email];
+							connection.query(getAllHostOwnedProductsQuery, getAllHostOwnedProductsParam, function (error, gotProducts, fields) {
+								if (error) {
+									reject("[Database Error]" + error);
+								} else {
+									resolve(gotProducts);
+									connection.release();
+								}
+							});
+						}
+					});
+				});
 			});
 		})
 	}
-
-
 };
 
