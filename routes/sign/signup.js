@@ -33,6 +33,8 @@ router.post('/host', function(req, res){
     login_info.expire
   ).then(insertHostDataResult =>{
     resobj.status = insertHostDataResult;
+    res.cookie('role','host');
+    res.cookie('token',login_info.login_access_token);
     res.json(resobj);
   });
 });
@@ -48,6 +50,8 @@ router.post('/user', function(req, res){
     login_info.expire
   ).then(insertUserDataResult =>{
     resobj.status = insertUserDataResult;
+    res.cookie('role','user');
+    res.cookie('token',login_info.login_access_token);
     res.json(resobj);
   });
 });

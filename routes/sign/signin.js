@@ -20,7 +20,6 @@ router.post('/check', function (req, res) {
       if (data.length == 0) {
         res.json({ status: 'You have not been signed up as a user yet.' });
       } else {
-        var status = 'Welcome Back! ' + name;
         //做完登入確認要轉跳
         signin.Update_login_access_token(role,email).then((Updated_login_access_token)=>{
           console.log('Updated_login_access_token == ',Updated_login_access_token);
