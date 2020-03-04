@@ -239,20 +239,6 @@ router.post('/getAllHostOwnedProduct', function (req, res, next) {
 
 });
 
-router.post('/payment', function (req, res, next) {
-  const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
-  stripe.charges.create({
-    amount: 9487,
-    currency: "hkd",
-    source: req.body.stripeToken, // obtained with Stripe.js
-    description: "Test Tony Charge"
-  }, function (err, charge) {
-    if (err) {
-      res.json({ 'Tony err:': err })
-    }
-    res.json(charge);
-  });
-})
 
 
 module.exports = router;

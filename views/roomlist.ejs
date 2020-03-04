@@ -25,7 +25,6 @@
     function getStreamToken() {
         const stream_token = document.getElementsByClassName('stream_token')[0].innerText;
         const room_hostname = document.getElementsByClassName('room_hostname')[0].getElementsByTagName('p')[0].innerText;
-        console.log(room_hostname);
         if ('<%= loginStatus.role %>' == 'host') {
             if ('<%= loginStatus.name %>' == room_hostname) {
                 window.location = '/hostlive/' + stream_token;
@@ -44,7 +43,6 @@
 
     var rooms = String(`<%- rooms %>`);
     var rooms_obj = JSON.parse(rooms);
-    console.log(rooms_obj);
 
     for (var iter = 0; iter < rooms_obj.length; iter++) {
         const stream_name = rooms_obj[iter].stream_token;
@@ -52,14 +50,13 @@
         const room_host_name = rooms_obj[iter].name;
         const ActivationStatus = rooms_obj[iter].active;
         const logo = rooms_obj[iter].logo;
-        console.log(room_Title);
         generateEverySingleRoom(stream_name, room_Title, room_host_name, ActivationStatus, logo);
     }
 
     function generateEverySingleRoom(stream_token, room_Title, room_host_name, active, logo) {
         let background_color = '';
         let liveword = '';
-        console.log(active);
+
         if (active == 'close') {
             background_color = 'rgba(128,128,128,0.8)';
             livewords = 'NOT LIVE';

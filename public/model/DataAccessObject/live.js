@@ -14,7 +14,6 @@ module.exports = {
 							reject(Transaction_err);
 						});
 					}
-					//const update_query = `UPDATE hostlist SET active='${updateStatus.status}' where stream_token='${updateStatus.stream_token}';`;
 					const updateQuery = `UPDATE hostlist SET active=? where stream_token=? ;`;
 					const updateParams = [updateStatus.status, updateStatus.stream_token];
 					connection.query(updateQuery, updateParams, function (error, UpdatedResult, fields) {

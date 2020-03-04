@@ -68,17 +68,14 @@
     socket = io.connect();
     const roomid = '<%- id %>';
     const current_host_name = '<%= loginStatus.name %>';
-    // var username = document.getElementById('username').innerText;
 
     //check host's room and join
-    console.log(roomid);
     var user = {
       name: current_host_name,
       room: roomid
     }
     socket.emit('join', user);
     socket.on('sys', function (status) {
-      console.log(status);
     });
 
     //chat enter event
@@ -104,7 +101,6 @@
           room: roomid,
           image: ''
         }
-        console.log(msg);
         socket.emit('usr_message', msg);
         document.getElementById("message").value = '';
       }
@@ -129,7 +125,6 @@
           room: roomid,
           image: document.getElementById('mainimg').src
         }
-        console.log(msg);
         socket.emit('usr_message', msg);
       }
     })
@@ -188,7 +183,6 @@
   document.getElementById('liveCheckButton').addEventListener('click', function (e) {
     e.preventDefault();
     var color = $('#liveicon-container').css("background-color");
-    console.log('color ==', color);
     if (color == 'rgb(128, 128, 128)') {
       $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
       document.getElementById('livestatus').innerHTML = '正在開播中，按我取消';
@@ -218,7 +212,6 @@
         status: status
       },
       success: function (res) {
-        console.log(res.status);
       }
     })
   }
@@ -233,8 +226,6 @@
       stream_token: '<%- id %>',
     },
     success: function (gotAllProducts_of_current_host) {
-      console.log('gotAllProducts == ', gotAllProducts_of_current_host);
-
       if (gotAllProducts_of_current_host.length != 0) {
         document.getElementById('addtoCart').style.visibility = 'visible';
         document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
@@ -248,7 +239,6 @@
       }
 
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
-        console.log(item);
         let image_S3_url = gotAllProducts_of_current_host[item].image
         generateProductImages(image_S3_url);
       }
@@ -275,8 +265,6 @@
           image: imagePath,
         },
         success: function (singleProduct) {
-          console.log('singleProduct ==', singleProduct);
-
           document.getElementById('product_name').innerHTML = singleProduct.name;
           document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
           document.getElementById('size').innerHTML = singleProduct.size;

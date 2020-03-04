@@ -46,8 +46,6 @@
 </body>
 
 <script>
-
-    console.log('started');
     document.getElementById("sendSigninInfo").addEventListener("click", function (event) {
       event.preventDefault();
       
@@ -62,8 +60,6 @@
           role : document.getElementById("role").value
         },
         success: function (req) {
-          //請求成功時處理
-          console.log('req.status== ',req.status);
           if(req.status == 'You have not been signed up as a user yet.'){
             document.getElementById('status').innerText = "你尚未註冊為使用者";
           }else if(req.status == 'You have not been signed up as a host yet.'){
@@ -76,14 +72,6 @@
 
         }
       })
-
-
     });
-
-
-
-
-
 </script>
-
 </html>

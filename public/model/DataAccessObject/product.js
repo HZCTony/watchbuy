@@ -28,7 +28,6 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			const getaSingleProductQuery = `select name, size, color, image, stock, description, price from products where image=? ;`;
 			const getaSingleProductParam = [image];
-			if (getaSingleProduct_query != '') {
 				database.connection.query(getaSingleProductQuery, getaSingleProductParam, function (error, singleProduct, fields) {
 					if (error) {
 						reject("[Database Error]" + error);
@@ -36,15 +35,11 @@ module.exports = {
 						resolve(singleProduct[0]);
 					}
 				});
-			} else {
-				reject("[Database Query Error]: query of Update Logo Path is not available");
-			}
 		})
 	},
 	InsertNewProduct: function (productName, color, size, price, description, stock, email, filepath, price) {
 		return new Promise(function (resolve, reject) {
 			//find hostid
-			// const FindHostId_query = `select id from hostlist where email='${email}';`;
 			const FindHostIdQuery = `select id from hostlist where email=?;`;
 			const FindHostIdParam = [email];
 			database.connection.getConnection(function (err, connection) {
@@ -55,8 +50,6 @@ module.exports = {
 					if (FindIderror) {
 						reject("[Database Error]" + FindIderror);
 					} else {
-						// var update_query = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
-						// 				VALUES('${HostID[0].id}', '${email}','${productName}','${size}','${color}','${filepath}','${stock}','${description}', '${price}');`;
 						var updateQuery = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
 							VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 						const updateParams = [HostID[0].id, email, productName, size, color, filepath, stock, description, price];

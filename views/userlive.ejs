@@ -79,14 +79,12 @@
   const current_user_name = '<%= loginStatus.name %>';
 
   //check user's room and join
-  console.log(roomid);
   var user = {
     name: current_user_name,
     room: roomid
   }
   socket.emit('join', user);
   socket.on('sys', function (status) {
-    console.log(status);
   });
 
   //chat enter event
@@ -145,9 +143,8 @@
 
 <script>
   var single_room = `<%- room %>`;
-  console.log(single_room);
   var room_obj = JSON.parse(single_room);
-  console.log('room ==', room_obj);
+
   if (room_obj.active == 'open') {
 
     $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
@@ -199,7 +196,6 @@
       stream_token: '<%- id %>',
     },
     success: function (gotAllProducts_of_current_host) {
-      console.log('gotAllProducts == ', gotAllProducts_of_current_host);
       //for open the live view at the beginning, parse the first product to product show
       if(gotAllProducts_of_current_host.length != 0){
       document.getElementById('addtoCart').style.visibility = 'visible';
@@ -216,7 +212,6 @@
     }
 
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
-        console.log(item);
         let image_S3_url = gotAllProducts_of_current_host[item].image
         generateProductImages(image_S3_url);
 
@@ -246,8 +241,6 @@
           image: imagePath,
         },
         success: function (singleProduct) {
-          console.log('singleProduct ==', singleProduct);
-
           document.getElementById('product_name').innerHTML = singleProduct.name;
           document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
           document.getElementById('color').innerHTML = singleProduct.color;
@@ -289,7 +282,6 @@
       type: "POST",
       data: AddToCart,
       success: function (result) {
-        console.log('result ==', result);
         document.getElementById('addtoCart').style.backgroundColor = 'rgba(0,0,0,0)';
         document.getElementById('addtoCart').innerHTML = '<video id="checkvid" autoplay muted src="/images/checkvid2.mp4"><video>'
       }

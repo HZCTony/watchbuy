@@ -4,7 +4,6 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	getAllProductsInCart: function (email) {
 		return new Promise(function (resolve, reject) {
-			//var getallproductsInCart_query = `select * from cartlist where email='${email}';`;
 			var getallproductsInCartQuery = `select * from cartlist where email=? ;`;
 			const getAllProductsInCartParam = [email];
 			database.connection.query(getallproductsInCartQuery, getAllProductsInCartParam, function (error, gotAllProductsInCart, fields) {
@@ -58,9 +57,6 @@ module.exports = {
 
 											// if there is no duplicate product, insert the new product into cartlist table, the count will be 1 at first;
 											if (ParsedCartlistResult.length == 0) {
-												// 	let insertToCart_query = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
-												// VALUES('${role}','${email}','${productName}','${size}','${color}','${filepath}','${stock}', '${price}', '${description}', '${foundID[0].id}','1');`;
-
 												const insertToCartQuery = `Insert into cartlist(role, email, name, size, color, image, stock, price, description, product_id, count)
 																				VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'1');`;
 												const insertToCartParams = [role, email, productName, size, color, filepath, stock, price, description, foundID[0].id];
@@ -85,7 +81,6 @@ module.exports = {
 											else {
 												let current_count = ParsedCartlistResult[0].count;
 												let new_count = parseInt(current_count) + 1;
-												//let Update_count_query = `UPDATE cartlist SET count='${new_count}' WHERE email='${email}' AND product_id='${foundID[0].id}';`;
 												const updateCountQuery = `UPDATE cartlist SET count=? WHERE email=? AND product_id=?;`;
 												const updateCountParams = [new_count, email, foundID[0].id];
 												connection.query(updateCountQuery, updateCountParams, function (error, UpdatedCountResult, fields) {
@@ -120,40 +115,36 @@ module.exports = {
 	deleteProductInCart: function (email, productName) {
 		return new Promise(function (resolve, reject) {
 			var deleteProductInCart_query = `delete from cartlist where email='${email}' AND name='${productName}';`;
-			if (deleteProductInCart_query != '') {
 
-				database.connection.getConnection(function (err, connection) {
-					if (err) {
-						reject(err);
+			database.connection.getConnection(function (err, connection) {
+				if (err) {
+					reject(err);
+				}
+
+				connection.beginTransaction(function (Transaction_err) {
+					if (Transaction_err) {
+						connection.rollback(function () {
+							reject(Transaction_err);
+						});
 					}
-
-					connection.beginTransaction(function (Transaction_err) {
-						if (Transaction_err) {
-							connection.rollback(function () {
-								reject(Transaction_err);
+					connection.query(deleteProductInCart_query, function (error, gotAllProductsInCart, fields) {
+						if (error) {
+							reject("[Database Error]" + error);
+						} else {
+							connection.commit(function (commitErr) {
+								if (commitErr) {
+									connection.rollback(function () {
+										connection.release();
+										reject(commitErr);
+									});
+								}
+								resolve(gotAllProductsInCart);
+								connection.release();
 							});
 						}
-						connection.query(deleteProductInCart_query, function (error, gotAllProductsInCart, fields) {
-							if (error) {
-								reject("[Database Error]" + error);
-							} else {
-								connection.commit(function (commitErr) {
-									if (commitErr) {
-										connection.rollback(function () {
-											connection.release();
-											reject(commitErr);
-										});
-									}
-									resolve(gotAllProductsInCart);
-									connection.release();
-								});
-							}
-						});
 					});
 				});
-			} else {
-				reject("[Database Query Error]: query of deleting product in cart is not available");
-			}
+			});
 		})
 	},
 	deleteAllProductInCart: function (email) {

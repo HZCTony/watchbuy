@@ -4,7 +4,6 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	InsertSingleOrder: function (email, products_in_an_order, amount) {
 		return new Promise(function (resolve, reject) {
-			//var InsertSingleOrder_query = `INSERT INTO orderlist (email,products,amount,payment) VALUES('${email}','${products_in_an_order}','${amount}','unpaid');`;
 			const InsertSingleOrderQuery = `INSERT INTO orderlist (email, products, amount, payment) VALUES( ?, ?, ?,'unpaid');`;
 			const InsertSingleOrderParams = [email, products_in_an_order, amount];
 
@@ -133,10 +132,8 @@ module.exports = {
 					ids_str += ',' + String(id_array[id]);
 				}
 			}
-			//`select * from products where id IN (${ids_str});`;
-			const GetAllOrdersImageQuery = `select * from products where id IN (?);`;
-			const GetAllOrdersImageParam = [ids_str];
-			database.connection.query(GetAllOrdersImageQuery, GetAllOrdersImageParam, function (error, GotImages, fields) {
+			const GetAllOrdersImageQuery = `select * from products where id IN (${ids_str});`;
+			database.connection.query(GetAllOrdersImageQuery, function (error, GotImages, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {

@@ -6,7 +6,6 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	userSignInCheck: function (username, password, email) {
 		return new Promise(function (resolve, reject) {
-			//`select * from userlist where name='${username}' AND password='${passwordEncryption(password)}' AND email='${email}';`
 			const userSignInCheckQuery = `select * from userlist where name=? AND password=? AND email=? ;`;
 			const userSignInCheckParams = [username, passwordEncryption(password), email];
 			database.connection.query(userSignInCheckQuery, userSignInCheckParams, function (error, usercheck, fields) {
@@ -18,10 +17,8 @@ module.exports = {
 			});
 		});
 	},
-
 	hostSignInCheck: function (hostname, password, email) {
 		return new Promise(function (resolve, reject) {
-			//`select * from hostlist where name='${hostname}' AND password='${passwordEncryption(password)}' AND email='${email}';`
 			const hostSignInCheckQuery = `select * from hostlist where name=? AND password=? AND email=? ;`;
 			const hostSignInCheckParams = [hostname, passwordEncryption(password), email];
 			database.connection.query(hostSignInCheckQuery, hostSignInCheckParams, function (error, hostcheck, fields) {
@@ -43,7 +40,6 @@ module.exports = {
 				stream_token: ''
 			};
 			if (role == 'user') {
-				//`select * from userlist where login_access_token='${token}';`
 				cookieCheckQuery = `select * from userlist where login_access_token=? ;`;
 				cookieCheckParam = [token];
 				database.connection.query(cookieCheckQuery, cookieCheckParam, function (error, usercookiecheck, fields) {
@@ -65,7 +61,6 @@ module.exports = {
 					}
 				});
 			} else if (role == 'host') {
-				//`select * from hostlist where login_access_token='${token}';`
 				hostCookieQuery = `select * from hostlist where login_access_token=? ;`;
 				hostCookieParam = [token];
 				database.connection.query(hostCookieQuery, hostCookieParam, function (error, hostcookiecheck, fields) {
@@ -96,11 +91,6 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			Updated = loginTokenGenerator(email);
 			let UpdateloginInfoQuery = '';
-			// if (role == 'user') {
-			// 	UpdateloginInfoQuery = `Update userlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
-			// } else if (role == 'host') {
-			// 	UpdateloginInfoQuery = `Update hostlist SET login_access_token='${Updated.login_access_token}', expire_time='${Updated.expire}' where email='${email}';`;
-			// }
 			if (role == 'user') {
 				UpdateloginInfoQuery = `Update userlist SET login_access_token=?, expire_time=? where email=? ;`;
 			} else if (role == 'host') {

@@ -22,8 +22,6 @@ module.exports = {
 
 			function insertUserSignUpInfo(name, password, email, login_access_token, expire_time) {
 				return new Promise(function (resolve, reject) {
-					// const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
-					// 						  values('${name}', '${password}',  '${email}', '${login_access_token}', '${expire_time}');`
 					const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
 									values(?, ?, ?, ?, ?);`;
 					const insertparams = [name, password, email, login_access_token, expire_time];
