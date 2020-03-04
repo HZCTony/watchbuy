@@ -24,6 +24,7 @@ router.post('/', function (req, res, next) {
   })();
 });
 
+
 router.post('/cancelOrder', function (req, res, next) {
   order.DeleteSingleOrder(req.body.order).then(Deleted_order_result => {
     res.send(Deleted_order_result);

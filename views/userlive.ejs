@@ -45,12 +45,12 @@
 
     <div id='live'>
 
-        <div id='video-container'>
-          <div id='video'>
-            <video autoplay id="live_video" width="100%">
-            </video>
-          </div>
+      <div id='video-container'>
+        <div id='video'>
+          <video autoplay id="live_video" width="100%">
+          </video>
         </div>
+      </div>
 
     </div>
 
@@ -129,7 +129,7 @@
         msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '"></div>';
       }
       msglog.scrollTop = msglog.scrollHeight;
-    } else{
+    } else {
       msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
       if (gotMessage.image != '') {
         msglog.innerHTML += '<div class="userMsg-img"><img src="' + gotMessage.image + '"></div>';
@@ -197,19 +197,25 @@
     },
     success: function (gotAllProducts_of_current_host) {
       //for open the live view at the beginning, parse the first product to product show
-      if(gotAllProducts_of_current_host.length != 0){
-      document.getElementById('addtoCart').style.visibility = 'visible';
-      document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
-      document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
-      document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
-      document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+      if (gotAllProducts_of_current_host.length != 0) {
 
-      //document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
-      document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
-      document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
-    }else{
-      document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
-    }
+        if ('<%= loginStatus.role %>') {
+          document.getElementById('addtoCart').style.visibility = 'visible';
+        } else {
+          document.getElementById('addtoCart').style.visibility = 'hidden';
+        }
+
+        document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
+        document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
+        document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
+        document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+
+        //document.getElementById('stock').innerHTML = gotAllProducts_of_current_host[0].stock;
+        document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
+        document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
+      } else {
+        document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+      }
 
       for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
         let image_S3_url = gotAllProducts_of_current_host[item].image
@@ -263,7 +269,7 @@
   // add to cart
   document.getElementById('addtoCart').addEventListener('click', function (e) {
     e.preventDefault();
-    document.getElementById('reddot').style.visibility='visible';
+    document.getElementById('reddot').style.visibility = 'visible';
     const AddToCart = {
       role: '<%= loginStatus.role %>',
       email: '<%= loginStatus.email %>',
@@ -314,7 +320,7 @@
     if (live_video_check.paused) {
       if (live_video_check.buffered.end(0) >= 1) {
         live_video_check.currentTime = live_video_check.buffered.end(0) - 0.5;
-        
+
       }
       live_video_check.play();
       document.getElementById('notLiveWord').style.display = 'none';
@@ -334,13 +340,14 @@
 
   document.getElementById('message').addEventListener('focus', (event) => {
     $("#msglog").addClass('msglog');
-    $("#msglog").removeClass('msglog_opacity');  
+    $("#msglog").removeClass('msglog_opacity');
   });
-  
+
   document.getElementById('message').addEventListener('blur', (event) => {
-    $("#msglog").removeClass('msglog');  
+    $("#msglog").removeClass('msglog');
     $("#msglog").addClass('msglog_opacity');
   });
-  
-  </script>
+
+</script>
+
 </html>
