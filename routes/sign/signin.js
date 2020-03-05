@@ -1,9 +1,8 @@
-var express = require('express');
-var signin = require('../../public/model/DataAccessObject/signin.js');
-var router = express.Router();
-
+let express = require('express');
+let signin = require('../../public/model/DataAccessObject/signin.js');
+let router = express.Router();
 const title = 'WatchBuy';
-/* GET home page. */
+
 router.get('/', function (req, res, next) {
   res.render('./signin/signin', { title: title });
 });
@@ -40,7 +39,6 @@ router.post('/check', function (req, res) {
       if (data.length == 0) {
         res.json({ status: 'You have not been signed up as a host yet.' });
       } else {
-        var status = 'Welcome Back! ' + name;
         //做完登入確認要轉跳
         signin.Update_login_access_token(role,email).then((Updated_login_access_token)=>{
         console.log('Updated_login_access_token == ',Updated_login_access_token);

@@ -41,10 +41,10 @@
 <script>
 
 
-    var rooms = String(`<%- rooms %>`);
-    var rooms_obj = JSON.parse(rooms);
+    let rooms = String(`<%- rooms %>`);
+    let rooms_obj = JSON.parse(rooms);
 
-    for (var iter = 0; iter < rooms_obj.length; iter++) {
+    for (let iter = 0; iter < rooms_obj.length; iter++) {
         const stream_name = rooms_obj[iter].stream_token;
         const room_Title = rooms_obj[iter].room_name;
         const room_host_name = rooms_obj[iter].name;
@@ -64,14 +64,14 @@
             background_color = 'rgba(255, 0, 0, 0.8)';
             livewords = 'LIVE';
         }
-        var single_room = document.createElement('div');
-        var room_title = document.createElement('div');
-        var circle = document.createElement('div');
-        var innercircle = document.createElement('div');
-        var RoomTitleP = document.createElement('p');
+        let single_room = document.createElement('div');
+        let room_title = document.createElement('div');
+        let circle = document.createElement('div');
+        let innercircle = document.createElement('div');
+        let RoomTitleP = document.createElement('p');
 
-        var RoomTitleText = document.createTextNode(room_Title);
-        var LiveStatusText = document.createTextNode(livewords);
+        let RoomTitleText = document.createTextNode(room_Title);
+        let LiveStatusText = document.createTextNode(livewords);
         room_title.classList.add('room_title');
         room_title.style.backgroundColor = background_color;
         single_room.classList.add('single_room');
@@ -82,9 +82,9 @@
         room_title.appendChild(RoomTitleP);
 
 
-        var room_hostname = document.createElement('div');
+        let room_hostname = document.createElement('div');
         room_hostname.classList.add('room_hostname');
-        var host_owner_name = document.createElement('p');
+        let host_owner_name = document.createElement('p');
         host_owner_name.appendChild(RoomTitleText);
         room_hostname.appendChild(host_owner_name);
 

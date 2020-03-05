@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
   (async () => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.amount,
-      currency: 'usd',
+      currency: 'twd',
       payment_method_types: ['card'],
     });
       let insert_order_result = await order.InsertSingleOrder(email, Products_object_of_an_order, amount);

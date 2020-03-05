@@ -1,19 +1,16 @@
-var express = require('express');
-var signin = require('../../public/model/DataAccessObject/signin.js');
-var Logo = require('../../public/model/DataAccessObject/Logo.js');
-var cart = require('../../public/model/DataAccessObject/cart.js');
-var product = require('../../public/model/DataAccessObject/product.js');
-var s3_credential = require('../../public/model/util/aws.json');
-var router = express.Router();
-var multer = require('multer');
-var multerS3 = require('multer-s3');
-var AWS = require('aws-sdk');
-var multiparty = require('multiparty');
-var util = require('util');
-//var s3 = require('../../public/model/util/s3uploader.js');
+let express = require('express');
+let signin = require('../../public/model/DataAccessObject/signin.js');
+let logo = require('../../public/model/DataAccessObject/logo.js');
+let cart = require('../../public/model/DataAccessObject/cart.js');
+let product = require('../../public/model/DataAccessObject/product.js');
+let s3_credential = require('../../public/model/util/aws.json');
+let router = express.Router();
+let multer = require('multer');
+let multerS3 = require('multer-s3');
+let AWS = require('aws-sdk');
 
 //s3 logo uploader
-var host_logo_upload = multer({
+let host_logo_upload = multer({
   storage: multerS3({
     s3: new AWS.S3(s3_credential),
     bucket: 'hzctonyforlive/logo/host',
@@ -28,7 +25,7 @@ var host_logo_upload = multer({
   })
 })
 
-var user_logo_upload = multer({
+let user_logo_upload = multer({
   storage: multerS3({
     s3: new AWS.S3(s3_credential),
     bucket: 'hzctonyforlive/logo/user',
@@ -44,7 +41,7 @@ var user_logo_upload = multer({
 })
 
 
-var product_upload = multer({
+let product_upload = multer({
   storage: multerS3({
     s3: new AWS.S3(s3_credential),
     bucket: 'hzctonyforlive/product',
@@ -66,22 +63,18 @@ const title = 'WatchBuy';
 /* GET home page. */
 router.get('/', function (req, res, next) {
 
-
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
 
   if (!role || !token) {
     res.redirect('/signin');
   } else {
-
     signin.personCookieCheck(role, token).then(loginStatus => {
       if (loginStatus.status == 'ok') {
-        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+        logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
           res.render('./profile/settings', { title: title, loginStatus: loginStatus });
-
         })
-
       } else {
         res.clearCookie('role');
         res.clearCookie('token');
@@ -98,8 +91,8 @@ router.get('/', function (req, res, next) {
 router.get('/:list', function (req, res, next) {
 
 
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
   let profileList = req.params.list;
 
   if (!role || !token) {
@@ -108,7 +101,7 @@ router.get('/:list', function (req, res, next) {
 
     signin.personCookieCheck(role, token).then(loginStatus => {
       if (loginStatus.status == 'ok') {
-        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+        logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
 
 
@@ -172,7 +165,7 @@ router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req,
   const role = req.body.role;
   const filename = req.file.location;
   const current_host_email = req.body.email;
-  Logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
+  logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
     res.redirect({ status: 'updated logo path to host database' });
   }).catch(err => {
     res.json({ status: err });
@@ -184,7 +177,7 @@ router.post('/user_logo_upload', user_logo_upload.single('logo'), function (req,
   const role = req.body.role;
   const filename = req.file.location;
   const current_user_email = req.body.email;
-  Logo.UpdateLogoPath(filename, 'user', current_user_email).then(UpdatedResult => {
+  logo.UpdateLogoPath(filename, 'user', current_user_email).then(UpdatedResult => {
     res.json({ status: 'updated logo path to user database' });
   }).catch(err => {
     res.json({ status: err });

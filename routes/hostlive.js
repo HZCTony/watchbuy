@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sigin = require('../public/model/DataAccessObject/signin.js');
-var Logo = require('../public/model/DataAccessObject/Logo.js');
+var logo = require('../public/model/DataAccessObject/logo.js');
 var product = require('../public/model/DataAccessObject/product.js');
 var live = require('../public/model/DataAccessObject/live.js');
 const title = 'WatchBuy';
@@ -21,7 +21,7 @@ router.get('/:id', function (req, res, next) {
           res.redirect(`/userlive/${id}`);
         } else {
           if(id == loginStatus.stream_token){
-            Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+            logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
               loginStatus.logo = logoPath.logo;
               res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
             });
@@ -30,7 +30,6 @@ router.get('/:id', function (req, res, next) {
             res.redirect(`/userlive/${id}`);
           }
         }
-
       } else {
         res.redirect('/signin');
       }

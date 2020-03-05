@@ -45,7 +45,7 @@
 </body>
 
 <script>
-    var role = '<%= loginStatus.role %>';
+    let role = '<%= loginStatus.role %>';
     if (role == 'host') {
         document.getElementById('name').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.name %>';
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';

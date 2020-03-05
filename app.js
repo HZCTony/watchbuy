@@ -1,25 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-const bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var favicon = require('serve-favicon');
-var cors = require('cors');
-
-var homepage = require('./routes/index');
-var signup = require('./routes/sign/signup');
-var signin = require('./routes/sign/signin');
-var profile = require('./routes/sign/profile');
-var roomlist = require('./routes/roomlist');
-var userlive = require('./routes/userlive');
-var hostlive = require('./routes/hostlive');
-var usersRouter = require('./routes/users');
-var checkout = require('./routes/checkout.js');
-var multer = require('multer');
-var app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let bodyParser = require('body-parser');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let favicon = require('serve-favicon');
+let cors = require('cors');
+let homepage = require('./routes/index');
+let signup = require('./routes/sign/signup');
+let signin = require('./routes/sign/signin');
+let profile = require('./routes/sign/profile');
+let roomlist = require('./routes/roomlist');
+let userlive = require('./routes/userlive');
+let hostlive = require('./routes/hostlive');
+let usersRouter = require('./routes/users');
+let checkout = require('./routes/checkout.js');
+let multer = require('multer');
+let app = express();
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -82,38 +81,37 @@ var roomInfo = {};
 io.on('connection', function (socket) {
   var url = socket.request.headers.referer;
   var roomID;
-  var A_real_user = '';
+  var aRealUser = '';
   roomInfo[roomID] = [];
 
-
   socket.on('join', function (user) {
-    A_real_user = user.name;
+    aRealUser = user.name;
     roomID = user.room;
 
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
     }
-    roomInfo[roomID].push(A_real_user);
+    roomInfo[roomID].push(aRealUser);
 
     socket.join(roomID);   
-    io.to(roomID).emit('sys', A_real_user + ' joined in this room :', roomInfo[roomID]);
+    io.to(roomID).emit('sys', aRealUser + ' joined in this room :', roomInfo[roomID]);
   });
 
 
   socket.on('usr_message', function (msg) {
-    if (roomInfo[roomID].indexOf(A_real_user) === -1) {
+    if (roomInfo[roomID].indexOf(aRealUser) === -1) {
       return false;
     }
     io.to(roomID).emit('gotMessage', msg);
   })
 
   socket.on('disconnect', function () {
-    var index = roomInfo[roomID].indexOf(A_real_user);
+    var index = roomInfo[roomID].indexOf(aRealUser);
     if (index != -1) {
       roomInfo[roomID].splice(index, 1);
     }
     socket.leave(roomID);
-    io.to(roomID).emit('sys', A_real_user + ' exit the room: ', roomInfo[roomID]);
+    io.to(roomID).emit('sys', aRealUser + ' exit the room: ', roomInfo[roomID]);
   });
 });
 

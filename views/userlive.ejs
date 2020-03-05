@@ -79,7 +79,7 @@
   const current_user_name = '<%= loginStatus.name %>';
 
   //check user's room and join
-  var user = {
+  let user = {
     name: current_user_name,
     room: roomid
   }
@@ -99,10 +99,9 @@
   document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
   function sendMessage(e) {
     e.preventDefault();
-    //var username = document.getElementById('username').value;
-    var message = document.getElementById('message').value;
+    let message = document.getElementById('message').value;
     if (message != '' && current_user_name != '') {
-      var msg = {
+      let msg = {
         username: current_user_name,
         sender_role: 'user',
         message: message,
@@ -142,8 +141,8 @@
 </script>
 
 <script>
-  var single_room = `<%- room %>`;
-  var room_obj = JSON.parse(single_room);
+  let single_room = `<%- room %>`;
+  let room_obj = JSON.parse(single_room);
 
   if (room_obj.active == 'open') {
 
@@ -163,8 +162,8 @@
     document.getElementById('notLiveWord').innerHTML = '請點播放以開始觀看';
     document.getElementById('notLiveWord').style.marginTop = '150px';
 
-    var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    let isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+    let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     if (isSafari && iOS) {
       document.getElementById('live_video').src = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
@@ -230,10 +229,10 @@
 
 
   function generateProductImages(imagePath, addtoCartOrigininnerHTML) {
-    var item = document.createElement('div');
+    let item = document.createElement('div');
     item.classList.add('item');
 
-    var productimg = document.createElement('div');
+    let productimg = document.createElement('div');
     productimg.classList.add('productimg');
     productimg.style.backgroundImage = `url('${imagePath}')`;
     item.appendChild(productimg);
@@ -300,7 +299,7 @@
 <script>
   document.getElementById('openProductShowBtn').addEventListener('click', function (e) {
     e.preventDefault();
-    var see = $('#productShow').css("visibility");
+    let see = $('#productShow').css("visibility");
     if (see == 'visible') {
       $('#productShow').css("visibility", 'hidden');
       document.getElementById('openProductShowBtn').innerHTML = '<p>+</p>';

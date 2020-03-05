@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var signup = require('../../public/model/DataAccessObject/signup.js');
+let express = require('express');
+let router = express.Router();
+let signup = require('../../public/model/DataAccessObject/signup.js');
 
 const title = 'WatchBuy';
-var resobj = {status:""};
-/* GET home page. */
+let resobj = {status:""};
+
 router.get('/', function (req, res, next) {
   res.render('./signup/role', { title: title });
 });

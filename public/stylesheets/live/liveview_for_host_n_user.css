@@ -82,11 +82,16 @@ body{
 #productimg{
     width: 280px;
     height: 280px;
+
 }
 
 
 .productimg img{
     object-fit: cover;
+}
+
+.productimg{
+    cursor: pointer;
 }
 
 

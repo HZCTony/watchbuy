@@ -1,22 +1,22 @@
-var express = require('express');
-var router = express.Router();
-var sigin = require('../public/model/DataAccessObject/signin.js');
-var live = require('../public/model/DataAccessObject/live.js');
-var Logo = require('../public/model/DataAccessObject/Logo.js');
-var cart = require('../public/model/DataAccessObject/cart.js');
+let express = require('express');
+let router = express.Router();
+let sigin = require('../public/model/DataAccessObject/signin.js');
+let live = require('../public/model/DataAccessObject/live.js');
+let logo = require('../public/model/DataAccessObject/logo.js');
+let cart = require('../public/model/DataAccessObject/cart.js');
 const title = 'WatchBuy';
 /* GET home page. */
 router.get('/:id', function (req, res, next) {
-  var id = req.params.id;
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let id = req.params.id;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
 
   live.getOnlyOneRoom(id).then(a_single_room => {
-    if (!role || !token) {
+    if (!role || !token) { // if not login, user can still watch live view
       res.render('userlive', { title: title, id: id, loginStatus: 'none', room: JSON.stringify(a_single_room[0]) });
     } else {
       sigin.personCookieCheck(role, token).then(loginStatus => {
-        Logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
+        logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           if(!logoPath){
             loginStatus.logo = '/images/userundefined.png';
           }else{

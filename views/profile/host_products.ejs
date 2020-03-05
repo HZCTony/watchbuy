@@ -46,7 +46,7 @@
 </body>
 
 <script>
-    var role = '<%= loginStatus.role %>';
+    let role = '<%= loginStatus.role %>';
     if (role == 'host') {
         $.ajax({
             url: '/profile/getAllHostOwnedProduct',

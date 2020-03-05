@@ -182,7 +182,7 @@
   const stream_id = '<%- id %>';
   document.getElementById('liveCheckButton').addEventListener('click', function (e) {
     e.preventDefault();
-    var color = $('#liveicon-container').css("background-color");
+    let color = $('#liveicon-container').css("background-color");
     if (color == 'rgb(128, 128, 128)') {
       $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
       document.getElementById('livestatus').innerHTML = '正在開播中，按我取消';
