@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sigin = require('../public/model/DataAccessObject/signin.js');
 var logo = require('../public/model/DataAccessObject/logo.js');
-
+const title = 'WatchBuy';
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var role = req.cookies.role;
@@ -13,9 +13,9 @@ router.get('/', function(req, res, next) {
     sigin.personCookieCheck(role, token).then(loginStatus => {
       logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
         loginStatus.logo = logoPath.logo;
-      res.render('index', { title: 'WatchBuy' ,  loginStatus: loginStatus });
+      res.render('index', { title: title ,  loginStatus: loginStatus });
       }).catch(err =>{
-        res.render('index', { title: 'WatchBuy', loginStatus: 'none' });
+        res.render('index', { title: title, loginStatus: 'none' });
       });
     });
   };

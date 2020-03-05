@@ -11,9 +11,9 @@ router.get('/:id', function (req, res, next) {
   let role = req.cookies.role;
   let token = req.cookies.token;
 
-  live.getOnlyOneRoom(id).then(a_single_room => {
+  live.getOnlyOneRoom(id).then(singleRoom => {
     if (!role || !token) { // if not login, user can still watch live view
-      res.render('userlive', { title: title, id: id, loginStatus: 'none', room: JSON.stringify(a_single_room[0]) });
+      res.render('userlive', { title: title, id: id, loginStatus: 'none', room: JSON.stringify(singleRoom[0]) });
     } else {
       sigin.personCookieCheck(role, token).then(loginStatus => {
         logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
@@ -22,7 +22,7 @@ router.get('/:id', function (req, res, next) {
           }else{
             loginStatus.logo = logoPath.logo;
           }
-          res.render('userlive', { title: title, id: id, loginStatus: loginStatus, room: JSON.stringify(a_single_room[0]) });
+          res.render('userlive', { title: title, id: id, loginStatus: loginStatus, room: JSON.stringify(singleRoom[0]) });
         })
       });
     };
@@ -48,17 +48,13 @@ router.post('/addtoCart', function (req, res, next) {
   if (!role || !email) {
     res.json({ error: '[userlive.js]: not a user to do adding to cart' });
   } else {
-    cart.InsertSingleProducttoCart(role, email, name, color, size, price, description, stock, image)
+    cart.insertSingleProducttoCart(role, email, name, color, size, price, description, stock, image)
       .then(addedResult => {
         res.send(JSON.stringify(addedResult));
       }).catch(err => {
         console.log(err);
       })
   }
-
 });
-
-
-
 
 module.exports = router;

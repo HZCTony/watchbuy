@@ -8,11 +8,11 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			const userSignInCheckQuery = `select * from userlist where name=? AND password=? AND email=? ;`;
 			const userSignInCheckParams = [username, passwordEncryption(password), email];
-			database.connection.query(userSignInCheckQuery, userSignInCheckParams, function (error, usercheck, fields) {
+			database.connection.query(userSignInCheckQuery, userSignInCheckParams, function (error, userCheck, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
-					resolve(usercheck);
+					resolve(userCheck);
 				}
 			});
 		});
@@ -21,11 +21,11 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			const hostSignInCheckQuery = `select * from hostlist where name=? AND password=? AND email=? ;`;
 			const hostSignInCheckParams = [hostname, passwordEncryption(password), email];
-			database.connection.query(hostSignInCheckQuery, hostSignInCheckParams, function (error, hostcheck, fields) {
+			database.connection.query(hostSignInCheckQuery, hostSignInCheckParams, function (error, hostCheck, fields) {
 				if (error) {
 					reject("[Database Error] " + error);
 				} else {
-					resolve(hostcheck);
+					resolve(hostCheck);
 				}
 			});
 		});
@@ -37,25 +37,25 @@ module.exports = {
 				status: '',
 				name: '',
 				email: '',
-				stream_token: ''
+				streamToken: ''
 			};
 			if (role == 'user') {
 				cookieCheckQuery = `select * from userlist where login_access_token=? ;`;
 				cookieCheckParam = [token];
-				database.connection.query(cookieCheckQuery, cookieCheckParam, function (error, usercookiecheck, fields) {
+				database.connection.query(cookieCheckQuery, cookieCheckParam, function (error, userCookieCheck, fields) {
 					if (error) {
 						reject("[Database Error] " + error);
 					} else {
-						if (usercookiecheck.length == 0) {
+						if (userCookieCheck.length == 0) {
 							loginStatus.role = 'user';
 							loginStatus.status = 'none';
 							resolve(loginStatus);
 						} else {
 
 							loginStatus.role = 'user';
-							loginStatus.status = Expire_calculation(usercookiecheck[0].expire_time);
-							loginStatus.name = usercookiecheck[0].name;
-							loginStatus.email = usercookiecheck[0].email;
+							loginStatus.status = expireCalculation(userCookieCheck[0].expire_time);
+							loginStatus.name = userCookieCheck[0].name;
+							loginStatus.email = userCookieCheck[0].email;
 							resolve(loginStatus);
 						}
 					}
@@ -63,20 +63,20 @@ module.exports = {
 			} else if (role == 'host') {
 				hostCookieQuery = `select * from hostlist where login_access_token=? ;`;
 				hostCookieParam = [token];
-				database.connection.query(hostCookieQuery, hostCookieParam, function (error, hostcookiecheck, fields) {
+				database.connection.query(hostCookieQuery, hostCookieParam, function (error, hostCookieCheck, fields) {
 					if (error) {
 						reject("[Database Error] " + error);
 					} else {
-						if (hostcookiecheck.length == 0) {
+						if (hostCookieCheck.length == 0) {
 							loginStatus.role = 'host';
 							loginStatus.status = 'none';
 							resolve(loginStatus);
 						} else {
 							loginStatus.role = 'host';
-							loginStatus.status = Expire_calculation(hostcookiecheck[0].expire_time);
-							loginStatus.name = hostcookiecheck[0].name;
-							loginStatus.email = hostcookiecheck[0].email;
-							loginStatus.stream_token = hostcookiecheck[0].stream_token;
+							loginStatus.status = expireCalculation(hostCookieCheck[0].expire_time);
+							loginStatus.name = hostCookieCheck[0].name;
+							loginStatus.email = hostCookieCheck[0].email;
+							loginStatus.streamToken = hostCookieCheck[0].stream_token;
 							resolve(loginStatus);
 						}
 					}
@@ -87,7 +87,7 @@ module.exports = {
 		});
 	},
 
-	Update_login_access_token: function (role, email) {
+	updateLoginAccessToken: function (role, email) {
 		return new Promise(function (resolve, reject) {
 			Updated = loginTokenGenerator(email);
 			let UpdateloginInfoQuery = '';
@@ -102,13 +102,13 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
-					connection.query(UpdateloginInfoQuery, UpdateloginInfoParams, function (error, Update_Token_and_Expire_result, fields) {
+					connection.query(UpdateloginInfoQuery, UpdateloginInfoParams, function (error, updateTokenAndExpireResult, fields) {
 						if (error) {
 							reject("[Database Error] " + error);
 						} else {
@@ -132,9 +132,9 @@ module.exports = {
 };
 
 function passwordEncryption(password) {
-	const new_password = crypto.createHash('sha256').update(password, 'utf8').digest();
-	const new_password_token = new_password.toString('hex');
-	return new_password_token;
+	const newPassword = crypto.createHash('sha256').update(password, 'utf8').digest();
+	const newPasswordToken = newPassword.toString('hex');
+	return newPasswordToken;
 }
 
 
@@ -142,46 +142,34 @@ function passwordEncryption(password) {
 function loginTokenGenerator(email) {
 	const date = new Date();
 	const temp = date.setSeconds(date.getSeconds() + config.access_expired_sec);
-	const expire_date = new Date(temp);
-	const new_access = email + String(expire_date);
+	const expireDate = new Date(temp);
+	const newAccess = email + String(expireDate);
 
 	// generate login access token
-	const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
-	const login_access_token = new_access_token.toString('hex');
+	const newAccessToken = crypto.createHash('sha256').update(newAccess, 'utf8').digest();
+	const loginAccessToken = newAccessToken.toString('hex');
 
 	var res_obj = {
-		expire: expire_date.toString(),
-		login_access_token: login_access_token
+		expire: expireDate.toString(),
+		loginAccessToken: loginAccessToken
 	}
 
 	return res_obj;
 }
 
-// every host should have only one stream id
-function StreamTokenGenerator(hostname) {
-	const date = new Date();
-	const new_access = hostname + String(date);
 
-	// generate stream token
-	const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
-	const stream_token = new_access_token.toString('hex');
-	return stream_token
-
-
-}
-
-function Expire_calculation(expire_time) {
+function expireCalculation(expireTime) {
 
 	const current = new Date();
-	const expire = new Date(expire_time);
+	const expire = new Date(expireTime);
 	const difference = (expire - current) / 1000;
-	var expire_judgement = '';
+	var expireJudgement = '';
 
 	if (difference > 0) {
-		expire_judgement = 'ok';
+		expireJudgement = 'ok';
 	} else {
-		expire_judgement = 'not ok';
+		expireJudgement = 'not ok';
 	}
-	return expire_judgement;
+	return expireJudgement;
 
 }

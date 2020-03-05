@@ -3,16 +3,16 @@ let signin = require('../../public/model/DataAccessObject/signin.js');
 let logo = require('../../public/model/DataAccessObject/logo.js');
 let cart = require('../../public/model/DataAccessObject/cart.js');
 let product = require('../../public/model/DataAccessObject/product.js');
-let s3_credential = require('../../public/model/util/aws.json');
+let s3Credential = require('../../public/model/util/aws.json');
 let router = express.Router();
 let multer = require('multer');
 let multerS3 = require('multer-s3');
 let AWS = require('aws-sdk');
 
 //s3 logo uploader
-let host_logo_upload = multer({
+let hostLogoUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3_credential),
+    s3: new AWS.S3(s3Credential),
     bucket: 'hzctonyforlive/logo/host',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -25,9 +25,9 @@ let host_logo_upload = multer({
   })
 })
 
-let user_logo_upload = multer({
+let userLogoUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3_credential),
+    s3: new AWS.S3(s3Credential),
     bucket: 'hzctonyforlive/logo/user',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -41,9 +41,9 @@ let user_logo_upload = multer({
 })
 
 
-let product_upload = multer({
+let productUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3_credential),
+    s3: new AWS.S3(s3Credential),
     bucket: 'hzctonyforlive/product',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -94,7 +94,7 @@ router.get('/:list', function (req, res, next) {
   let role = req.cookies.role;
   let token = req.cookies.token;
   let profileList = req.params.list;
-  console.log('profileList == ',profileList);
+
   if (!role || !token) {
     res.redirect('/signin');
   } else {
@@ -149,7 +149,6 @@ router.get('/:list', function (req, res, next) {
       } else {
         res.clearCookie('role');
         res.clearCookie('token');
-        console.log('[profile.js]: loginStatus=', loginStatus);
         res.redirect('/signin');
       }
     }).catch((err) => {
@@ -161,11 +160,11 @@ router.get('/:list', function (req, res, next) {
 
 
 
-router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req, res) {
+router.post('/host_logo_upload', hostLogoUpload.single('logo'), function (req, res) {
   const role = req.body.role;
   const filename = req.file.location;
-  const current_host_email = req.body.email;
-  logo.UpdateLogoPath(filename, 'host', current_host_email).then(UpdatedResult => {
+  const currentHostEmail = req.body.email;
+  logo.updateLogoPath(filename, 'host', currentHostEmail).then(UpdatedResult => {
     res.redirect({ status: 'updated logo path to host database' });
   }).catch(err => {
     res.json({ status: err });
@@ -173,11 +172,11 @@ router.post('/host_logo_upload', host_logo_upload.single('logo'), function (req,
 })
 
 
-router.post('/user_logo_upload', user_logo_upload.single('logo'), function (req, res) {
+router.post('/user_logo_upload', userLogoUpload.single('logo'), function (req, res) {
   const role = req.body.role;
   const filename = req.file.location;
-  const current_user_email = req.body.email;
-  logo.UpdateLogoPath(filename, 'user', current_user_email).then(UpdatedResult => {
+  const currentUserEmail = req.body.email;
+  logo.updateLogoPath(filename, 'user', currentUserEmail).then(UpdatedResult => {
     res.json({ status: 'updated logo path to user database' });
   }).catch(err => {
     res.json({ status: err });
@@ -186,7 +185,7 @@ router.post('/user_logo_upload', user_logo_upload.single('logo'), function (req,
 })
 
 
-router.post('/product_upload', product_upload.single('image'), function (req, res) {
+router.post('/product_upload', productUpload.single('image'), function (req, res) {
   const productName = req.body.name;
   const color = req.body.color;
   const size = req.body.size;
@@ -196,7 +195,7 @@ router.post('/product_upload', product_upload.single('image'), function (req, re
   const email = req.body.email;
   const filepath = req.file.location;
 
-  product.InsertNewProduct(productName, color, size, price, description, stock, email, filepath, price)
+  product.insertNewProduct(productName, color, size, price, description, stock, email, filepath, price)
     .then(UpdatedResult => {
       res.json({ status: 'Updated information of a single product to database' });
     }).catch(err => {

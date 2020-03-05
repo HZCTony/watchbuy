@@ -15,7 +15,7 @@ module.exports = {
 			});
 		})
 	},
-	InsertSingleProducttoCart: function (role, email, productName, color, size, price, description, stock, filepath) {
+	insertSingleProducttoCart: function (role, email, productName, color, size, price, description, stock, filepath) {
 		return new Promise(function (resolve, reject) {
 			let findPersonIdQuery = '';
 			if (role == 'user') {
@@ -31,10 +31,10 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
 					connection.query(findPersonIdQuery, findpersonIdParam, function (error, personID, fields) {
@@ -79,10 +79,10 @@ module.exports = {
 											}
 											// Yes, there is an existed product in one's cartlist
 											else {
-												let current_count = ParsedCartlistResult[0].count;
-												let new_count = parseInt(current_count) + 1;
+												let currentCount = ParsedCartlistResult[0].count;
+												let newCount = parseInt(currentCount) + 1;
 												const updateCountQuery = `UPDATE cartlist SET count=? WHERE email=? AND product_id=?;`;
-												const updateCountParams = [new_count, email, foundID[0].id];
+												const updateCountParams = [newCount, email, foundID[0].id];
 												connection.query(updateCountQuery, updateCountParams, function (error, UpdatedCountResult, fields) {
 													if (error) {
 														reject("[Database Error]: unable to update count of an existed product in cartlist" + error);
@@ -114,20 +114,20 @@ module.exports = {
 	},
 	deleteProductInCart: function (email, productName) {
 		return new Promise(function (resolve, reject) {
-			var deleteProductInCart_query = `delete from cartlist where email='${email}' AND name='${productName}';`;
+			var deleteProductInCartQuery = `delete from cartlist where email='${email}' AND name='${productName}';`;
 
 			database.connection.getConnection(function (err, connection) {
 				if (err) {
 					reject(err);
 				}
 
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
-					connection.query(deleteProductInCart_query, function (error, gotAllProductsInCart, fields) {
+					connection.query(deleteProductInCartQuery, function (error, gotAllProductsInCart, fields) {
 						if (error) {
 							reject("[Database Error]" + error);
 						} else {
@@ -156,10 +156,10 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
 					connection.query(deleteAllProductInCartQuery, deleteAllProductInCartParam, function (error, gotAllProductsInCart, fields) {

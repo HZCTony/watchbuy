@@ -13,7 +13,6 @@ let profile = require('./routes/sign/profile');
 let roomlist = require('./routes/roomlist');
 let userlive = require('./routes/userlive');
 let hostlive = require('./routes/hostlive');
-let usersRouter = require('./routes/users');
 let checkout = require('./routes/checkout.js');
 let multer = require('multer');
 let app = express();
@@ -53,8 +52,6 @@ app.use('/profile', profile);
 app.use('/roomlist', roomlist);
 app.use('/userlive', userlive);
 app.use('/hostlive', hostlive);
-app.use('/users', usersRouter);
-
 
 //payment
 app.use('/checkout', checkout);
@@ -76,42 +73,37 @@ app.use(function (err, req, res, next) {
 });
 
 var roomInfo = {};
-
-
 io.on('connection', function (socket) {
   var url = socket.request.headers.referer;
   var roomID;
-  var aRealUser = '';
+  var singleRealUser = '';
   roomInfo[roomID] = [];
 
   socket.on('join', function (user) {
-    aRealUser = user.name;
+    singleRealUser = user.name;
     roomID = user.room;
-
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
     }
-    roomInfo[roomID].push(aRealUser);
-
-    socket.join(roomID);   
-    io.to(roomID).emit('sys', aRealUser + ' joined in this room :', roomInfo[roomID]);
+    roomInfo[roomID].push(singleRealUser);
+    socket.join(roomID);
+    io.to(roomID).emit('sys', singleRealUser + ' joined in this room :', roomInfo[roomID]);
   });
 
-
   socket.on('usr_message', function (msg) {
-    if (roomInfo[roomID].indexOf(aRealUser) === -1) {
+    if (roomInfo[roomID].indexOf(singleRealUser) === -1) {
       return false;
     }
     io.to(roomID).emit('gotMessage', msg);
   })
 
   socket.on('disconnect', function () {
-    var index = roomInfo[roomID].indexOf(aRealUser);
+    var index = roomInfo[roomID].indexOf(singleRealUser);
     if (index != -1) {
       roomInfo[roomID].splice(index, 1);
     }
     socket.leave(roomID);
-    io.to(roomID).emit('sys', aRealUser + ' exit the room: ', roomInfo[roomID]);
+    io.to(roomID).emit('sys', singleRealUser + ' exit the room: ', roomInfo[roomID]);
   });
 });
 

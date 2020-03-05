@@ -20,10 +20,9 @@ router.post('/check', function (req, res) {
         res.json({ status: 'You have not been signed up as a user yet.' });
       } else {
         //做完登入確認要轉跳
-        signin.Update_login_access_token(role,email).then((Updated_login_access_token)=>{
-          console.log('Updated_login_access_token == ',Updated_login_access_token);
+        signin.updateLoginAccessToken(role,email).then((updatedLoginAccessToken)=>{
           res.cookie('role', role);
-          res.cookie('token', Updated_login_access_token);
+          res.cookie('token', updatedLoginAccessToken);
           res.json({ status: 'ok' });
         }).catch(function (err) {
           res.json({ status: err });
@@ -40,10 +39,9 @@ router.post('/check', function (req, res) {
         res.json({ status: 'You have not been signed up as a host yet.' });
       } else {
         //做完登入確認要轉跳
-        signin.Update_login_access_token(role,email).then((Updated_login_access_token)=>{
-        console.log('Updated_login_access_token == ',Updated_login_access_token);
+        signin.updateLoginAccessToken(role,email).then((updatedLoginAccessToken)=>{
         res.cookie('role',role);
-        res.cookie('token',Updated_login_access_token);
+        res.cookie('token',updatedLoginAccessToken);
         res.json({ status: 'ok' });
         }).catch(function (err) {
           res.json({ status: err });

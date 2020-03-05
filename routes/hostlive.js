@@ -5,7 +5,7 @@ var logo = require('../public/model/DataAccessObject/logo.js');
 var product = require('../public/model/DataAccessObject/product.js');
 var live = require('../public/model/DataAccessObject/live.js');
 const title = 'WatchBuy';
-/* GET home page. */
+
 router.get('/:id', function (req, res, next) {
   var id = req.params.id;
   var role = req.cookies.role;
@@ -54,7 +54,7 @@ router.post('/getAllproducts', function (req, res) {
 
 
 router.post('/getaSingleProduct', function (req, res) {
-  product.getaSingleProduct(req.body.image).then(singleProduct => {
+  product.getSingleProduct(req.body.image).then(singleProduct => {
     res.send(singleProduct);
   })
 })

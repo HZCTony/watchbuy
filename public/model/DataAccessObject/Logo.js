@@ -20,7 +20,7 @@ module.exports = {
 				});
 		})
 	},
-	UpdateLogoPath: function (logoPath, role, email) {
+	updateLogoPath: function (logoPath, role, email) {
 		return new Promise(function (resolve, reject) {
 			let updateQuery = '';
 			if (role == 'user') {
@@ -34,10 +34,10 @@ module.exports = {
 					if (err) {
 						reject(err);
 					}
-					connection.beginTransaction(function (Transaction_err) {
-						if (Transaction_err) {
+					connection.beginTransaction(function (transactionErr) {
+						if (transactionErr) {
 							connection.rollback(function () {
-								reject(Transaction_err);
+								reject(transactionErr);
 							});
 						}
 						connection.query(updateQuery, updateParams, function (error, UpdatedResult, fields) {

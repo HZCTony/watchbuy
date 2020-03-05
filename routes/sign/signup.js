@@ -21,37 +21,37 @@ router.post('/', function (req, res) {
 });
 
 router.post('/host', function(req, res){
-  var login_info  = signup.loginTokenGenerator(req.body.email);
-  var stream_token = signup.StreamTokenGenerator(req.body.name);
+  var loginInfo  = signup.loginTokenGenerator(req.body.email);
+  var streamToken = signup.streamTokenGenerator(req.body.name);
   signup.hostSignUp(
     req.body.name,
     req.body.password,
     req.body.email,
-    login_info.login_access_token,
-    stream_token,
+    loginInfo.loginAccessToken,
+    streamToken,
     req.body.room_name,
-    login_info.expire
+    loginInfo.expire
   ).then(insertHostDataResult =>{
     resobj.status = insertHostDataResult;
     res.cookie('role','host');
-    res.cookie('token',login_info.login_access_token);
+    res.cookie('token',loginInfo.loginAccessToken);
     res.json(resobj);
   });
 });
 
 
 router.post('/user', function(req, res){
-  var login_info  = signup.loginTokenGenerator(req.body.email);
+  var loginInfo  = signup.loginTokenGenerator(req.body.email);
   signup.userSignUp(
     req.body.name,
     req.body.password,
     req.body.email,
-    login_info.login_access_token,
-    login_info.expire
+    loginInfo.loginAccessToken,
+    loginInfo.expire
   ).then(insertUserDataResult =>{
     resobj.status = insertUserDataResult;
     res.cookie('role','user');
-    res.cookie('token',login_info.login_access_token);
+    res.cookie('token',loginInfo.loginAccessToken);
     res.json(resobj);
   });
 });

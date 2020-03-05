@@ -2,22 +2,22 @@
 const database = require("../util/rds_mysql.js");
 // Build DAO Object
 module.exports = {
-	InsertSingleOrder: function (email, products_in_an_order, amount) {
+	insertSingleOrder: function (email, productsInOneOrder, amount) {
 		return new Promise(function (resolve, reject) {
 			const InsertSingleOrderQuery = `INSERT INTO orderlist (email, products, amount, payment) VALUES( ?, ?, ?,'unpaid');`;
-			const InsertSingleOrderParams = [email, products_in_an_order, amount];
+			const InsertSingleOrderParams = [email, productsInOneOrder, amount];
 
 			database.connection.getConnection(function (err, connection) {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
-					connection.query(InsertSingleOrderQuery, InsertSingleOrderParams, function (error, insert_order_result, fields) {
+					connection.query(InsertSingleOrderQuery, InsertSingleOrderParams, function (error, insertOrderResult, fields) {
 						if (error) {
 							reject("[Database Error]" + error);
 						} else {
@@ -28,7 +28,7 @@ module.exports = {
 										reject(commitErr);
 									});
 								}
-								resolve(insert_order_result);
+								resolve(insertOrderResult);
 								connection.release();
 							});
 						}
@@ -37,7 +37,7 @@ module.exports = {
 			});
 		})
 	},
-	DeleteSingleOrder: function (orderID) {
+	deleteSingleOrder: function (orderID) {
 		return new Promise(function (resolve, reject) {
 			//const DeleteSingleOrderQuery = `delete from orderlist where id='${orderID}';`;
 			const DeleteSingleOrderQuery = `delete from orderlist where id=? ;`;
@@ -46,13 +46,13 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
-					connection.query(DeleteSingleOrderQuery, DeleteSingleOrderParam, function (error, Deleted_order_result, fields) {
+					connection.query(DeleteSingleOrderQuery, DeleteSingleOrderParam, function (error, deletedOrderResult, fields) {
 						if (error) {
 							reject("[Database Error]" + error);
 						} else {
@@ -64,7 +64,7 @@ module.exports = {
 										reject(commitErr);
 									});
 								}
-								resolve(Deleted_order_result);
+								resolve(deletedOrderResult);
 								connection.release();
 							});
 						}
@@ -73,7 +73,7 @@ module.exports = {
 			});
 		})
 	},
-	UpdateOrderStatus: function (orderID) {
+	updateOrderStatus: function (orderID) {
 		return new Promise(function (resolve, reject) {
 			//var UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id='${orderID}';`;
 			const UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id=? ;`;
@@ -82,13 +82,13 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
-					connection.query(UpdateOrderStatusQuery, UpdateOrderStatusParam, function (error, Updated_order_result, fields) {
+					connection.query(UpdateOrderStatusQuery, UpdateOrderStatusParam, function (error, updatedOrderResult, fields) {
 						if (error) {
 							reject("[Database Error]" + error);
 						} else {
@@ -99,7 +99,7 @@ module.exports = {
 										reject(commitErr);
 									});
 								}
-								resolve(Updated_order_result);
+								resolve(updatedOrderResult);
 								connection.release();
 							});
 						}
@@ -108,31 +108,31 @@ module.exports = {
 			});
 		})
 	},
-	GetAllOrders: function (email) {
+	getAllOrders: function (email) {
 		return new Promise(function (resolve, reject) {
 
 			const GetAllOrdersQuery = `select * from orderlist where email=? ;`;
 			const GetAllOrdersParam = [email];
-			database.connection.query(GetAllOrdersQuery, GetAllOrdersParam, function (error, getBack_order_result, fields) {
+			database.connection.query(GetAllOrdersQuery, GetAllOrdersParam, function (error, getBackOrderResult, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
 				} else {
-					resolve(getBack_order_result);
+					resolve(getBackOrderResult);
 				}
 			});
 		})
 	},
-	GetOrderImages: function (id_array) {
+	getOrderImages: function (idArray) {
 		return new Promise(function (resolve, reject) {
-			let ids_str = '';
-			for (let id = 0; id < id_array.length; id++) {
+			let idsString = '';
+			for (let id = 0; id < idArray.length; id++) {
 				if (id == 0) {
-					ids_str += String(id_array[id]);
+					idsString += String(idArray[id]);
 				} else {
-					ids_str += ',' + String(id_array[id]);
+					idsString += ',' + String(idArray[id]);
 				}
 			}
-			const GetAllOrdersImageQuery = `select * from products where id IN (${ids_str});`;
+			const GetAllOrdersImageQuery = `select * from products where id IN (${idsString});`;
 			database.connection.query(GetAllOrdersImageQuery, function (error, GotImages, fields) {
 				if (error) {
 					reject("[Database Error]" + error);

@@ -4,7 +4,7 @@ const config = require('./config.json');
 const database = require("../util/rds_mysql.js");
 // Build DAO Object
 module.exports = {
-	userSignUp: function (name, password, email, login_access_token, expire_time) {
+	userSignUp: function (name, password, email, loginAccessToken, expireTime) {
 		return new Promise(function (resolve, reject) {
 			function checkDuplicatedName(useremail) {
 				return new Promise(function (resolve, reject) {
@@ -20,19 +20,19 @@ module.exports = {
 				});
 			}
 
-			function insertUserSignUpInfo(name, password, email, login_access_token, expire_time) {
+			function insertUserSignUpInfo(name, password, email, loginAccessToken, expireTime) {
 				return new Promise(function (resolve, reject) {
 					const insert = `Insert into userlist(name ,password, email, login_access_token, expire_time) 
 									values(?, ?, ?, ?, ?);`;
-					const insertparams = [name, password, email, login_access_token, expire_time];
+					const insertparams = [name, password, email, loginAccessToken, expireTime];
 					database.connection.getConnection(function (err, connection) {
 						if (err) {
 							reject(err);
 						}
-						connection.beginTransaction(function (Transaction_err) {
-							if (Transaction_err) {
+						connection.beginTransaction(function (transactionErr) {
+							if (transactionErr) {
 								connection.rollback(function () {
-									reject(Transaction_err);
+									reject(transactionErr);
 								});
 							}
 							connection.query(insert, insertparams, function (error, insertedHostCheck, fields) {
@@ -56,7 +56,7 @@ module.exports = {
 				});
 			}
 
-			async function UserSignUpProcess() {
+			async function userSignUpProcess() {
 				let duplicatedUserNameorNot = await checkDuplicatedName(email);
 				const passwordEcripted = passwordEncryption(password);
 				if (duplicatedUserNameorNot.length == 0) {
@@ -65,8 +65,8 @@ module.exports = {
 						name,
 						passwordEcripted,
 						email,
-						login_access_token,
-						expire_time
+						loginAccessToken,
+						expireTime
 					);
 					return '[User sign up result]:' + insertUserDataResult;
 				} else {
@@ -74,7 +74,7 @@ module.exports = {
 				}
 
 			}
-			UserSignUpProcess().then(value => {
+			userSignUpProcess().then(value => {
 				resolve(value);
 			}).catch(err => {
 				reject(err);
@@ -83,7 +83,7 @@ module.exports = {
 
 	},
 
-	hostSignUp: function (name, password, email, login_access_token, stream_token, room_name, expire_time) {
+	hostSignUp: function (name, password, email, loginAccessToken, streamToken, roomName, expireTime) {
 		return new Promise(function (resolve, reject) {
 			function checkDuplicatedName(hostemail) {
 				return new Promise(function (resolve, reject) {
@@ -101,19 +101,19 @@ module.exports = {
 
 
 
-			function insertHostSignUpInfo(name, password, email, login_access_token, stream_token, room_name, expire_time) {
+			function insertHostSignUpInfo(name, password, email, loginAccessToken, streamToken, roomName, expireTime) {
 				return new Promise(function (resolve, reject) {
 					const insert = `Insert into hostlist(name , password, email, login_access_token, stream_token, room_name, expire_time) 
 									values(?, ?, ?, ?, ?, ?, ?);`;
-					const insertparams = [name, password, email, login_access_token, stream_token, room_name, expire_time];
+					const insertparams = [name, password, email, loginAccessToken, streamToken, roomName, expireTime];
 					database.connection.getConnection(function (err, connection) {
 						if (err) {
 							reject(err);
 						}
-						connection.beginTransaction(function (Transaction_err) {
-							if (Transaction_err) {
+						connection.beginTransaction(function (transactionErr) {
+							if (transactionErr) {
 								connection.rollback(function () {
-									reject(Transaction_err);
+									reject(transactionErr);
 								});
 							}
 							connection.query(insert, insertparams, function (error, insertedHostCheck, fields) {
@@ -137,7 +137,7 @@ module.exports = {
 				});
 			}
 
-			async function HostSignUpProcess() {
+			async function hostSignUpProcess() {
 				var duplicatedHostNameorNot = await checkDuplicatedName(email);
 				const passwordEcripted = passwordEncryption(password);
 				if (duplicatedHostNameorNot.length == 0) {
@@ -145,10 +145,10 @@ module.exports = {
 						name,
 						passwordEcripted,
 						email,
-						login_access_token,
-						stream_token,
-						room_name,
-						expire_time
+						loginAccessToken,
+						streamToken,
+						roomName,
+						expireTime
 					);
 					return '[host sign up result]:' + insertHostDataResult;
 				} else {
@@ -156,7 +156,7 @@ module.exports = {
 				}
 
 			}
-			HostSignUpProcess().then(value => {
+			hostSignUpProcess().then(value => {
 				resolve(value);
 			}).catch(err => {
 				reject(err);
@@ -168,36 +168,36 @@ module.exports = {
 	loginTokenGenerator: function (email) {
 		const date = new Date();
 		const temp = date.setSeconds(date.getSeconds() + config.access_expired_sec);
-		const expire_date = new Date(temp);
-		const new_access = email + String(expire_date);
+		const expireDate = new Date(temp);
+		const newAccess = email + String(expireDate);
 
 		// generate login access token
-		const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
-		const login_access_token = new_access_token.toString('hex');
+		const newAccessToken = crypto.createHash('sha256').update(newAccess, 'utf8').digest();
+		const loginAccessToken = newAccessToken.toString('hex');
 
-		var res_obj = {
-			expire: expire_date.toString(),
-			login_access_token: login_access_token
+		var resObject = {
+			expire: expireDate.toString(),
+			login_access_token: loginAccessToken
 		}
 
-		return res_obj
+		return resObject
 	},
 	// every host should have only one stream id
-	StreamTokenGenerator: function (hostname) {
+	streamTokenGenerator: function (hostname) {
 		const date = new Date();
-		const new_access = hostname + String(date);
+		const newAccess = hostname + String(date);
 
 		// generate stream token
-		const new_access_token = crypto.createHash('sha256').update(new_access, 'utf8').digest();
-		const stream_token = new_access_token.toString('hex');
-		return stream_token
+		const newAccessToken = crypto.createHash('sha256').update(newAccess, 'utf8').digest();
+		const streamToken = newAccessToken.toString('hex');
+		return streamToken
 	}
 
 };
 
 function passwordEncryption(password) {
-	const new_password = crypto.createHash('sha256').update(password, 'utf8').digest();
-	const new_password_token = new_password.toString('hex');
-	return new_password_token;
+	const newPassword = crypto.createHash('sha256').update(password, 'utf8').digest();
+	const newPasswordToken = newPassword.toString('hex');
+	return newPasswordToken;
 }
 

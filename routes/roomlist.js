@@ -23,7 +23,6 @@ router.get('/', function (req, res, next) {
       res.render('roomlist', { title: title, loginStatus: 'none', rooms: JSON.stringify(rooms) });
     });
   })
-
 });
 
 module.exports = router;

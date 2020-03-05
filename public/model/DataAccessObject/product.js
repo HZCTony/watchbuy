@@ -2,10 +2,10 @@
 const database = require("../util/rds_mysql.js");
 // Build DAO Object
 module.exports = {
-	getAllProducts: function (stream_token) {
+	getAllProducts: function (streamToken) {
 		return new Promise(function (resolve, reject) {
 			const getHostIdQuery = `select id from hostlist where stream_token=? ;`;
-			const getHostIdParam = [stream_token];
+			const getHostIdParam = [streamToken];
 			database.connection.query(getHostIdQuery, getHostIdParam, function (error, hostid, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
@@ -24,7 +24,7 @@ module.exports = {
 			});
 		})
 	},
-	getaSingleProduct: function (image) {
+	getSingleProduct: function (image) {
 		return new Promise(function (resolve, reject) {
 			const getaSingleProductQuery = `select name, size, color, image, stock, description, price from products where image=? ;`;
 			const getaSingleProductParam = [image];
@@ -37,7 +37,7 @@ module.exports = {
 				});
 		})
 	},
-	InsertNewProduct: function (productName, color, size, price, description, stock, email, filepath, price) {
+	insertNewProduct: function (productName, color, size, price, description, stock, email, filepath, price) {
 		return new Promise(function (resolve, reject) {
 			//find hostid
 			const FindHostIdQuery = `select id from hostlist where email=?;`;
@@ -83,10 +83,10 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
 					connection.query(checkhostQuery, checkhostParam, function (error, hostid, fields) {

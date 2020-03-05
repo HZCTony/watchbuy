@@ -8,10 +8,10 @@ module.exports = {
 				if (err) {
 					reject(err);
 				}
-				connection.beginTransaction(function (Transaction_err) {
-					if (Transaction_err) {
+				connection.beginTransaction(function (transactionErr) {
+					if (transactionErr) {
 						connection.rollback(function () {
-							reject(Transaction_err);
+							reject(transactionErr);
 						});
 					}
 					const updateQuery = `UPDATE hostlist SET active=? where stream_token=? ;`;
@@ -36,10 +36,10 @@ module.exports = {
 			})
 		})
 	},
-	getOnlyOneRoom: function (stream_token) {
+	getOnlyOneRoom: function (streamToken) {
 		return new Promise(function (resolve, reject) {
 			let getOnlyOneRoomQuery = `select id, name, stream_token, room_name, active from hostlist where stream_token=? ;`;
-			let getOnlyOneRoomParam = [stream_token];
+			let getOnlyOneRoomParam = [streamToken];
 			database.connection.query(getOnlyOneRoomQuery, getOnlyOneRoomParam, function (error, room, fields) {
 				if (error) {
 					reject("[Database Error]" + error);
