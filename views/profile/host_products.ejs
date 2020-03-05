@@ -56,7 +56,9 @@
                 email: '<%= loginStatus.email %>'
             },
             success: (function(GotAllProducts){
-
+                if(GotAllProducts.length == 0){
+                    document.getElementById('hostproductlist').innerHTML = '<h2>目前尚未上傳任何商品！</h2>';
+                }else{
                 for(let p=GotAllProducts.length-1; 0<p<GotAllProducts.length; p--){
                     generateEverySingleHostOwnedProduct(
                         GotAllProducts[p].image,
@@ -69,6 +71,7 @@
                         GotAllProducts[p].id
                     );
                 }
+            }
             })
         })
     }

@@ -77,6 +77,10 @@
             },
             success:function(Allorders){
                 document.getElementById('loading').style.display='none';
+                if(Allorders.length == 0){
+                    document.getElementById('orderSection').innerHTML = '<h2>目前尚未有任何訂單！</h2>';
+                }else{
+                    document.getElementById('orderSection').style.justifyContent = 'flex-start';
                 for(let item=0; item<Allorders.length; item++){
                     generateEveryOrder(
                         Allorders[item].id,
@@ -85,7 +89,7 @@
                         Allorders[item].products
                         );
                 }
-
+            }
             }
         })
     }

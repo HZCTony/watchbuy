@@ -50,7 +50,7 @@
 
 <script>
     let role = '<%= loginStatus.role %>';
-    let userPages = ['settings','cartlist','orderlist','logout'];
+    let userPages = ['settings', 'cartlist', 'orderlist', 'logout'];
     let profileList = document.getElementsByClassName('profileSettingitem');
     for (let i = 0; i < profileList.length; i++) {
         profileList[i].addEventListener('click', function (e) {
@@ -88,31 +88,38 @@
             let productIds = Array();
             let temp = Array();
             let All_product_cart = new Object();
-            for (let cart_item = 0; cart_item < allproducts.length; cart_item++) {
-                generateEverySingleItemToCart(
-                    allproducts[cart_item].name,
-                    allproducts[cart_item].price,
-                    allproducts[cart_item].color,
-                    allproducts[cart_item].size,
-                    allproducts[cart_item].description,
-                    allproducts[cart_item].image,
-                    allproducts[cart_item].count
-                );
-                let number = Number(allproducts[cart_item].price.replace(/[^0-9.-]+/g, ""));
-                total = total + number * parseInt(allproducts[cart_item].count);
-                productIds.push(allproducts[cart_item].product_id);
-                object = new Object();
-                object['id'] = String(allproducts[cart_item].product_id);
-                object['name'] = String(allproducts[cart_item].name);
-                object['price'] = String(allproducts[cart_item].price);
-                object['count'] = allproducts[cart_item].count;
-                temp.push(object);
-                if (cart_item == allproducts.length - 1) {
-                    document.getElementById('totial_price_value').innerHTML = '<h1>' + total + '</h1>';
-                    document.getElementById('AllProductIDinCart').value = '[' + JSON.stringify(temp) + ']';
-                    document.getElementById('cart_email').value = '<%= loginStatus.email %>';
 
-                    document.getElementById('amount').value = total;
+            if (allproducts.length == 0) {
+                document.getElementById('cartDetails').innerHTML = '<h2>目前尚未有任何欲購商品喔！</h2>';
+
+            } else {
+                document.getElementById('totalPrice').style.visibility = 'visible';
+                document.getElementById('sendOrder').style.visibility = 'visible';
+                for (let cart_item = 0; cart_item < allproducts.length; cart_item++) {
+                    generateEverySingleItemToCart(
+                        allproducts[cart_item].name,
+                        allproducts[cart_item].price,
+                        allproducts[cart_item].color,
+                        allproducts[cart_item].size,
+                        allproducts[cart_item].description,
+                        allproducts[cart_item].image,
+                        allproducts[cart_item].count
+                    );
+                    let number = Number(allproducts[cart_item].price.replace(/[^0-9.-]+/g, ""));
+                    total = total + number * parseInt(allproducts[cart_item].count);
+                    productIds.push(allproducts[cart_item].product_id);
+                    object = new Object();
+                    object['id'] = String(allproducts[cart_item].product_id);
+                    object['name'] = String(allproducts[cart_item].name);
+                    object['price'] = String(allproducts[cart_item].price);
+                    object['count'] = allproducts[cart_item].count;
+                    temp.push(object);
+                    if (cart_item == allproducts.length - 1) {
+                        document.getElementById('totial_price_value').innerHTML = '<h1>' + total + '</h1>';
+                        document.getElementById('AllProductIDinCart').value = '[' + JSON.stringify(temp) + ']';
+                        document.getElementById('cart_email').value = '<%= loginStatus.email %>';
+                        document.getElementById('amount').value = total;
+                    }
                 }
             }
         }
@@ -228,4 +235,5 @@
         })
     }
 </script>
+
 </html>

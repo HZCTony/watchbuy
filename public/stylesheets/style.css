@@ -134,7 +134,7 @@ body{
   transform: translate(-100%,0);
   display: inline-flex;
   flex-direction: column;
-  transition: left 0.3s;
+  transition: left 0.5s;
 }
 
 
