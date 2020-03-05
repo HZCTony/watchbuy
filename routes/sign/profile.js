@@ -94,7 +94,7 @@ router.get('/:list', function (req, res, next) {
   let role = req.cookies.role;
   let token = req.cookies.token;
   let profileList = req.params.list;
-
+  console.log('profileList == ',profileList);
   if (!role || !token) {
     res.redirect('/signin');
   } else {
@@ -107,16 +107,16 @@ router.get('/:list', function (req, res, next) {
 
           if (loginStatus.role == 'host') {
             switch (profileList) {
-              case '0':
+              case 'settings':
                 res.render('./profile/settings', { title: title, loginStatus: loginStatus });
                 break;
-              case '1':
+              case 'product_upload':
                 res.render('./profile/product_upload', { title: title, loginStatus: loginStatus });
                 break;
-              case '2':
+              case 'host_products':
                 res.render('./profile/host_products', { title: title, loginStatus: loginStatus });
                 break;
-              case '3':
+              case 'logout':
                 res.clearCookie('role');
                 res.clearCookie('token');
 
@@ -127,16 +127,16 @@ router.get('/:list', function (req, res, next) {
             }
           } else if (loginStatus.role == 'user') {
             switch (profileList) {
-              case '0':
+              case 'settings':
                 res.render('./profile/settings', { title: title, loginStatus: loginStatus });
                 break;
-              case '1':
+              case 'cartlist':
                 res.render('./profile/cartlist', { title: title, loginStatus: loginStatus });
                 break;
-              case '2':
+              case 'orderlist':
                 res.render('./profile/orderlist', { title: title, loginStatus: loginStatus });
                 break;
-              case '3':
+              case 'logout':
                 res.clearCookie('role');
                 res.clearCookie('token');
                 res.redirect('/signin');

@@ -58,13 +58,13 @@
 
 <script>
     let role = '<%= loginStatus.role %>';
-
+    let Pages = ['settings', 'product_upload', 'host_products', 'logout'];
     let profile_list = document.getElementsByClassName('profileSettingitem');
 
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
             e.preventDefault();
-            window.location = '/profile/' + i;
+            window.location = '/profile/' + Pages[i];
         })
     }
     if (role == 'host') {

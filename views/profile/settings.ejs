@@ -46,22 +46,26 @@
 
 <script>
     let role = '<%= loginStatus.role %>';
+    let Pages = [];
     if (role == 'host') {
         document.getElementById('name').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.name %>';
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
         document.getElementById('ID').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.stream_token %>';
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
+        Pages = ['settings', 'product_upload', 'host_products', 'logout'];
     } else if (role == 'user') {
         document.getElementById('name').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.name %>';
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
+        Pages = ['settings', 'cartlist', 'orderlist', 'logout'];
     }
 
     let profile_list = document.getElementsByClassName('profileSettingitem');
+
     for (let i = 0; i < profile_list.length; i++) {
         profile_list[i].addEventListener('click', function (e) {
             e.preventDefault();
-            window.location = '/profile/' + i;
+            window.location = '/profile/' + Pages[i];
         })
     }
 

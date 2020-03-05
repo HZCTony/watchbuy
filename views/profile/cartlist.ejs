@@ -50,11 +50,12 @@
 
 <script>
     let role = '<%= loginStatus.role %>';
-    let profile_list = document.getElementsByClassName('profileSettingitem');
-    for (let i = 0; i < profile_list.length; i++) {
-        profile_list[i].addEventListener('click', function (e) {
+    let userPages = ['settings','cartlist','orderlist','logout'];
+    let profileList = document.getElementsByClassName('profileSettingitem');
+    for (let i = 0; i < profileList.length; i++) {
+        profileList[i].addEventListener('click', function (e) {
             e.preventDefault();
-            window.location = '/profile/' + i;
+            window.location = '/profile/' + userPages[i];
         })
     }
     $('#upload_product').submit(function (e) {
