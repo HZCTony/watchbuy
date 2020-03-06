@@ -96,7 +96,7 @@ module.exports = {
 			} else if (role == 'host') {
 				UpdateloginInfoQuery = `Update hostlist SET login_access_token=?, expire_time=? where email=? ;`;
 			}
-			const UpdateloginInfoParams = [Updated.login_access_token, Updated.expire, email];
+			const UpdateloginInfoParams = [Updated.loginAccessToken, Updated.expire, email];
 
 			database.connection.getConnection(function (err, connection) {
 				if (err) {
@@ -119,7 +119,8 @@ module.exports = {
 										reject(commitErr);
 									});
 								}
-								resolve(Updated.login_access_token);
+								console.log('Updated.login_access_token == ',Updated.loginAccessToken);
+								resolve(Updated.loginAccessToken);
 								connection.release();
 							});
 						}

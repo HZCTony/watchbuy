@@ -155,13 +155,13 @@
   var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isSafari && iOS) {
-    document.getElementById('live_video').src = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
+    document.getElementById('live_video').src = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
 
   } else {
 
     // live video pull
     if (flvjs.isSupported()) {
-      const live_url = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
+      const live_url = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '01f6dc142165f85b56a724b416e5a449dedb038bf20cac4b7fdbdaee0396665bc61575e19d9b94f26' + `.flv`;
       const video = document.getElementById('live_video');
       const flvPlayer = flvjs.createPlayer({
         type: 'flv',

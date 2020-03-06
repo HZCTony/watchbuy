@@ -14,13 +14,14 @@ router.get('/:id', function (req, res, next) {
     res.redirect('/signin');
   } else {
     sigin.personCookieCheck(role, token).then(loginStatus => {
+      console.log(loginStatus);
       if (role == 'host') {
         if (loginStatus.status == 'not ok') {
           res.clearCookie('role');
           res.clearCookie('token');
           res.redirect(`/userlive/${id}`);
         } else {
-          if(id == loginStatus.stream_token){
+          if(id == loginStatus.streamToken){
             logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
               loginStatus.logo = logoPath.logo;
               res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
