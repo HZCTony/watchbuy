@@ -37,7 +37,7 @@ module.exports = {
 				status: '',
 				name: '',
 				email: '',
-				streamToken: ''
+				stream_token: ''
 			};
 			if (role == 'user') {
 				cookieCheckQuery = `select * from userlist where login_access_token=? ;`;
@@ -76,7 +76,7 @@ module.exports = {
 							loginStatus.status = expireCalculation(hostCookieCheck[0].expire_time);
 							loginStatus.name = hostCookieCheck[0].name;
 							loginStatus.email = hostCookieCheck[0].email;
-							loginStatus.streamToken = hostCookieCheck[0].stream_token;
+							loginStatus.stream_token = hostCookieCheck[0].stream_token;
 							resolve(loginStatus);
 						}
 					}
@@ -89,14 +89,14 @@ module.exports = {
 
 	updateLoginAccessToken: function (role, email) {
 		return new Promise(function (resolve, reject) {
-			Updated = loginTokenGenerator(email);
+			let Updated = loginTokenGenerator(email);
 			let UpdateloginInfoQuery = '';
 			if (role == 'user') {
 				UpdateloginInfoQuery = `Update userlist SET login_access_token=?, expire_time=? where email=? ;`;
 			} else if (role == 'host') {
 				UpdateloginInfoQuery = `Update hostlist SET login_access_token=?, expire_time=? where email=? ;`;
 			}
-			const UpdateloginInfoParams = [Updated.login_access_token, Updated.expire, email];
+			const UpdateloginInfoParams = [Updated.loginAccessToken, Updated.expire, email];
 
 			database.connection.getConnection(function (err, connection) {
 				if (err) {
@@ -119,7 +119,7 @@ module.exports = {
 										reject(commitErr);
 									});
 								}
-								resolve(Updated.login_access_token);
+								resolve(Updated.loginAccessToken);
 								connection.release();
 							});
 						}

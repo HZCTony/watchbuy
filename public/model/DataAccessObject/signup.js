@@ -177,10 +177,10 @@ module.exports = {
 
 		var resObject = {
 			expire: expireDate.toString(),
-			login_access_token: loginAccessToken
+			loginAccessToken: loginAccessToken
 		}
 
-		return resObject
+		return resObject;
 	},
 	// every host should have only one stream id
 	streamTokenGenerator: function (hostname) {
@@ -190,7 +190,7 @@ module.exports = {
 		// generate stream token
 		const newAccessToken = crypto.createHash('sha256').update(newAccess, 'utf8').digest();
 		const streamToken = newAccessToken.toString('hex');
-		return streamToken
+		return streamToken;
 	}
 
 };

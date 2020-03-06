@@ -103,7 +103,8 @@ router.get('/:list', function (req, res, next) {
       if (loginStatus.status == 'ok') {
         logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
           loginStatus.logo = logoPath.logo;
-
+          
+          console.log('loginStatus == ',loginStatus);
 
           if (loginStatus.role == 'host') {
             switch (profileList) {
