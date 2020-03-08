@@ -23,7 +23,7 @@
         </div>
         <div id='url'>
             <div class='title'>直播網址</div>
-            <div class='content'>rtmp://18.140.200.159/live</div>
+            <div class='content'></div>
         </div>
         <div id='ID'>
             <div class='title'>直播ID</div>
@@ -35,3 +35,20 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+    $.ajax({
+        type: 'POST',
+        url : '/profile/hostipaddress',
+        data: {
+            request: 'currentlowestloadingserver'
+        },
+        success: function(response){
+            console.log(response.ip);
+            document.getElementById('url').getElementsByClassName('content')[0].innerHTML = String(response.ip);
+        }
+    })
+
+</script>

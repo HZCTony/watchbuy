@@ -3,16 +3,17 @@ let signin = require('../../public/model/DataAccessObject/signin.js');
 let logo = require('../../public/model/DataAccessObject/logo.js');
 let cart = require('../../public/model/DataAccessObject/cart.js');
 let product = require('../../public/model/DataAccessObject/product.js');
-let s3Credential = require('../../public/model/util/aws.json');
+let credential = require('../../public/model/util/aws.json');
 let router = express.Router();
 let multer = require('multer');
 let multerS3 = require('multer-s3');
 let AWS = require('aws-sdk');
+let requestPromise = require('request-promise');
 
 //s3 logo uploader
 let hostLogoUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3Credential),
+    s3: new AWS.S3(credential),
     bucket: 'hzctonyforlive/logo/host',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -27,7 +28,7 @@ let hostLogoUpload = multer({
 
 let userLogoUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3Credential),
+    s3: new AWS.S3(credential),
     bucket: 'hzctonyforlive/logo/user',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -43,7 +44,7 @@ let userLogoUpload = multer({
 
 let productUpload = multer({
   storage: multerS3({
-    s3: new AWS.S3(s3Credential),
+    s3: new AWS.S3(credential),
     bucket: 'hzctonyforlive/product',
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -231,6 +232,112 @@ router.post('/getAllHostOwnedProduct', function (req, res, next) {
   }
 
 });
+
+
+router.post('/hostipaddress', function (req, res) {
+
+  let ec2 = new AWS.EC2(credential);
+
+  let params = {
+    Filters: [
+      {
+        Name: "instance-type",
+        Values: [
+          "t2.micro"
+        ]
+      }
+    ]
+  };
+  let allEC2InstaceDNS = [];
+  let allEC2InstaceIp = [];
+  ec2.describeInstances(params, function (err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+      for (let i = 0; i < data.Reservations.length; i++) {
+        console.log(data.Reservations[i].Instances[0].PublicDnsName);
+        if (data.Reservations[i].Instances[0].State.Code == 16) {
+          allEC2InstaceDNS.push('http://' + data.Reservations[i].Instances[0].PublicDnsName + ':3000');
+          allEC2InstaceIp.push('rtmp://' + data.Reservations[i].Instances[0].PublicIpAddress + '/live')
+        }
+      }
+
+      Promise.all(generateMultipleServerRequest(allEC2InstaceDNS))
+        .then(function (parsedBody) {
+          // POST succeeded...
+          console.log(parsedBody);
+          let sort = findLowestInputNetworkOfServer(parsedBody);
+          console.log('sort == ', sort);
+          console.log('allEC2InstaceIp == ', allEC2InstaceIp);
+          res.json({
+            ip: allEC2InstaceIp[sort.lowestIndex]
+          });
+        })
+        .catch(function (err) {
+          // POST failed...
+          res.json({ err: err })
+        });
+    }          // successful response
+  });
+
+})
+
+
+
+
+
+
+
+
+function generateMultipleServerRequest(allEC2InstaceDNS) {
+
+  //dead data
+  let url = [
+    'http://ec2-18-140-200-159.ap-southeast-1.compute.amazonaws.com:3000',
+    'http://ec2-13-229-219-202.ap-southeast-1.compute.amazonaws.com:3000'
+  ];
+
+  console.log('allEC2InstaceIP == ', allEC2InstaceDNS);
+
+  let requests = [];
+  for (let u = 0; u < allEC2InstaceDNS.length; u++) {
+    let opt = {
+      method: 'POST',
+      uri: allEC2InstaceDNS[u],
+      body: {
+        data: 1
+      },
+      json: true // Automatically stringifies the body to JSON
+    };
+
+    requests.push(requestPromise(opt));
+
+  }
+
+  return requests;
+
+}
+
+
+
+
+function findLowestInputNetworkOfServer(networkInputResults) {
+  let lowest = 0;
+  let highest = 0;
+  let tmp;
+  for (let i = networkInputResults.length - 1; i >= 0; i--) {
+    tmp = networkInputResults[i].input;
+    // find out the ip index of array with max and min d
+    if (tmp <= lowest) lowest = i;
+    if (tmp >= highest) highest = i;
+  }
+  let result = {
+    highestIndex: highest,
+    lowestIndex: lowest
+  }
+  return result;
+}
+
+
 
 
 
