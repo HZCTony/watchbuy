@@ -109,6 +109,7 @@ router.get('/', function (req, res, next) {
                   let splitedInstanceId = String(allEC2InstaceId[sort.lowestIndex]).split('-',2)[1];
                   loginStatus.logo = logoPath.logo;
                   loginStatus.ip = allEC2InstaceIp[sort.lowestIndex];
+                  loginStatus.instance = splitedInstanceId;
                   customlb.writeCurrentEC2instanceIdtoHost(loginStatus.email, splitedInstanceId).then(result => {
                     res.render('./profile/settings', { title: title, loginStatus: loginStatus });
                   })

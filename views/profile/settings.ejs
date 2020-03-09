@@ -50,7 +50,7 @@
     if (role == 'host') {
         document.getElementById('name').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.name %>';
         document.getElementById('email').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.email %>';
-        document.getElementById('ID').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.stream_token %>';
+        document.getElementById('ID').getElementsByClassName('content')[0].innerHTML = '<%= loginStatus.instance %>' + '<%= loginStatus.stream_token %>';
         document.getElementById('description').getElementsByClassName('content')[0].innerHTML = 'no description';
         Pages = ['settings', 'product_upload', 'host_products', 'logout'];
     } else if (role == 'user') {

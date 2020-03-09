@@ -23,17 +23,19 @@ module.exports = {
     findLowestInputNetworkOfServer: function (networkInputResults) {
         let lowest = 0;
         let highest = 0;
-        let tmp;
+        let tmp = 0;
         for (let i = networkInputResults.length - 1; i >= 0; i--) {
-            tmp = networkInputResults[i].input;
+
             // find out the ip index of array with max and min d
             if (tmp <= lowest) lowest = i;
             if (tmp >= highest) highest = i;
+            tmp = networkInputResults[i].input;
         }
         let result = {
             highestIndex: highest,
             lowestIndex: lowest
         }
+        console.log('result == ',result);
         return result;
     },
 
