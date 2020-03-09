@@ -86,14 +86,19 @@ router.get('/', function (req, res, next) {
             ]
           };
           let allEC2InstaceDNS = [];
+          let allEC2InstaceId = [];
           let allEC2InstaceIp = [];
           //get all the ec2 instances running node media server
           ec2.describeInstances(params, function (err, gotBackAllEc2Instances) {
             if (err) console.log(err, err.stack);
             else {
+
               for (let i = 0; i < gotBackAllEc2Instances.Reservations.length; i++) {
+                console.log();
                 if (gotBackAllEc2Instances.Reservations[i].Instances[0].State.Code == 16) {
+
                   allEC2InstaceDNS.push('http://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicDnsName + ':3000');
+                  allEC2InstaceId.push(gotBackAllEc2Instances.Reservations[i].Instances[0].InstanceId);
                   allEC2InstaceIp.push('rtmp://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicIpAddress + '/live')
                 }
               }
@@ -101,14 +106,17 @@ router.get('/', function (req, res, next) {
               Promise.all(customlb.generateMultipleServerRequests(allEC2InstaceDNS))
                 .then(function (parsedBody) {
                   let sort = customlb.findLowestInputNetworkOfServer(parsedBody);
+                  let splitedInstanceId = String(allEC2InstaceId[sort.lowestIndex]).split('-',2)[1];
                   loginStatus.logo = logoPath.logo;
                   loginStatus.ip = allEC2InstaceIp[sort.lowestIndex];
-                  res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+                  customlb.writeCurrentEC2instanceIdtoHost(loginStatus.email, splitedInstanceId).then(result => {
+                    res.render('./profile/settings', { title: title, loginStatus: loginStatus });
+                  })
                 })
                 .catch(function (err) {
                   res.json({ err: err })
                 });
-            } 
+            }
           });
         })
       } else {

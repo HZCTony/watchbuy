@@ -161,9 +161,8 @@
 
     // live video pull
     if (flvjs.isSupported()) {
-      //const live_url = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `.flv`;
-      const live_url = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '01f6dc142165f85b5' + '<%- id %>' + `.flv`;
-      //const live_url = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '07981bcfcba0e8e26' + '<%- id %>' + `.flv`;
+      const live_url = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- loginStatus.instance %>' + '<%- id %>' + `.flv`;
+      console.log('live_url == ',live_url);
       const video = document.getElementById('live_video');
       const flvPlayer = flvjs.createPlayer({
         type: 'flv',

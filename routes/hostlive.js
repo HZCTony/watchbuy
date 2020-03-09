@@ -22,8 +22,11 @@ router.get('/:id', function (req, res, next) {
         } else {
           if(id == loginStatus.stream_token){
             logo.getLogoImgPath(loginStatus.role, loginStatus.email).then(logoPath => {
-              loginStatus.logo = logoPath.logo;
-              res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
+              live.getOnlyOneRoom(id).then(singleRoom =>{
+                loginStatus.logo = logoPath.logo;
+                loginStatus.instance = singleRoom[0].ec2id;
+                res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
+              })
             });
 
           }else{

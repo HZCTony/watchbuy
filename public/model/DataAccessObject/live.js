@@ -38,7 +38,7 @@ module.exports = {
 	},
 	getOnlyOneRoom: function (streamToken) {
 		return new Promise(function (resolve, reject) {
-			let getOnlyOneRoomQuery = `select id, name, stream_token, room_name, active from hostlist where stream_token=? ;`;
+			let getOnlyOneRoomQuery = `select id, name, stream_token, room_name, active, ec2id from hostlist where stream_token=? ;`;
 			let getOnlyOneRoomParam = [streamToken];
 			database.connection.query(getOnlyOneRoomQuery, getOnlyOneRoomParam, function (error, room, fields) {
 				if (error) {

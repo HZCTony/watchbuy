@@ -37,10 +37,42 @@ module.exports = {
         return result;
     },
 
-    writeCurrentEC2instanceIdtoHost: function(email, ec2Id){
+    writeCurrentEC2instanceIdtoHost: function (email, ec2Id) {
+        return new Promise(function (resolve, reject) {
+            database.connection.getConnection(function (err, connection) {
+                if (err) {
+                    reject(err);
+                }
+                connection.beginTransaction(function (transactionErr) {
+                    if (transactionErr) {
+                        connection.rollback(function () {
+                            reject(transactionErr);
+                        });
+                    }
+                    let insertEC2IdQuery = `UPDATE hostlist SET ec2id=? where email=? `;
+                    let insertEC2IdParams = [ec2Id, email];
+                    connection.query(insertEC2IdQuery, insertEC2IdParams, function (error, insertedResult, fields) {
+                        if (error) {
+                            reject("[Database Error]" + error);
+                        } else {
+                            connection.commit(function (commitErr) {
+                                if (commitErr) {
+                                    connection.rollback(function () {
+                                        connection.release();
+                                        reject(commitErr);
+                                    });
+                                }
+                                resolve(insertedResult);
+                                connection.release();
+                            });
+                        }
+                    });
+                })
+            })
+        })
+
+
 
     }
-
-
-};
+}
 
