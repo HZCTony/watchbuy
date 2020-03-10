@@ -11,7 +11,7 @@ test('networksInputTest', function () {
         { input: 0},
         { input: 444},
         { input: 221},
-        { input: 8989}
+        { input: 12312}
     ];
     expect(typeof customlb.findLowestInputNetworkOfServer(obj)).toBe('object');
 })
