@@ -85,9 +85,9 @@ router.get('/', function (req, res, next) {
               }
             ]
           };
-          let allEC2InstaceDNS = [];
-          let allEC2InstaceId = [];
-          let allEC2InstaceIp = [];
+          let allEC2InstaceDNSs = [];
+          let allEC2InstaceIds = [];
+          let allEC2InstaceIps = [];
           //get all the ec2 instances running node media server
           ec2.describeInstances(params, function (err, gotBackAllEc2Instances) {
             if (err) console.log(err, err.stack);
@@ -97,18 +97,18 @@ router.get('/', function (req, res, next) {
                 console.log();
                 if (gotBackAllEc2Instances.Reservations[i].Instances[0].State.Code == 16) {
 
-                  allEC2InstaceDNS.push('http://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicDnsName + ':3000');
-                  allEC2InstaceId.push(gotBackAllEc2Instances.Reservations[i].Instances[0].InstanceId);
-                  allEC2InstaceIp.push('rtmp://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicIpAddress + '/live')
+                  allEC2InstaceDNSs.push('http://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicDnsName + ':3000');
+                  allEC2InstaceIds.push(gotBackAllEc2Instances.Reservations[i].Instances[0].InstanceId);
+                  allEC2InstaceIps.push('rtmp://' + gotBackAllEc2Instances.Reservations[i].Instances[0].PublicIpAddress + '/live')
                 }
               }
               //send requests to all the ec2 instances running node media server
-              Promise.all(customlb.generateMultipleServerRequests(allEC2InstaceDNS))
+              Promise.all(customlb.generateMultipleServerRequests(allEC2InstaceDNSs))
                 .then(function (parsedBody) {
                   let sort = customlb.findLowestInputNetworkOfServer(parsedBody);
-                  let splitedInstanceId = String(allEC2InstaceId[sort.lowestIndex]).split('-',2)[1];
+                  let splitedInstanceId = String(allEC2InstaceIds[sort.lowestIndex]).split('-',2)[1];
                   loginStatus.logo = logoPath.logo;
-                  loginStatus.ip = allEC2InstaceIp[sort.lowestIndex];
+                  loginStatus.ip = allEC2InstaceIps[sort.lowestIndex];
                   loginStatus.instance = splitedInstanceId;
                   customlb.writeCurrentEC2instanceIdtoHost(loginStatus.email, splitedInstanceId).then(result => {
                     res.render('./profile/settings', { title: title, loginStatus: loginStatus });

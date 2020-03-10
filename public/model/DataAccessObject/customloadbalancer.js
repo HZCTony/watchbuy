@@ -3,13 +3,12 @@ const database = require("../util/rds_mysql.js");
 let requestPromise = require('request-promise');
 // Build DAO Object
 module.exports = {
-
     generateMultipleServerRequests: function (allEC2InstaceDNS) {
-        let requests = [];
-        for (let u = 0; u < allEC2InstaceDNS.length; u++) {
+        let requests = new Array();
+        for (let unit = 0; unit < allEC2InstaceDNS.length; unit++) {
             let opt = {
                 method: 'POST',
-                uri: allEC2InstaceDNS[u],
+                uri: allEC2InstaceDNS[unit],
                 body: {
                     data: 1
                 },
@@ -18,27 +17,22 @@ module.exports = {
             requests.push(requestPromise(opt));
         }
         return requests;
-
     },
     findLowestInputNetworkOfServer: function (networkInputResults) {
-        let lowest = 0;
-        let highest = 0;
-        let tmp = 0;
+        let lowest = {index:null, value: Number.POSITIVE_INFINITY};
+        let highest = {index:null, value: Number.NEGATIVE_INFINITY};
         for (let i = networkInputResults.length - 1; i >= 0; i--) {
-
-            // find out the ip index of array with max and min d
-            if (tmp <= lowest) lowest = i;
-            if (tmp >= highest) highest = i;
-            tmp = networkInputResults[i].input;
+            let tmp = networkInputResults[i].input;
+            if (tmp <= lowest.value) lowest = {index:i, value:tmp};
+            if (tmp >= highest.value) highest = {index:i, value:tmp};
         }
         let result = {
-            highestIndex: highest,
-            lowestIndex: lowest
+            highestIndex: highest.index,
+            lowestIndex: lowest.index
         }
-        console.log('result == ',result);
+
         return result;
     },
-
     writeCurrentEC2instanceIdtoHost: function (email, ec2Id) {
         return new Promise(function (resolve, reject) {
             database.connection.getConnection(function (err, connection) {
@@ -72,9 +66,6 @@ module.exports = {
                 })
             })
         })
-
-
-
     }
 }
 
