@@ -9,7 +9,7 @@
 ---------------------------------------
 '[technique architechture]'
 
-
+![image](readme/architechture.png)
 
 ## Architecture features
 1. Basic server scalibility for pushing live stream through auto scaling to hosts.
@@ -18,7 +18,10 @@
 ---------------------------------------
 
 
-## Prerequeisite
+## Mysql schema
 
+---------------------------------------
+
+## Prerequeisite
 
 ---------------------------------------
