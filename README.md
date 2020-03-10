@@ -9,7 +9,7 @@
 ---------------------------------------
 '[technique architechture]'
 
-![image](readme/architechture2.png)
+![image](readme/architechture3.png)
 
 ## Architecture features
 1. Basic server scalibility for pushing live stream through auto scaling to hosts.
