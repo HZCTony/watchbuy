@@ -24,7 +24,7 @@
 
 ## Mysql schema
 
-![image](public/image/dbschema.png);
+![image](public/images/dbschema.png);
 
 ### features
 1. Saved unique stream token for every host in hostlist
