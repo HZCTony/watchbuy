@@ -1,7 +1,7 @@
 # WatchBuy - Live video shopping
 
 
-[![demo video]()](https://youtu.be/HZEDPOzgSJk)
+[![demo video](https://hzctonyforlive.s3-ap-southeast-1.amazonaws.com/demovid.png)](https://youtu.be/HZEDPOzgSJk)
 ## features
 1. Every live host can introduce every product in live video.
 2. Every user can ask questions through chat view.
