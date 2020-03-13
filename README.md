@@ -24,8 +24,9 @@
 
 ## Mysql schema
 
-features
+![image](public/image/dbschema.png);
 
+### features
 1. Saved unique stream token for every host in hostlist
 2. Saved login expire date of hosts and users in hostlist and userlist
 3. Saved every single product owned by hosts in products table
