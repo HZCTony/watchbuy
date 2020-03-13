@@ -25,7 +25,7 @@ router.get('/:id', function (req, res, next) {
               live.getOnlyOneRoom(id).then(singleRoom =>{
                 loginStatus.logo = logoPath.logo;
                 loginStatus.instance = singleRoom[0].ec2id;
-                res.render('hostlive', { title: title, id: id, loginStatus: loginStatus });
+                res.render('demo', { title: title, id: id, loginStatus: loginStatus });
               })
             });
 

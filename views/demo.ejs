@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/live/liveviewForHostAndUser.css' />
+  <link rel='stylesheet' href='/stylesheets/live/rwd.css' />
+
+  <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.0/dash.all.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <%- include("./model/header/call-headers.ejs") %>
+
+  <div id='live_container'>
+    <div id='vidplay'></div>
+    <div id='openProductShowBtn'>
+      <p>-</p>
+    </div>
+    <div id='productShow'>
+      <div id='productDescription'>
+        <%- include("./model/product/productdescription.ejs") %>
+      </div>
+      <div id='productlist'>
+      </div>
+    </div>
+
+    <div id='liveCheckButton'>
+      <div id='liveicon-container'>
+        <div id='circle'>
+          <div id='innercircle'></div>
+        </div>
+        <div id='liveword'>NOT LIVE</div>
+      </div>
+      <div id='livestatus'>影像有出現後按我開播</div>
+
+    </div>
+
+    <div id='live'>
+
+
+      <div id='video'>
+        <video id="live_video" src='/demo.MOV'>
+        </video>
+      </div>
+    </div>
+
+    <div id='chat'>
+      <div id='msglog' class="msglog_opacity">
+      </div>
+      <div id='sendmsg-container'>
+        <div id='sendMessage'>
+          <input type="text" id="message" name="message" placeholder="Type message here...">
+          <button id='sendMsgBtn'>傳 送</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+
+    socket = io.connect();
+    const roomid = '<%- id %>';
+    const current_host_name = '<%= loginStatus.name %>';
+
+    //check host's room and join
+    var user = {
+      name: current_host_name,
+      room: roomid
+    }
+    socket.emit('join', user);
+    socket.on('sys', function (status) {
+    });
+
+    //chat enter event
+    document.getElementById("message").addEventListener("keypress", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("sendMsgBtn").click();
+      }
+    });
+
+
+    // host send message
+    document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
+    function sendMessage(e) {
+      e.preventDefault();
+      // var username = document.getElementById('username').innerText;
+      var message = document.getElementById('message').value;
+      if (message != '' && current_host_name != '') {
+        var msg = {
+          username: current_host_name,
+          sender_role: 'host',
+          message: message,
+          room: roomid,
+          image: ''
+        }
+        socket.emit('usr_message', msg);
+        document.getElementById("message").value = '';
+      }
+      if (current_host_name == '') {
+        document.getElementById('msg_status').innerText = '請先登入';
+        document.getElementById('msg_status').style.visibility = 'visible';
+      }
+
+    }
+
+    //host send current product
+    document.getElementById('Button_text').innerText = '發佈到聊天';
+    document.getElementById('addtoCart').addEventListener('click', function (e) {
+      e.preventDefault();
+
+      var message = '現在要播出的商品: ' + document.getElementById('product_name').innerText;
+      if (current_host_name != '') {
+        var msg = {
+          username: current_host_name,
+          sender_role: 'host',
+          message: message,
+          room: roomid,
+          image: document.getElementById('mainimg').src
+        }
+        socket.emit('usr_message', msg);
+      }
+    })
+
+
+    // User receive message 
+    socket.on('gotMessage', function (gotMessage) {
+      let msglog = document.getElementById('msglog');
+      if (gotMessage.sender_role == 'host') {
+        msglog.innerHTML += '<div class="hostMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        if (gotMessage.image != '') {
+          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '"></div>';
+        }
+        msglog.scrollTop = msglog.scrollHeight;
+
+      } else {
+        msglog.innerHTML += '<div class="userMsg">' + '<div><span>' + gotMessage.username + " : " + gotMessage.message + '</span></div></div>';
+        if (gotMessage.image != '') {
+          msglog.innerHTML += '<div class="hostMsg-img"><img src="' + gotMessage.image + '"></div>';
+        }
+        msglog.scrollTop = msglog.scrollHeight;
+      }
+    });
+  </script>
+</body>
+<script>
+
+  var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+  var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isSafari && iOS) {
+    document.getElementById('live_video').src = `https://dcz520qs6parq.cloudfront.net/live/` + '<%- id %>' + `/index.m3u8`;
+
+  } else {
+
+    // live video pull
+    // if (flvjs.isSupported()) {
+    //   const live_url = `https://d2bdydyr5nl3wu.cloudfront.net/live/` + '<%- loginStatus.instance %>' + '<%- id %>' + `.flv`;
+    //   console.log('live_url == ',live_url);
+    //   const video = document.getElementById('live_video');
+    //   const flvPlayer = flvjs.createPlayer({
+    //     type: 'flv',
+    //     url: live_url
+    //   });
+    //   flvPlayer.attachMediaElement(video);
+    //   flvPlayer.load();
+    //   video.pause();
+    //   //flvPlayer.play();
+    // }
+  }
+
+</script>
+
+
+
+<script>
+  const stream_id = '<%- id %>';
+  document.getElementById('liveCheckButton').addEventListener('click', function (e) {
+    e.preventDefault();
+    let color = $('#liveicon-container').css("background-color");
+    if (color == 'rgb(128, 128, 128)') {
+      $('#liveicon-container').css('background-color', 'rgb(255, 0, 0)');
+      document.getElementById('livestatus').innerHTML = '正在開播中，按我取消';
+      document.getElementById('liveword').innerHTML = 'LIVE';
+      updateLiveActivation('open', stream_id);
+    } else if (color == 'rgb(255, 0, 0)') {
+      $('#liveicon-container').css('background-color', 'rgb(128, 128, 128)');
+      document.getElementById('livestatus').innerHTML = '影像有畫面後按我開播';
+      document.getElementById('liveword').innerHTML = 'NOT LIVE';
+      updateLiveActivation('close', stream_id);
+    }
+  })
+
+
+  window.addEventListener("beforeunload", function (e) {
+    e.preventDefault();
+    updateLiveActivation('close', stream_id);
+
+  });
+
+  function updateLiveActivation(status) {
+    $.ajax({
+      url: '/hostlive/updateLiveActivation',
+      type: "POST",
+      data: {
+        stream_token: stream_id,
+        status: status
+      },
+      success: function (res) {
+      }
+    })
+  }
+
+</script>
+
+<script>
+  $.ajax({
+    url: '/hostlive/getAllproducts',
+    type: "POST",
+    data: {
+      stream_token: '<%- id %>',
+    },
+    success: function (gotAllProducts_of_current_host) {
+      if (gotAllProducts_of_current_host.length != 0) {
+        document.getElementById('addtoCart').style.visibility = 'visible';
+        document.getElementById('product_name').innerHTML = gotAllProducts_of_current_host[0].name;
+        document.getElementById('price').innerHTML = '$ ' + gotAllProducts_of_current_host[0].price;
+        document.getElementById('size').innerHTML = gotAllProducts_of_current_host[0].size;
+        document.getElementById('color').innerHTML = gotAllProducts_of_current_host[0].color;
+        document.getElementById('description').innerHTML = gotAllProducts_of_current_host[0].description;
+        document.getElementById('mainimg').src = gotAllProducts_of_current_host[0].image;
+      } else {
+        document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+      }
+
+      for (let item = 0; item < gotAllProducts_of_current_host.length; item++) {
+        let image_S3_url = gotAllProducts_of_current_host[item].image
+        generateProductImages(image_S3_url);
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      document.getElementById('product_name').innerHTML = '目前尚未有任何商品';
+    }
+  })
+
+
+  function generateProductImages(imagePath) {
+    var item = document.createElement('div');
+    item.classList.add('item');
+    var productimg = document.createElement('div');
+    productimg.classList.add('productimg');
+    productimg.style.backgroundImage = `url('${imagePath}')`;
+    item.appendChild(productimg);
+    item.onclick = function () {
+      //get a single product and show the details on the above div
+      $.ajax({
+        url: '/hostlive/getaSingleProduct',
+        type: "POST",
+        data: {
+          image: imagePath,
+        },
+        success: function (singleProduct) {
+          document.getElementById('product_name').innerHTML = singleProduct.name;
+          document.getElementById('price').innerHTML = '$ ' + singleProduct.price;
+          document.getElementById('size').innerHTML = singleProduct.size;
+          document.getElementById('color').innerHTML = singleProduct.color;
+          //document.getElementById('stock').innerHTML = singleProduct.stock;
+          document.getElementById('description').innerHTML = singleProduct.description;
+          document.getElementById('mainimg').src = singleProduct.image;
+        }
+      })
+    }
+    document.getElementById('productlist').append(item);
+  }
+</script>
+
+<script>
+  document.getElementById('openProductShowBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    var see = $('#productShow').css("visibility");
+    if (see == 'visible') {
+      $('#productShow').css("visibility", 'hidden');
+      document.getElementById('openProductShowBtn').innerHTML = '<p>' + '+' + '</p>';
+      document.getElementById('addtoCart').style.visibility = 'hidden';
+    } else if (see == 'hidden') {
+      $('#productShow').css("visibility", 'visible');
+      document.getElementById('openProductShowBtn').innerHTML = '<p>' + '-' + '</p>';
+      document.getElementById('addtoCart').style.visibility = 'visible';
+    }
+  })
+</script>
+
+<script>
+  let live_video_check = document.getElementById('live_video');
+  document.getElementById('vidplay').addEventListener('click', function () {
+    if (live_video_check.paused) {
+      if (live_video_check.buffered.end(0) >= 1) {
+        //live_video_check.currentTime = live_video_check.buffered.end(0) - 0.5;
+      }
+      live_video_check.play();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/pause.png")';
+    } else {
+      live_video_check.pause();
+      document.getElementById('vidplay').style.backgroundImage = 'url("/images/play.png")';
+    }
+  })
+
+</script>
+
+<script>
+  document.getElementById('message').addEventListener('focus', (event) => {
+    $("#msglog").addClass('msglog');
+    $("#msglog").removeClass('msglog_opacity');
+  });
+
+  document.getElementById('message').addEventListener('blur', (event) => {
+    $("#msglog").removeClass('msglog');
+    $("#msglog").addClass('msglog_opacity');
+  });
+</script>
+
+</html>
