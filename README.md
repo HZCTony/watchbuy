@@ -7,7 +7,12 @@
 ## features
 1. Every live host can introduce every product in live video.
 2. Every user can ask questions through chat view.
-3. User can add product to cart and purchase them through Stripe. (now only for test number of credit card: 4242 4242 4242 4242)
+3. User can add product to cart and purchase them through Stripe.<br> (<br>now only for test: 
+<br>credit card: 4242 4242 4242 4242
+<br>Expire: 42/42
+<br>CVV/CVC NUMBER : 424
+<br>)
+
 
 ---------------------------------------
 ## Architecture
@@ -33,7 +38,6 @@
 3. Saved every single product owned by hosts in products table
 4. Saved orders, products in cart for users in orderlist and cartlist
 5. Set Transaction to every mysql query except reading data
-6. Parametrized every query string
 
 ---------------------------------------
 
