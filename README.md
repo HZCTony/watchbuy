@@ -1,8 +1,7 @@
 # WatchBuy - Live video shopping
 
 
-
-'[youtube demo video]'
+[![demo video]()](https://youtu.be/HZEDPOzgSJk)
 ## features
 1. Every live host can introduce every product in live video.
 2. Every user can ask questions through chat view.
