@@ -1,4 +1,4 @@
-# WatchBuy 
+# WatchBuy - Shopping with live video stream
 
 [WatchBuy](https://hzctony.com/) is a shopping website with live video streams. Hosts can introduce products through live videos and share their own live rooms to the audience. If the audience is interested in any products, just add them to cart and go to pay for them.
 
