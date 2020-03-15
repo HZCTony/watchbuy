@@ -1,6 +1,6 @@
 # WatchBuy 
 
-[WatchBuy](https://hzctony.com/) is a shopping website with live video streams. Hosts can introduce products through live video and share their own live room to the audience. If the audience is interested in any products, just add them to cart and go to pay for them.
+[WatchBuy](https://hzctony.com/) is a shopping website with live video streams. Hosts can introduce products through live videos and share their own live rooms to the audience. If the audience is interested in any products, just add them to cart and go to pay for them.
 
 [![demo video](https://hzctonyforlive.s3-ap-southeast-1.amazonaws.com/demovid.png)](https://youtu.be/HZEDPOzgSJk)
 
@@ -8,11 +8,11 @@
 ## features
 1. hosts can get their own IP address and stream ID in profile page for pushing their own video.
 2. Users can ask questions by sending instant messages in chat view.
-3. User can add product to cart and pay for them through Stripe.<br> (<br>now only for test: 
-<br>credit card: 4242 4242 4242 4242
-<br>Expire: 42/42
-<br>CVV/CVC NUMBER : 424
-<br>)
+3. User can add product to cart and pay for them through Stripe. Now only for test numbers like below:
+    * credit card: 4242 4242 4242 4242
+    * Expire: 42/42
+    * CVV/CVC NUMBER : 424
+
 
 
 ---------------------------------------
@@ -28,7 +28,7 @@
 
 3. Customized load balancer as an API to detect which network input of ec2 instances is the lowest and return back the ip address to the hosts. Here are some tips:
     * Created Status server, a node.js server, in every instance. It calculated the difference of rx_types(received bytes) between secs after receiving requests.
-    * Every time hosts check their own profile on WatchBuy, the WatchBuy server will send GET requests to all Status servers under Auto Scaling with Promise.all to check which is the one with the lowest network input.
+    * Every time hosts check their own profile on WatchBuy, the WatchBuy server will get all IPs of running EC2 instances by 'aws-sdk' and send GET requests to all Status servers under Auto Scaling with Promise.all to check which is the one with the lowest network input.
 
 4. Used RTMP to push video stream and HTTP-FLV to pull video stream, which is based on the open source: [Node Media Server](https://github.com/illuspas/Node-Media-Server.git). It is great for high interaction between host and audience with very low latency(around 2~5 seconds).
 
@@ -36,11 +36,12 @@
 
 
 ## Mysql schema
+My database is MySQL which is built on my RDS. Here is my tables:
 
 ![image](public/images/dbschema.png)
 
-### features
-1. Saved unique stream token for every host in hostlist
+### Main features
+1. Saved unique stream token and ec2 instance ID for every host in hostlist
 2. Saved login expire date of hosts and users in hostlist and userlist
 3. Saved every single product owned by hosts in products table
 4. Saved orders, products in cart for users in orderlist and cartlist
@@ -50,28 +51,31 @@
 
 ## Prerequeisite
 
-
-### Language
-
-JavaScript <br />HTML5 <br />CSS
+### Languages
+* JavaScript 
+* HTML5 
+* CSS
 
 ### Framwork
 
-Node.js / express
+* Node.js / express
 
 ### AWS
 
-EC2 <br />S3<br /> RDS<br /> Auto Scaling
+* EC2 
+* S3
+* RDS 
+* Auto Scaling
 
 ### Database
 
-MySQL
+* MySQL
 
-### NPM module
+### NPM modules
 
-crypto<br />
-aws-sdk<br />
-mysql<br />
-Stripe<br />
+* crypto
+* aws-sdk
+* MySQL
+* Stripe
 
 ---------------------------------------
