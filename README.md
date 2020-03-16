@@ -35,15 +35,25 @@
 
 ### Future work
 
-1. When generated a new EC2 instance by Auto Scaling, execute a .sh file to update CloudFront with new cache behavior like:
-* 
+Every time Auto Scaling generated a new EC2 instance, execute a .sh file to update new EC2 origin and cache behavior to CloudFront distribution. like below:
+* Set specific user info from IAM to 'aws-sdk'
+* Use 'getDistributionConfig' to get all current CloudFront settings of.
+* Use 'describeInstances' to get all running ec2 instances and add them to config.
+* Use 'updateDistribution' to set the midified config.
 ---------------------------------------
 
 
 
-## Dashboard by Node Media Server
+## Tested around 20 people online shown on Dashboard 
+This test is going to see the changing of big network traffic with around 20 people in a t2.micro EC2 instance.<br>
 ![image](readme/dashboard.png)
 [Demo Video about the dynamic charts](https://youtu.be/5Snbt_aPUms)
+
+As shown on dashboard, network input is proportional to the number of hosts. In contrast, network output is proportional to the number of users. <br>There is an apparent change when hosts push their video to server. On the other hand, the data of rx_bytes(received bytes) is easy to get from system folder. I can compare the rx_bytes/s between servers to provide the IP address of lowest network input to host.
+
+
+This dashboard is made by [Node Media Server](https://github.com/illuspas/Node-Media-Server.git)
+
 
 ---------------------------------------
 ## Mysql schema
