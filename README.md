@@ -35,7 +35,7 @@
 
 ### Future work
 
-Every time Auto Scaling generated a new EC2 instance, execute a .sh file to update new EC2 origin and cache behavior to CloudFront distribution. like below:
+Every time Auto Scaling generated a new EC2 instance, execute a .sh file to update new EC2 origin and cache behavior to CloudFront distribution. The approximate steps like below:
 * Set specific user info from IAM to 'aws-sdk'
 * Use 'getDistributionConfig' to get all current CloudFront settings of.
 * Use 'describeInstances' to get all running ec2 instances and add them to config.
@@ -45,7 +45,7 @@ Every time Auto Scaling generated a new EC2 instance, execute a .sh file to upda
 
 
 ## Tested around 20 people online shown on Dashboard 
-This test is going to see the changing of big network traffic with around 20 people in a t2.micro EC2 instance.<br>
+This test is going to see the changing of network traffic with around 20 people in a t2.micro EC2 instance.<br>
 ![image](readme/dashboard.png)
 [Demo Video about the dynamic charts](https://youtu.be/5Snbt_aPUms)
 
