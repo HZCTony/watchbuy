@@ -36,7 +36,7 @@
 ### Future work
 
 Every time Auto Scaling generated a new EC2 instance, execute a .sh file to update new EC2 origin and cache behavior to CloudFront distribution. The approximate steps like below:
-* Set specific user info from IAM to 'aws-sdk'
+* Set specific user info got from IAM to 'aws-sdk'
 * Use 'getDistributionConfig' to get all current CloudFront settings of.
 * Use 'describeInstances' to get all running ec2 instances and add them to config.
 * Use 'updateDistribution' to set the midified config.
@@ -107,4 +107,12 @@ My database is MySQL which is built on my RDS. Here is my tables:
 
 ### video player
 * [flv.js](https://github.com/bilibili/flv.js.git)
+
+
+
+
 ---------------------------------------
+
+## Contact
+
+I am Tony. If you hava any questions, don't be hesitate to share your ideas to me: hzc1033@smail.nchu.edu.tw
