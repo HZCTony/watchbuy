@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var sigin = require('../public/model/DataAccessObject/signin.js');
-var logo = require('../public/model/DataAccessObject/logo.js');
+let express = require('express');
+let router = express.Router();
+let sigin = require('../public/model/DataAccessObject/signin.js');
+let logo = require('../public/model/DataAccessObject/logo.js');
 const title = 'WatchBuy';
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
   if (!role || !token) {
     res.render('index', { title: 'WatchBuy', loginStatus: 'none' });
   } else {

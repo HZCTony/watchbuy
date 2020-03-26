@@ -6,8 +6,8 @@ let logo = require('../public/model/DataAccessObject/logo.js');
 const title = 'WatchBuy';
 
 router.get('/', function (req, res, next) {
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
 
   liveroomlist.getAllRooms().then(rooms => {
     signin.personCookieCheck(role, token).then(loginStatus => {

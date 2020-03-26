@@ -138,10 +138,10 @@ module.exports = {
 			}
 
 			async function hostSignUpProcess() {
-				var duplicatedHostNameorNot = await checkDuplicatedName(email);
+				let duplicatedHostNameorNot = await checkDuplicatedName(email);
 				const passwordEcripted = passwordEncryption(password);
 				if (duplicatedHostNameorNot.length == 0) {
-					var insertHostDataResult = await insertHostSignUpInfo(
+					let insertHostDataResult = await insertHostSignUpInfo(
 						name,
 						passwordEcripted,
 						email,
@@ -175,7 +175,7 @@ module.exports = {
 		const newAccessToken = crypto.createHash('sha256').update(newAccess, 'utf8').digest();
 		const loginAccessToken = newAccessToken.toString('hex');
 
-		var resObject = {
+		let resObject = {
 			expire: expireDate.toString(),
 			loginAccessToken: loginAccessToken
 		}

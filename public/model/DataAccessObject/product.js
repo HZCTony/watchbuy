@@ -50,7 +50,7 @@ module.exports = {
 					if (FindIderror) {
 						reject("[Database Error]" + FindIderror);
 					} else {
-						var updateQuery = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
+						let updateQuery = `Insert into products(hostid, host_email, name, size, color, image, stock, description, price)
 							VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 						const updateParams = [HostID[0].id, email, productName, size, color, filepath, stock, description, price];
 						connection.query(updateQuery, updateParams, function (error, UpdatedResult, fields) {

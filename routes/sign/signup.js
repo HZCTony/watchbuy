@@ -21,8 +21,8 @@ router.post('/', function (req, res) {
 });
 
 router.post('/host', function(req, res){
-  var loginInfo  = signup.loginTokenGenerator(req.body.email);
-  var streamToken = signup.streamTokenGenerator(req.body.name);
+  let loginInfo  = signup.loginTokenGenerator(req.body.email);
+  let streamToken = signup.streamTokenGenerator(req.body.name);
   signup.hostSignUp(
     req.body.name,
     req.body.password,
@@ -41,7 +41,7 @@ router.post('/host', function(req, res){
 
 
 router.post('/user', function(req, res){
-  var loginInfo  = signup.loginTokenGenerator(req.body.email);
+  let loginInfo  = signup.loginTokenGenerator(req.body.email);
   signup.userSignUp(
     req.body.name,
     req.body.password,

@@ -35,15 +35,15 @@ router.get('/:id', function (req, res, next) {
 
 router.post('/addtoCart', function (req, res, next) {
 
-  var role = req.cookies.role;
-  var email = req.body.email;
-  var name = req.body.name;
-  var color = req.body.color;
-  var size = req.body.size;
-  var price = req.body.price;
-  var description = req.body.description;
-  var stock = req.body.stock;
-  var image = req.body.image;
+  let role = req.cookies.role;
+  let email = req.body.email;
+  let name = req.body.name;
+  let color = req.body.color;
+  let size = req.body.size;
+  let price = req.body.price;
+  let description = req.body.description;
+  let stock = req.body.stock;
+  let image = req.body.image;
 
   if (!role || !email) {
     res.json({ error: '[userlive.js]: not a user to do adding to cart' });

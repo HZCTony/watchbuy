@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 const stripe = require('stripe')('sk_test_JxwU8aWOHEeGy9lsAjIoQaAp004S8XdBcE');
-var order = require('../public/model/DataAccessObject/order.js');
-var cart = require('../public/model/DataAccessObject/cart.js');
+let order = require('../public/model/DataAccessObject/order.js');
+let cart = require('../public/model/DataAccessObject/cart.js');
 
 router.get('/', function (req, res, next) {
   res.render('checkout', { secret: secret });

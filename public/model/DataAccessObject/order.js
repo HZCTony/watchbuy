@@ -75,7 +75,7 @@ module.exports = {
 	},
 	updateOrderStatus: function (orderID) {
 		return new Promise(function (resolve, reject) {
-			//var UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id='${orderID}';`;
+			//let UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id='${orderID}';`;
 			const UpdateOrderStatusQuery = `Update orderlist set payment='paid' where id=? ;`;
 			const UpdateOrderStatusParam = [orderID];
 			database.connection.getConnection(function (err, connection) {

@@ -62,11 +62,11 @@ app.use(function (req, res, next) {
 });
 
 
-var roomInfo = {};
+let roomInfo = {};
 io.on('connection', function (socket) {
 
-  var roomID;
-  var singleRealUser = '';
+  let roomID;
+  let singleRealUser = '';
   roomInfo[roomID] = [];
 
   socket.on('join', function (user) {
@@ -88,7 +88,7 @@ io.on('connection', function (socket) {
   })
 
   socket.on('disconnect', function () {
-    var index = roomInfo[roomID].indexOf(singleRealUser);
+    let index = roomInfo[roomID].indexOf(singleRealUser);
     if (index != -1) {
       roomInfo[roomID].splice(index, 1);
     }

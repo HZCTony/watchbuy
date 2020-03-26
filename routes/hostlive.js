@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var sigin = require('../public/model/DataAccessObject/signin.js');
-var logo = require('../public/model/DataAccessObject/logo.js');
-var product = require('../public/model/DataAccessObject/product.js');
-var live = require('../public/model/DataAccessObject/live.js');
+let express = require('express');
+let router = express.Router();
+let sigin = require('../public/model/DataAccessObject/signin.js');
+let logo = require('../public/model/DataAccessObject/logo.js');
+let product = require('../public/model/DataAccessObject/product.js');
+let live = require('../public/model/DataAccessObject/live.js');
 const title = 'WatchBuy';
 
 router.get('/:id', function (req, res, next) {
-  var id = req.params.id;
-  var role = req.cookies.role;
-  var token = req.cookies.token;
+  let id = req.params.id;
+  let role = req.cookies.role;
+  let token = req.cookies.token;
   if (!role || !token) {
     res.redirect('/signin');
   } else {

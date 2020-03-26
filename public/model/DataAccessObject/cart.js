@@ -4,7 +4,7 @@ const database = require("../util/rds_mysql.js");
 module.exports = {
 	getAllProductsInCart: function (email) {
 		return new Promise(function (resolve, reject) {
-			var getallproductsInCartQuery = `select * from cartlist where email=? ;`;
+			let getallproductsInCartQuery = `select * from cartlist where email=? ;`;
 			const getAllProductsInCartParam = [email];
 			database.connection.query(getallproductsInCartQuery, getAllProductsInCartParam, function (error, gotAllProductsInCart, fields) {
 				if (error) {
@@ -114,7 +114,7 @@ module.exports = {
 	},
 	deleteProductInCart: function (email, productName) {
 		return new Promise(function (resolve, reject) {
-			var deleteProductInCartQuery = `delete from cartlist where email='${email}' AND name='${productName}';`;
+			let deleteProductInCartQuery = `delete from cartlist where email='${email}' AND name='${productName}';`;
 
 			database.connection.getConnection(function (err, connection) {
 				if (err) {

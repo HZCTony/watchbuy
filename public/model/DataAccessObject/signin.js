@@ -32,7 +32,7 @@ module.exports = {
 	},
 	personCookieCheck: function (role, token) {
 		return new Promise(function (resolve, reject) {
-			var loginStatus = {
+			let loginStatus = {
 				role: '',
 				status: '',
 				name: '',

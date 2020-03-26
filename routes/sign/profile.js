@@ -258,8 +258,8 @@ router.post('/getProductsinCart', function (req, res, next) {
 });
 
 router.post('/deleteProductInCart', function (req, res, next) {
-  var email = req.body.email;
-  var productName = req.body.productName;
+  let email = req.body.email;
+  let productName = req.body.productName;
   cart.deleteProductInCart(email, productName).then(result => {
     res.send('delete a product in your cart');
   })
