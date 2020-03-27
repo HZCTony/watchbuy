@@ -6,7 +6,7 @@
 
 [See demo video of live view on Youtube](https://youtu.be/HZEDPOzgSJk)
 ## features
-1. hosts can get their own IP address and stream ID in profile page for pushing their own video.
+1. hosts can get their assigned IP address and stream ID in profile page for pushing their own video.
 2. Users can ask questions by sending instant messages in chat view.
 3. User can add product to cart and pay for them through Stripe. Now only for test numbers like below:
     * credit card: 4242 4242 4242 4242
@@ -40,11 +40,12 @@ Every time Auto Scaling generated a new EC2 instance, execute a .sh file to upda
 * Use 'getDistributionConfig' to get all current CloudFront settings.
 * Use 'describeInstances' to get all running ec2 instances and add them to config.
 * Use 'updateDistribution' to set the modified config.
+* Now CloudFront can get streaming data from all the running ec2 instances.
 ---------------------------------------
 
 
 
-## Tested around 20 people online shown on Dashboard 
+## Result of Testing around 20 people online shown on dashboard
 This test is going to see the changing of network traffic with around 20 people in a t2.micro EC2 instance.<br>
 ![image](readme/dashboard.png)
 [Demo Video about the dynamic charts](https://youtu.be/5Snbt_aPUms)
