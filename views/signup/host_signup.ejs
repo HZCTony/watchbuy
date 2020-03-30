@@ -50,19 +50,28 @@
     if (data.name == '' || data.email == '' || data.password == '' || data.room_name == '') {
 
       console.log('Sign up info should not be empty.');
-
     } else {
 
-      $.ajax({
-        url: '/signup/host',
-        type: "POST",
-        dataType: "json",
-        data: data,
-        success: function (req) {
-          window.location = '/roomlist';
-        }
-      })
+      let CheckString = /^[A-Za-z0-9]*$/;
+      let Checkemail = /^[A-Za-z0-9@.]*$/;
+      if (CheckString.test(data.name) == true &&
+        Checkemail.test(data.email) == true &&
+        CheckString.test(data.password) == true &&
+        CheckString.test(data.room_name) == true) {
+        $.ajax({
+          url: '/signup/host',
+          type: "POST",
+          dataType: "json",
+          data: data,
+          success: function (req) {
+            window.location = '/roomlist';
+          }
+        })
+      } else {
+        console.log('Sign up info should be english character or number.');
+      }
     }
   })
 </script>
+
 </html>

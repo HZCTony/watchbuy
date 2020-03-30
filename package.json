@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.614.0",
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "debug": "~2.6.9",

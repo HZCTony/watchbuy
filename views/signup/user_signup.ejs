@@ -51,19 +51,26 @@
 
     } else {
 
+      let CheckString = /^[A-Za-z0-9]*$/;
+      let Checkemail = /^[A-Za-z0-9@.]*$/;
+      if (CheckString.test(data.name) == true &&
+      Checkemail.test(data.email) == true &&
+        CheckString.test(data.password) == true) {
 
-      $.ajax({
-        url: '/signup/user',
-        type: "POST",
-        dataType: "json",
-        data: data,
-        success: function (req) {
-          //請求成功時處理
-          console.log(req);
-          window.location = '/roomlist';
-        }
-      })
-
+        $.ajax({
+          url: '/signup/user',
+          type: "POST",
+          dataType: "json",
+          data: data,
+          success: function (req) {
+            //請求成功時處理
+            console.log(req);
+            window.location = '/roomlist';
+          }
+        })
+      }else{
+        console.log('Sign in info should only have english character and number.');
+      }
     }
 
   })
