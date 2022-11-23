@@ -24,7 +24,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "stripe": "^8.17.0"
   },
   "devDependencies": {
